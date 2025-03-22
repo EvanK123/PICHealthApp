@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "PIC-Health-App",
+    "slug": "PIC-Health-App",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/pic-logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-pic-logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/pic-logo.png"
+    },
+    "experiments": {
+      "baseUrl": "/PIC-Health-App"
+    }
+  }
+}
