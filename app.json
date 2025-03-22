@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PIC-Health-App",
-    "slug": "PIC-Health-App",
+    "name": "PIC-Health-MobApp",
+    "slug": "PIC-Health-MobApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/pic-logo.png",
@@ -24,7 +24,7 @@
       "favicon": "./assets/pic-logo.png"
     },
     "experiments": {
-      "baseUrl": "/PIC-Health-App"
+      "baseUrl": "/PIC-Health-MobApp"
     }
   }
 }
