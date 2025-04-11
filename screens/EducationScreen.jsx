@@ -96,6 +96,13 @@ const EducationScreen = () => {
             </View>
 
             <View style={textBox.container}>
+              <Text style={textBox.title}>PIC Health Youth Program</Text>
+              <Text style={textBox.text}>
+               Coming soon
+              </Text>
+            </View>
+
+            <View style={textBox.container}>
               <Text style={textBox.title}>Testimonials</Text>
               <Text style={textBox.text}>
                Coming soon

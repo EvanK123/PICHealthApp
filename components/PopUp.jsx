@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList } from 'react-native';
+import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
 
@@ -28,6 +28,12 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
     <Modal transparent={true} visible={visible} animationType='slide' onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.container}>
+          <TouchableOpacity 
+            style={styles.closeIconButton} 
+            onPress={onClose}
+          >
+            <Text style={styles.closeIcon}>✕</Text>
+          </TouchableOpacity>
           {mode === "event" ? (
             <FlatList
               data={events}
@@ -54,8 +60,16 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
             />
           ) : (
             <View>
-              <Text style={styles.welcomeTitle}>Welcome to PIC Health</Text>
-              <Text style={styles.welcomeText}>Your personal health assistant is here to help.</Text>
+              <Image
+                source={require('../assets/pic-logo.png')}
+                style={styles.welcomeLogo}
+                resizeMode='contain'
+              />
+              <Text style={styles.welcomeTitle}>Welcome to PIC Health!</Text>
+              <Text style={styles.betaText}>Beta</Text>
+              <Text style={styles.disclaimerText}>
+                <Text style={styles.disclaimerBold}>Disclaimer:</Text> This site is for educational use only. Consult a doctor for medical advice. In an emergency, call 911.
+              </Text>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>Get Started</Text>
               </TouchableOpacity>
@@ -79,13 +93,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: 300,
-    backgroundColor: 'white',
+    width: 400,
+    maxHeight: '80%',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 10,
     padding: 20,
+    position: 'relative',
+  },
+  closeIconButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  closeIcon: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#2d4887',
   },
   eventContainer: {
     marginBottom: 20,
+    paddingTop: 10,
+    paddingRight: 20,
   },
   title: {
     fontSize: 20,
@@ -119,9 +152,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-  welcomeText: {
-    fontSize: 16,
+  welcomeLogo: {
+    width: 180,
+    height: 180,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  betaText: {
+    fontSize: 18,
+    color: '#2d4887',
+    textAlign: 'center',
+    marginBottom: 15,
+    fontWeight: 'bold',
+  },
+  disclaimerText: {
+    fontSize: 14,
     textAlign: 'center',
     marginBottom: 20,
+    color: '#333',
+  },
+  disclaimerBold: {
+    fontWeight: 'bold',
   },
 });
