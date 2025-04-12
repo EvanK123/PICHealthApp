@@ -35,7 +35,7 @@ const AboutUs = () => {
           blurRadius={0}
           resizeMode='cover'
         >
-          <Header title="About" />
+          <Header title="About Us" />
           <ScrollView>
 
             {/* Logo and homepage title area */}
@@ -53,7 +53,6 @@ const AboutUs = () => {
 
               {/* Textbox */}
               <View style={textBox.container}>
-                <Text style={textBox.title}>About Us</Text>
                 <Text style={textBox.text}>
                   Established in 2013, Pacific Islander Community Health (PIC Health)
                   serves the Southern California region, by advancing health equity and
@@ -61,9 +60,6 @@ const AboutUs = () => {
                   health initiatives and community-centered research. PIC Health is dedicated
                   to promoting wellness and resilience by addressing the unique health needs
                   and disparities our Pasifika communities endure and navigate every day.
-                </Text>
-              <Text style={textBox.text}>
-                  
                 </Text>
                 <Text style={textBox.text}>
                   Learn more:

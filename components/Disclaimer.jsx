@@ -1,14 +1,16 @@
-import { StyleSheet, Alert, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
-import React from 'react'
-
+import React, { useState } from 'react'
+import DisclaimerModal from './DisclaimerModal';
 
 const Disclaimer = ({description}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={styles.iconContainer}>
         <TouchableOpacity 
           onPress={() => {
-            Alert.alert('Discalimer:', description);
+            setModalVisible(true);
           }}
         >
           <Icon
@@ -17,6 +19,13 @@ const Disclaimer = ({description}) => {
             color='white'
           />
         </TouchableOpacity>
+        
+        <DisclaimerModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          title="Disclaimer"
+          message={description}
+        />
     </View>
   )
 }
