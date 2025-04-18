@@ -23,7 +23,19 @@ jobs:
       run: npm install
 
     - name: Export the Expo app for web
-      run: npm run predeploy
+      run: |
+        npm run predeploy
+        ls -la
+        echo "Checking web-build directory:"
+        ls -la web-build || echo "web-build not found"
+        echo "Checking dist directory:"
+        ls -la dist || echo "dist not found"
+
+    - name: Move web-build to dist
+      run: |
+        mkdir -p dist
+        cp -r web-build/* dist/ || echo "No web-build directory found"
+        ls -la dist
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
