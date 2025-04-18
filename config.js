@@ -4,8 +4,8 @@ export const ENV = {
   DEV: 'dev'
 };
 
-// Default to public environment
-let currentEnv = ENV.PUBLIC;
+// Set default environment
+let currentEnv = ENV.DEV;
 
 // Function to get current environment
 export const getCurrentEnv = () => currentEnv;
