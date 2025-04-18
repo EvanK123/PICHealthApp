@@ -7,7 +7,8 @@ import Popup from '../components/PopUp';
 import CalendarBar from '../components/CalendarBar'; 
 import WebViewModal from '../components/WebViewModal';
 
-import { fetchCalendarEvents } from '../services/GoogleCalendarService';
+// new way to get calendar events with supabase
+import {getEvents} from '../services/SupabaseEventServices';
 
 const CalendarScreen = () => {
   // Track state of Calendar, True = Calendar View, False = List View
@@ -28,14 +29,8 @@ const CalendarScreen = () => {
   // Calendar Information. Key is the email related to the calendear,
   // value is the name that's to be displayed for it in the dropdown
   const calendarOptions = [
-    {
-      key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com', 
-      value: 'Pacific Islander Community'
-    },
-    {
-      key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com', 
-      value: 'Latino Community'
-    }
+    {   key: 'Pacific Islander Community', value: 'Pacific Islander Community'},
+    {   value: 'Latino Community', value: 'Latino Community' }
   ];
 
   const callWebView = (url) => {
@@ -62,24 +57,28 @@ const CalendarScreen = () => {
         return;
       }
 
-      // Calling Google api and grabbing events from selected calendar
-      const fetchedEvents = await fetchCalendarEvents(selectedCalendars);
+      console.log('Selected calendars:', selectedCalendars);
+      const allEvents = await getEvents();
+      console.log('All events before filtering:', allEvents);
 
-      // Building usable objects from the events that were fetched to use
-      // on the page
-      const formattedEvents = fetchedEvents.reduce((acc, event) => {
-        // dateTime is events with time, date is all day events
-        const date = (event.start.dateTime || event.start.date).split('T')[0];
+      const filtered = allEvents.filter(event => selectedCalendars.includes(event.community));
+      console.log('Filtered events:', filtered);
+
+      const formattedEvents = filtered.reduce((acc, event) => {
+        const date = event.date.split('T')[0];
         if (!acc[date]) acc[date] = [];
-        acc[date].push({ 
-          name: event.summary, 
-          time: new Date(event.start.dateTime).toLocaleTimeString(),
+
+        acc[date].push({
+          name: event.title,
+          time: event.time || 'All Day',
           description: event.description || 'No description available',
           ...event
         });
+
         return acc;
       }, {});
-      
+
+      console.log('Final formatted events:', formattedEvents);
       setEvents(formattedEvents);
     }
     loadEvents();
