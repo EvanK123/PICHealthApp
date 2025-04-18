@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
 
 jobs:
   build-deploy:
@@ -23,18 +22,10 @@ jobs:
       run: npm install
 
     - name: Export the Expo app for web
-      run: |
-        npm run predeploy
-        echo "Checking dist directory contents:"
-        ls -la dist
-        echo "Checking dist/_expo directory contents:"
-        ls -la dist/_expo || echo "_expo directory not found"
+      run: npm run predeploy
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
-        destination_dir: ${{ github.ref == 'refs/heads/main' && '.' || 'dev' }}
-        enable_jekyll: false
-        force_orphan: true
