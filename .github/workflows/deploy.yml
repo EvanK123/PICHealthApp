@@ -25,17 +25,10 @@ jobs:
     - name: Export the Expo app for web
       run: |
         npm run predeploy
-        ls -la
-        echo "Checking web-build directory:"
-        ls -la web-build || echo "web-build not found"
-        echo "Checking dist directory:"
-        ls -la dist || echo "dist not found"
-
-    - name: Move web-build to dist
-      run: |
-        mkdir -p dist
-        cp -r web-build/* dist/ || echo "No web-build directory found"
+        echo "Checking dist directory contents:"
         ls -la dist
+        echo "Checking dist/_expo directory contents:"
+        ls -la dist/_expo || echo "_expo directory not found"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -43,3 +36,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
         destination_dir: ${{ github.ref == 'refs/heads/main' && '.' || 'dev' }}
+        enable_jekyll: false
+        force_orphan: true
