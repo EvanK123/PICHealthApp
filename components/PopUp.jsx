@@ -40,7 +40,7 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
               keyExtractor={(item, index) => item.id + index}
               renderItem={({ item }) => (
                 <View style={styles.eventContainer}>
-                  <Text style={styles.title}>{item.summary}</Text>
+                  <Text style={styles.title}>{item.summary || item.title}</Text>
                   {item.description ? (
                     <RenderHtml
                       contentWidth={300}
@@ -52,9 +52,11 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
                     <Text style={styles.noDescription}>No description available</Text>
                   )}
                   <Text style={styles.eventTime}>
-                    {new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}
+                    {item.time || (item.start?.dateTime ? 
+                      new Date(item.start.dateTime).toLocaleString([], { hour: '2-digit', minute: '2-digit' })
+                      : 'Time not specified')}
                   </Text>
-                  <Text style={styles.eventTime}>{item.location}</Text>
+                  <Text style={styles.eventTime}>{item.location || 'No location specified'}</Text>
                 </View>
               )}
             />
