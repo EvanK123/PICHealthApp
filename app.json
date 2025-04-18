@@ -21,8 +21,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/pic-logo.png",
-      "bundler": "metro"
+      "favicon": "./assets/pic-logo.png"
     },
     "experiments": {
       "baseUrl": "/PIC-Health-MobApp"
