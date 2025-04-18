@@ -4,7 +4,7 @@
   "main": "expo/AppEntry.js",
   "scripts": {
     "deploy": "gh-pages -t -d dist",
-    "predeploy": "expo export -p web"
+    "predeploy": "node deploy.js"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
