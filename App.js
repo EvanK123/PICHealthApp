@@ -16,6 +16,11 @@ import RegisterScreen from './screens/RegisterScreen';
 import { supabase } from './supabase';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import { supabase } from './supabase';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 const Tab = createBottomTabNavigator();
 
 const App = () => {
@@ -39,6 +44,7 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
+<<<<<<< HEAD
       <TranslationProvider>
         {!session ? (
           showRegister ? (
@@ -83,6 +89,50 @@ const App = () => {
           </>
         )}
       </TranslationProvider>
+=======
+      {!session ? (
+        showRegister ? (
+          <RegisterScreen navigation={{ navigate: () => setShowRegister(false) }} />
+        ) : (
+          <LoginScreen navigation={{ navigate: () => setShowRegister(true) }} />
+        )
+      ) : (
+        <>
+          <Popup visible={showWelcome} onClose={() => setShowWelcome(false)} mode="welcome" />
+          <NavigationContainer>
+            <Tab.Navigator
+              initialRouteName='Home'
+              screenOptions={({ route }) => ({
+                tabBarIcon: ({ color, size }) => {
+                  let iconName;
+                  if (route.name === 'About Us') iconName = 'list';
+                  else if (route.name === 'Home') iconName = 'calendar';
+                  else if (route.name === 'Health') iconName = 'heart';
+                  else if (route.name === 'Education') iconName = 'book';
+                  else if (route.name === 'Culture') iconName = 'globe';
+                  else if (route.name === 'Account') iconName = 'person';
+
+                  return <Icon name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: 'white',
+                tabBarInactiveTintColor: 'darkgray',
+                headerShown: false,
+                tabBarStyle: {
+                  backgroundColor: '#2d4887',
+                },
+              })}
+            >
+              <Tab.Screen name='Home' component={CalendarScreen} />
+              <Tab.Screen name='Health' component={HealthScreen} />
+              <Tab.Screen name='Education' component={EducationScreen} />
+              <Tab.Screen name='Culture' component={CultureScreen} />
+              <Tab.Screen name='About Us' component={AboutUs} />
+              <Tab.Screen name='Account' component={AccountScreen} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </>
+      )}
+>>>>>>> 689fe9a248490e559203cb2a14703153b2bdf556
     </SafeAreaProvider>
   );
 };
