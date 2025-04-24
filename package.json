@@ -8,15 +8,8 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@react-native-picker/picker": "^2.11.0",
-=======
     "@react-native-async-storage/async-storage": "1.23.1",
->>>>>>> 74d543d (Added env support for dev tables)
-=======
-    "@react-native-async-storage/async-storage": "1.23.1",
->>>>>>> 689fe9a248490e559203cb2a14703153b2bdf556
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@supabase/supabase-js": "^2.49.4",
@@ -41,4 +34,4 @@
     "gh-pages": "^6.2.0"
   },
   "private": true
-}
+} 
