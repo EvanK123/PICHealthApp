@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
-    "@react-native-picker/picker": "^2.11.0",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@supabase/supabase-js": "^2.49.4",
@@ -34,4 +34,4 @@
     "gh-pages": "^6.2.0"
   },
   "private": true
-} 
+}
