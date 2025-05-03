@@ -4,66 +4,63 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ListView from '../components/ListView';
 import CalendarView from '../components/CalendarView';
 import Popup from '../components/PopUp';
-import CalendarBar from '../components/CalendarBar'; 
+import CalendarBar from '../components/CalendarBar';
 import WebViewModal from '../components/WebViewModal';
 
-// new way to get calendar events with supabase
-import {getEvents} from '../services/SupabaseEventServices';
+// Import calendar events from supabase service
+import { getEvents } from '../services/SupabaseEventServices';
 
-const CalendarScreen = () => {
-  // Track state of Calendar, True = Calendar View, False = List View
+const CalendarScreen = ({ isGuest }) => {
+  // Toggle between Calendar view (True) and List view (False)
   const [calendarMode, setCalendarMode] = useState(true);
-  // State for when an event is pressed and the Pop up is called
-  const [popupVisible, setPopupVisible] = useState(false);
-  // Event that is being selected for the Popup
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  // State for WebView stuff. isVisible is when to show the browser,
-  // url is the link that the browser is opening to
-  const [modalConfig, setModalConfig] = useState({isVisible: false, url: ''});
 
-  // Events that are loaded from the calendar
+  // Popup related states
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // WebView modal state
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '' });
+
+  // Events fetched from backend
   const [events, setEvents] = useState({});
-  // What calendars are being selected to fill the events state
+
+  // Which calendars are selected (filters)
   const [selectedCalendars, setSelectedCalendars] = useState([]);
 
-  // Calendar Information. Key is the email related to the calendear,
-  // value is the name that's to be displayed for it in the dropdown
+  // Calendar Information. Key is the email related to the calendar
+  //Value is the names that will be displayed for it in the dropdown
   const calendarOptions = [
-    {   key: 'Pacific Islander Community', value: 'Pacific Islander Community'},
-    {   value: 'Latino Community', value: 'Latino Community' }
+    { key: 'Pacific Islander Community', value: 'Pacific Islander Community' },
+    { value: 'Latino Community', value: 'Latino Community' }
   ];
 
+  // Handle URL links (open externally or in app browser)
   const callWebView = (url) => {
-    Platform.OS === 'web' ? 
-      Linking.openURL(url) :
-      setModalConfig({
-        isVisible: true,
-        url: url
-      });
+    Platform.OS === 'web'
+      ? Linking.openURL(url)
+      : setModalConfig({ isVisible: true, url });
   };
 
   const closeModal = () => {
-    setModalConfig(prev => ({
-      ...prev,
-      isVisible: false
-    }));
+    setModalConfig(prev => ({ ...prev, isVisible: false }));
   };
 
-  // Used for fetching the events from the calendar api
+  // Fetch and filter events based on selected calendars
   useEffect(() => {
     async function loadEvents() {
+      // If no calendars are selected, clear events
       if (selectedCalendars.length === 0) {
         setEvents({});
         return;
       }
 
-      console.log('Selected calendars:', selectedCalendars);
+      // Load all events from the database
       const allEvents = await getEvents();
-      console.log('All events before filtering:', allEvents);
 
+      // Filter events by selected calendars
       const filtered = allEvents.filter(event => selectedCalendars.includes(event.community));
-      console.log('Filtered events:', filtered);
 
+      // Group events by date
       const formattedEvents = filtered.reduce((acc, event) => {
         const date = event.date.split('T')[0];
         if (!acc[date]) acc[date] = [];
@@ -78,12 +75,13 @@ const CalendarScreen = () => {
         return acc;
       }, {});
 
-      console.log('Final formatted events:', formattedEvents);
       setEvents(formattedEvents);
     }
+
     loadEvents();
   }, [selectedCalendars]);
 
+  // When event is pressed, show popup
   const handleEventPress = (event) => {
     setSelectedEvent(event);
     setPopupVisible(true);
@@ -102,40 +100,48 @@ const CalendarScreen = () => {
         style={styles.image}
         blurRadius={0}
       >
+        {/* Calendar toolbar and filters */}
         <CalendarBar
           calendarMode={calendarMode}
           callWebView={callWebView}
           setCalendarMode={setCalendarMode}
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
+          isGuest={isGuest}
         />
-          <View style={styles.darken}>
-            {calendarMode //Checks calendar mode to load proper component
-            ?
-              <CalendarView
-                onEventPress={handleEventPress}
-                events={events}
-                selectedCalendars={selectedCalendars}
-                callWebView={callWebView}
-                closeModal={closeModal}
-              />
-            : <ListView 
-                onEventPress={handleEventPress}
-                events={events}
-                selectedCalendars={selectedCalendars}
-              />}
-          </View>
+
+        <View style={styles.darken}>
+          {/* Switch between Calendar and List views */}
+          {calendarMode ? (
+            <CalendarView
+              onEventPress={handleEventPress}
+              events={events}
+              selectedCalendars={selectedCalendars}
+              callWebView={callWebView}
+              closeModal={closeModal}
+            />
+          ) : (
+            <ListView
+              onEventPress={handleEventPress}
+              events={events}
+              selectedCalendars={selectedCalendars}
+            />
+          )}
+        </View>
       </ImageBackground>
+
+      {/* Event details popup */}
       <Popup 
-        visible={popupVisible} 
-        onClose={closePopup} 
-        event={selectedEvent} 
-        onGoing={() => console.log('Going')} 
-        onNotGoing={() => console.log('Not Going')} 
-        onMaybe={() => console.log('Maybe')} 
+        visible={popupVisible}
+        onClose={closePopup}
+        event={selectedEvent}
+        onGoing={() => console.log('Going')}
+        onNotGoing={() => console.log('Not Going')}
+        onMaybe={() => console.log('Maybe')}
+        isGuest={isGuest}
       />
 
-      {/*Web Browser*/}
+      {/* In-app web browser */}
       <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} />
     </SafeAreaView>
   );

@@ -4,20 +4,21 @@ import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
 
 // Popup component to display event details or welcome message in a modal
-const Popup = ({ visible, onClose, mode = "event", events }) => {
+const Popup = ({ visible, onClose, mode = "event", events, isGuest = false }) => {
+
   if (mode === "event" && (!events || events.length === 0)) return null;
-  
+
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '' });
 
-  // Function to handle link presses within the HTML content
+  // Handle link press inside event descriptions
   const handleLinkPress = (event, href) => {
     callWebView(href);
   };
 
   const callWebView = (url) => {
-    Platform.OS === 'web' ? 
-      Linking.openURL(url) :
-      setModalConfig({ isVisible: true, url });
+    Platform.OS === 'web'
+      ? Linking.openURL(url)
+      : setModalConfig({ isVisible: true, url });
   };
 
   const closeModal = () => {
@@ -28,12 +29,10 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
     <Modal transparent={true} visible={visible} animationType='slide' onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <TouchableOpacity 
-            style={styles.closeIconButton} 
-            onPress={onClose}
-          >
+          <TouchableOpacity style={styles.closeIconButton} onPress={onClose}>
             <Text style={styles.closeIcon}>✕</Text>
           </TouchableOpacity>
+
           {mode === "event" ? (
             <FlatList
               data={events}
@@ -52,8 +51,8 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
                     <Text style={styles.noDescription}>No description available</Text>
                   )}
                   <Text style={styles.eventTime}>
-                    {item.time || (item.start?.dateTime ? 
-                      new Date(item.start.dateTime).toLocaleString([], { hour: '2-digit', minute: '2-digit' })
+                    {item.time || (item.start?.dateTime
+                      ? new Date(item.start.dateTime).toLocaleString([], { hour: '2-digit', minute: '2-digit' })
                       : 'Time not specified')}
                   </Text>
                   <Text style={styles.eventTime}>{item.location || 'No location specified'}</Text>
@@ -61,17 +60,22 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
               )}
             />
           ) : (
+      
             <View>
-              <Image
-                source={require('../assets/pic-logo.png')}
-                style={styles.welcomeLogo}
-                resizeMode='contain'
-              />
+              <Image source={require('../assets/pic-logo.png')} style={styles.welcomeLogo} resizeMode='contain' />
               <Text style={styles.welcomeTitle}>Welcome to PIC Health!</Text>
               <Text style={styles.betaText}>Beta</Text>
               <Text style={styles.disclaimerText}>
                 <Text style={styles.disclaimerBold}>Disclaimer:</Text> This site is for educational use only. Consult a doctor for medical advice. In an emergency, call 911.
               </Text>
+
+              {/* Guest mode notice */}
+              {isGuest && (
+                <Text style={styles.guestNotice}>
+                  <Text style={styles.disclaimerBold}>Note:</Text> You are in guest mode and cannot create events.
+                </Text>
+              )}
+
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>Get Started</Text>
               </TouchableOpacity>
@@ -86,7 +90,7 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
 
 export default Popup;
 
-// Styles for the Popup component
+// Styles
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
@@ -106,11 +110,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
   },
   closeIcon: {
     fontSize: 20,
@@ -137,43 +136,41 @@ const styles = StyleSheet.create({
     color: '#555',
     marginTop: 10,
   },
-  closeButton: {
-    marginTop: 20,
-    backgroundColor: '#2d4887',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: 'white',
-    fontSize: 16,
+  welcomeLogo: {
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
   },
   welcomeTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10,
-  },
-  welcomeLogo: {
-    width: 180,
-    height: 180,
-    alignSelf: 'center',
-    marginBottom: 20,
   },
   betaText: {
-    fontSize: 18,
-    color: '#2d4887',
+    fontSize: 16,
     textAlign: 'center',
     marginBottom: 15,
-    fontWeight: 'bold',
   },
   disclaimerText: {
     fontSize: 14,
     textAlign: 'center',
-    marginBottom: 20,
-    color: '#333',
   },
   disclaimerBold: {
     fontWeight: 'bold',
+  },
+  guestNotice: {
+    marginTop: 10,
+    color: 'red',
+    textAlign: 'center',
+  },
+  closeButton: {
+    backgroundColor: '#2d4887',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  closeButtonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });

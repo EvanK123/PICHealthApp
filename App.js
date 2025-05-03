@@ -14,12 +14,14 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { supabase } from './supabase';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [showWelcome, setShowWelcome] = useState(true);
   const [session, setSession] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -38,15 +40,20 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <TranslationProvider>
-        {!session ? (
+        {(!session && !isGuest) ? (
           showRegister ? (
             <RegisterScreen navigation={{ navigate: () => setShowRegister(false) }} />
           ) : (
-            <LoginScreen navigation={{ navigate: () => setShowRegister(true) }} />
+            <LoginScreen navigation={{ 
+              navigate: (screen) => {
+                if (screen === 'Register') setShowRegister(true);
+                if (screen === 'Guest') setIsGuest(true);
+              }
+            }} />
           )
         ) : (
           <>
-            <Popup visible={showWelcome} onClose={() => setShowWelcome(false)} mode="welcome" />
+            <Popup visible={showWelcome} onClose={() => setShowWelcome(false)} mode="welcome" isGuest={isGuest} />
             <NavigationContainer>
               <Tab.Navigator
                 initialRouteName='Home'
@@ -70,12 +77,16 @@ const App = () => {
                   },
                 })}
               >
-                <Tab.Screen name='Home' component={CalendarScreen} />
+                <Tab.Screen name='Home'>
+                  {() => <CalendarScreen isGuest={isGuest} />}
+                </Tab.Screen>
                 <Tab.Screen name='Health' component={HealthScreen} />
                 <Tab.Screen name='Education' component={EducationScreen} />
                 <Tab.Screen name='Culture' component={CultureScreen} />
                 <Tab.Screen name='About Us' component={AboutUs} />
-                <Tab.Screen name='Account' component={AccountScreen} />
+                <Tab.Screen name='Account'>
+                  {() => <AccountScreen isGuest={isGuest} setIsGuest={setIsGuest} />}
+                </Tab.Screen>
               </Tab.Navigator>
             </NavigationContainer>
           </>

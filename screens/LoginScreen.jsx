@@ -45,6 +45,11 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={styles.link}>Don't have an account? Sign Up</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.guestButton} onPress={() => navigation.navigate('Guest')}>
+            <Text style={styles.buttonText}>Continue as Guest</Text>
+          </TouchableOpacity>
+
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>
@@ -80,6 +85,12 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#2d4887',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  guestButton: {
+    backgroundColor: '#888',
     padding: 15,
     borderRadius: 10,
     marginTop: 10,

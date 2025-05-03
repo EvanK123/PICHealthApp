@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 
-const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, calendarOptions, callWebView }) => {
-  // 'Today' button functionality can be customized as needed
-  // Toggles between Calendar and List view, state is in CalendarScreen
+const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, calendarOptions, callWebView, isGuest }) => {
+  
+  // Toggles between Calendar and List views
   const viewBtn = () => {
     setCalendarMode(prevMode => !prevMode);
   };
@@ -12,32 +12,39 @@ const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, cale
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        {/*Form submission button*/}
-        <TouchableOpacity onPress={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')} style={styles.flexItem}>
-          <View style={styles.buttons}>
-            <Text style={styles.buttonText}>Submit Event</Text>
-          </View>
-        </TouchableOpacity>
+
+        {/* Form submission button (hidden in guest mode) */}
+        {!isGuest && (
+          <TouchableOpacity onPress={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')} style={styles.flexItem}>
+            <View style={styles.buttons}>
+              <Text style={styles.buttonText}>Submit Event</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+
+        {/* Calendar Title */}
         <Text style={[styles.flexItem, styles.title]}>Calendar</Text>
-        {/*View switch button*/}
+
+        {/* Toggle view button (Calendar ↔ List) */}
         <TouchableOpacity onPress={viewBtn} style={styles.flexItem}>
           <View style={styles.buttons}>
             <Text style={styles.buttonText}>
-              {/*Switches based on the state of calendarMode*/}
               {calendarMode ? 'List' : 'Calendar'}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
-      <View style={calendarMode ? {} : {display: 'none'}}>
+
+      {/* Calendar filters - show only when in Calendar view */}
+      <View style={calendarMode ? {} : { display: 'none' }}>
         <MultipleSelectList
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save='key'
           label='Select Calendars'
           placeholder='Select Calendar'
-          dropdownStyles={styles.dropdown} // Apply custom styles to the dropdown
-          boxStyles={styles.dropdownBox} // Apply custom styles to the box
+          dropdownStyles={styles.dropdown} 
+          boxStyles={styles.dropdownBox} 
         />
       </View>
     </SafeAreaView>
@@ -53,8 +60,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 65,
-    shadowRadius: 3,
-    shadowOffset: 4,
     paddingHorizontal: 10,
   },
   flexItem: {
@@ -79,14 +84,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   dropdown: {
-    backgroundColor: '#fff', // White background for the dropdown
-    borderRadius: 0,
-    marginTop: 0,
+    backgroundColor: '#fff',
     marginBottom: 10,
   },
   dropdownBox: {
-    backgroundColor: '#fff', // White background for the box
-    borderColor: '#fff', // Optional: Add border color
-    borderRadius: 0
+    backgroundColor: '#fff',
+    borderColor: '#fff',
   },
 });
