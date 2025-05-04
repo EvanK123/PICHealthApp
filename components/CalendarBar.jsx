@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { useNavigation } from '@react-navigation/native';
 
 const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, calendarOptions, callWebView, isGuest }) => {
+  const navigation = useNavigation();
   
   // Toggles between Calendar and List views
   const viewBtn = () => {
@@ -14,8 +16,11 @@ const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, cale
       <View style={styles.container}>
 
         {/* Form submission button (hidden in guest mode) */}
+        {/* Removed Google Form button */}
+
+        {/* New button to navigate to AddEventScreen (hidden in guest mode) */}
         {!isGuest && (
-          <TouchableOpacity onPress={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')} style={styles.flexItem}>
+          <TouchableOpacity onPress={() => navigation.navigate('AddEvent')} style={styles.flexItem}>
             <View style={styles.buttons}>
               <Text style={styles.buttonText}>Submit Event</Text>
             </View>
