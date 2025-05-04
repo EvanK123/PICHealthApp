@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-//setting up project URL and anon/public API key from Supabase dashboard
-const supabaseURL = 'https://fywwsvxhwbntsfmpfyuh.supabase.co';
-const supabaseKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5d3dzdnhod2JudHNmbXBmeXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1MjQyNjIsImV4cCI6MjA1ODEwMDI2Mn0.-D3Qo2YXG7Sf_YzwxxknbHfgqy_v0j9JcDJiBh-mNZU';
-export const supabase = createClient(supabaseURL, supabaseKEY);
+import { supabase } from '../supabase';
 
 /**
  * Fetches all events from the events table
@@ -128,15 +123,25 @@ export const getEventById = async (id) => {
  * - Includes error logging for debugging
  */
 export const createEvent = async (eventData) => {
-    const {data, error} = await supabase
-        .from('events')
-        .insert([eventData]);
+    console.log('Attempting to create event with data:', eventData);
+    
+    try {
+        const { data, error } = await supabase
+            .from('events')
+            .insert([eventData])
+            .select();
 
-    if (error) {
-        console.error('Error creating event: ', error.message);
+        if (error) {
+            console.error('Error creating event:', error);
+            return false;
+        }
+
+        console.log('Successfully created event:', data);
+        return true;
+    } catch (e) {
+        console.error('Exception in createEvent:', e);
         return false;
     }
-    return data.user;
 };
 
 /**
