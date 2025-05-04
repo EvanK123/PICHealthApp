@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import {createEvent} from '../services/SupabaseEventService';
+import {createEvent} from '../services/SupabaseEventServices';
+import { supabase } from '../supabase';
 
 //allows screen an organizer to create a new event
 export default function AddEventScreen({navigation}){
@@ -13,20 +14,64 @@ export default function AddEventScreen({navigation}){
 
     //handler for form submission
     const handleCreateEvent = async () => {
-        const success = await createEvent({
-            title,
-            date,
-            time,
-            location,
-            description,
-            organizer: 'user-id-here', // Replace with logged-in user ID
-        });
+        try {
+            // Basic validation
+            if (!title.trim()) {
+                Alert.alert('Error', 'Please enter an event title');
+                return;
+            }
+            if (!date.trim()) {
+                Alert.alert('Error', 'Please enter a date');
+                return;
+            }
+            if (!time.trim()) {
+                Alert.alert('Error', 'Please enter a time');
+                return;
+            }
+            if (!location.trim()) {
+                Alert.alert('Error', 'Please enter a location');
+                return;
+            }
 
-        if (success) {
-            Alert.alert('Success', 'Event created!');
-            navigation.goBack();
-        } else {
-            Alert.alert('Error', 'Could not create event.');
+            const { data: { session } } = await supabase.auth.getSession();
+            const userId = session?.user?.id;
+            
+            if (!userId) {
+                Alert.alert('Error', 'You must be logged in to create an event');
+                return;
+            }
+
+            // Get user's community from their profile
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('community')
+                .eq('id', userId)
+                .single();
+
+            if (!profile?.community) {
+                Alert.alert('Error', 'Could not determine your community');
+                return;
+            }
+
+            const success = await createEvent({
+                title: title.trim(),
+                date: date.trim(),
+                time: time.trim(),
+                location: location.trim(),
+                description: description.trim(),
+                organizer: userId,
+                community: profile.community
+            });
+
+            if (success) {
+                Alert.alert('Success', 'Event created!');
+                navigation.goBack();
+            } else {
+                Alert.alert('Error', 'Could not create event. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error creating event:', error);
+            Alert.alert('Error', 'An unexpected error occurred. Please try again.');
         }
     };
 
