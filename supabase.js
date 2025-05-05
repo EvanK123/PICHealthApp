@@ -21,7 +21,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: true,
   },
   db: {
-    schema: getCurrentEnv()
+    schema: 'public'
   }
 });
 

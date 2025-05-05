@@ -35,7 +35,9 @@ npm install react-native-dropdown-select-list
 npm install react-native-icons
 npm install @react-navigation/native-stack
 npm install @supabase/supabase-js
+npm install uuid
 npx expo install @react-native-async-storage/async-storage
+expo install expo-image-picker
 
 ```
 
