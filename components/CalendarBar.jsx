@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { useNavigation } from '@react-navigation/native';
 
 const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, calendarOptions, callWebView, isGuest }) => {
-  
-  // Toggles between Calendar and List views
+  const navigation = useNavigation();
+
   const viewBtn = () => {
     setCalendarMode(prevMode => !prevMode);
   };
@@ -12,20 +13,14 @@ const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, cale
   return (
     <SafeAreaView>
       <View style={styles.container}>
-
-        {/* Form submission button (hidden in guest mode) */}
         {!isGuest && (
-          <TouchableOpacity onPress={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')} style={styles.flexItem}>
+          <TouchableOpacity onPress={() => navigation.navigate('AddEventScreen')} style={styles.flexItem}>
             <View style={styles.buttons}>
               <Text style={styles.buttonText}>Submit Event</Text>
             </View>
           </TouchableOpacity>
         )}
-
-        {/* Calendar Title */}
         <Text style={[styles.flexItem, styles.title]}>Calendar</Text>
-
-        {/* Toggle view button (Calendar ↔ List) */}
         <TouchableOpacity onPress={viewBtn} style={styles.flexItem}>
           <View style={styles.buttons}>
             <Text style={styles.buttonText}>
@@ -35,7 +30,6 @@ const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, cale
         </TouchableOpacity>
       </View>
 
-      {/* Calendar filters - show only when in Calendar view */}
       <View style={calendarMode ? {} : { display: 'none' }}>
         <MultipleSelectList
           setSelected={setSelectedCalendars}

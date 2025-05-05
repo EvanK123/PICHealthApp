@@ -14,6 +14,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { supabase } from './supabase';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AddEventScreen from './screens/AddEventScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -87,6 +88,13 @@ const App = () => {
                 <Tab.Screen name='Account'>
                   {() => <AccountScreen isGuest={isGuest} setIsGuest={setIsGuest} />}
                 </Tab.Screen>
+                <Tab.Screen
+                  name="AddEventScreen"
+                  component={AddEventScreen}
+                  options={{
+                    tabBarButton: () => null,
+                  }}
+                />
               </Tab.Navigator>
             </NavigationContainer>
           </>
