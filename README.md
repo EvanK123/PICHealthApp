@@ -38,6 +38,7 @@ npm install @supabase/supabase-js
 npm install uuid
 npx expo install @react-native-async-storage/async-storage
 expo install expo-image-picker
+npm install localforage
 
 ```
 

@@ -1,58 +1,46 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import {createEvent} from '../services/SupabaseEventServices';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { createEvent } from '../services/SupabaseEventServices';
 import { supabase } from '../supabase';
 
-//allows screen an organizer to create a new event
-export default function AddEventScreen({navigation}){
-    //state variables for each input field
+export default function AddEventScreen({ navigation }) {
     const [title, setTitle] = useState('');
-    const [date, setDate] = useState(''); // format: YYYY-MM-DD
-    const [time, setTime] = useState(''); // format: HH:MM:SS
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
+    const [community, setCommunity] = useState('');
 
-    //handler for form submission
     const handleCreateEvent = async () => {
         try {
-            // Basic validation
-            if (!title.trim()) {
-                Alert.alert('Error', 'Please enter an event title');
-                return;
-            }
-            if (!date.trim()) {
-                Alert.alert('Error', 'Please enter a date');
-                return;
-            }
-            if (!time.trim()) {
-                Alert.alert('Error', 'Please enter a time');
-                return;
-            }
-            if (!location.trim()) {
-                Alert.alert('Error', 'Please enter a location');
+            // Validate required fields
+            if (!title.trim() || !date.trim() || !time.trim() || !location.trim() || !community) {
+                Alert.alert('Error', 'Please fill in all required fields');
                 return;
             }
 
+            // Validate date format
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date.trim())) {
+                Alert.alert('Error', 'Date must be in YYYY-MM-DD format');
+                return;
+            }
+
+            // Validate time format
+            if (!/^\d{2}:\d{2}(:\d{2})?$/.test(time.trim())) {
+                Alert.alert('Error', 'Time must be in HH:MM or HH:MM:SS format');
+                return;
+            }
+
+            // Get current user
             const { data: { session } } = await supabase.auth.getSession();
             const userId = session?.user?.id;
-            
+
             if (!userId) {
                 Alert.alert('Error', 'You must be logged in to create an event');
                 return;
             }
 
-            // Get user's community from their profile
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('community')
-                .eq('id', userId)
-                .single();
-
-            if (!profile?.community) {
-                Alert.alert('Error', 'Could not determine your community');
-                return;
-            }
-
+            // Create event
             const success = await createEvent({
                 title: title.trim(),
                 date: date.trim(),
@@ -60,7 +48,7 @@ export default function AddEventScreen({navigation}){
                 location: location.trim(),
                 description: description.trim(),
                 organizer: userId,
-                community: profile.community
+                community: community
             });
 
             if (success) {
@@ -75,28 +63,63 @@ export default function AddEventScreen({navigation}){
         }
     };
 
-    //contains style input for event title, date, time, loc, and description
     return (
         <View style={styles.container}>
-          <Text style={styles.label}>Event Title</Text>
-          <TextInput style={styles.input} value={title} onChangeText={setTitle} />
-          <Text style={styles.label}>Date (YYYY-MM-DD)</Text>
-          <TextInput style={styles.input} value={date} onChangeText={setDate} />
-          <Text style={styles.label}>Time (HH:MM:SS)</Text>
-          <TextInput style={styles.input} value={time} onChangeText={setTime} />
-          <Text style={styles.label}>Location</Text>
-          <TextInput style={styles.input} value={location} onChangeText={setLocation} />
-          <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.input} value={description} onChangeText={setDescription} multiline />
+            <Text style={styles.label}>Event Title</Text>
+            <TextInput style={styles.input} value={title} onChangeText={setTitle} />
 
-          <Button title="Create Event" onPress={handleCreateEvent} />
+            <Text style={styles.label}>Date (YYYY-MM-DD)</Text>
+            <TextInput style={styles.input} value={date} onChangeText={setDate} />
+
+            <Text style={styles.label}>Time (HH:MM or HH:MM:SS)</Text>
+            <TextInput style={styles.input} value={time} onChangeText={setTime} />
+
+            <Text style={styles.label}>Location</Text>
+            <TextInput style={styles.input} value={location} onChangeText={setLocation} />
+
+            <Text style={styles.label}>Description</Text>
+            <TextInput style={styles.input} value={description} onChangeText={setDescription} multiline />
+
+            <Text style={styles.label}>Community</Text>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    style={[styles.communityButton, community === 'Pacific Islander' && styles.selectedButton]}
+                    onPress={() => setCommunity('Pacific Islander')}
+                >
+                    <Text style={styles.buttonText}>Pacific Islander</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.communityButton, community === 'Latino' && styles.selectedButton]}
+                    onPress={() => setCommunity('Latino')}
+                >
+                    <Text style={styles.buttonText}>Latino</Text>
+                </TouchableOpacity>
+            </View>
+
+            <Button title="Create Event" onPress={handleCreateEvent} />
         </View>
     );
 }
 
-//styling for the form
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  label: { marginTop: 10, fontWeight: 'bold' },
-  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 5, padding: 8, marginBottom: 10 }
+    container: { padding: 20 },
+    label: { marginTop: 10, fontWeight: 'bold' },
+    input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 5, padding: 8, marginBottom: 10 },
+    buttonContainer: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
+    communityButton: {
+        flex: 1,
+        backgroundColor: '#eee',
+        padding: 10,
+        marginHorizontal: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    selectedButton: {
+        backgroundColor: '#4CAF50',
+    },
+    buttonText: {
+        color: '#000',
+        fontWeight: 'bold',
+    }
 });
