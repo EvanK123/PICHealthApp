@@ -36,15 +36,14 @@ const CalendarView = ({ events, selectedCalendars, callWebView, closeModal }) =>
   useEffect(() => {
     const formatEvents = (events) => {
       const calendarColors = {
-        'PIC_Calendar_Email@gmail.com': '#0B75B9',
-        'Latino_Calendar_Email@group.calendar.google.com': '#71AD45',
+        'Pacific Islander': '#0B75B9',
+        'Latino': '#71AD45',
       };
 
       const formattedEvents = Object.keys(events).reduce((acc, date) => {
         const eventList = events[date];
         const dots = eventList.map(event => {
-          const calendarId = event.organizer.email;
-          const color = calendarColors[calendarId] || 'gray';
+          const color = calendarColors[event.community] || 'gray';
           return { color };
         });
 
@@ -57,6 +56,7 @@ const CalendarView = ({ events, selectedCalendars, callWebView, closeModal }) =>
 
     if (selectedCalendars.length > 0) {
       const formattedEvents = formatEvents(events);
+      console.log('Marked dates:', formattedEvents);
       setMarkedDates(formattedEvents);
     } else {
       setMarkedDates({});
@@ -67,25 +67,26 @@ const CalendarView = ({ events, selectedCalendars, callWebView, closeModal }) =>
   useEffect(() => {
     const filterUpcomingEvents = () => {
       const today = new Date();
-      const endDate = addDays(today, 7);
+      today.setHours(0, 0, 0, 0); // Set to start of day
       const upcomingEventsList = [];
       
       if (events && typeof events === 'object') {
         Object.entries(events).forEach(([date, eventsOnDate = []]) => {
           if (Array.isArray(eventsOnDate)) {
             eventsOnDate.forEach(event => {
-              const isAllDay = !!event.start?.date;
-              const eventDateObj = new Date(event.start?.dateTime || event.start?.date);
-
-              if (!isNaN(eventDateObj) && eventDateObj >= today && eventDateObj <= endDate) {
+              const eventDate = new Date(date);
+              eventDate.setHours(0, 0, 0, 0); // Set to start of day
+              
+              // Include all future events
+              if (eventDate >= today) {
+                console.log('Adding event to upcoming:', event.title, 'date:', date);
                 upcomingEventsList.push({
-                  name: event.summary,
+                  ...event,
+                  name: event.title || event.name,
                   date,
-                  time: isAllDay ? 'All Day' : new Date(event.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  time: event.time || 'All Day',
                   description: event.description || 'No description available',
-                  dateTime: event.start.dateTime || event.start.date,
-                  organizer: event.organizer,
-                  isAllDay,
+                  community: event.community
                 });
               }
             });
@@ -97,10 +98,10 @@ const CalendarView = ({ events, selectedCalendars, callWebView, closeModal }) =>
       upcomingEventsList.sort((a, b) => {
         const dateA = new Date(a.dateTime).getTime();
         const dateB = new Date(b.dateTime).getTime();
-        
         return dateA - dateB;
       });
 
+      console.log('Upcoming events:', upcomingEventsList);
       setUpcomingEvents(upcomingEventsList);
     };
 
@@ -139,34 +140,33 @@ const CalendarView = ({ events, selectedCalendars, callWebView, closeModal }) =>
       </View>
 
       {/* Upcoming Events section*/}
-        <Text style={styles.upcomingTitle}>Upcoming Events</Text>
-        {upcomingEvents.length > 0 ? (
-          upcomingEvents.map((event, index) => (
-            <View key={index} 
-            style={event.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com' ? styles.picEvent : styles.latinoEvent}>
-              
-              <Text style={styles.eventTitle}>{event.name}</Text>
-              <Text style={styles.eventDate}>{event.date}</Text>
-              <Text style={styles.eventTime}>{event.time}</Text>
-              {event.description ? (
-                <RenderHTML
-                  contentWidth={300}
-                  source={{ html: formattedDescription(event.description) }}
-                  defaultTextProps={{ selectable: true }}
-                  renderersProps={{
-                    a: {
-                      onPress: handleLinkPress,
-                    },
-                  }}
-                />
-              ) : (
-                <Text style={styles.eventTime}> No description available</Text>
-              )}
-            </View>
-          ))
-        ) : (
-          <Text style={styles.noUpcomingEventText}>No upcoming events</Text>
-        )}
+      <Text style={styles.upcomingTitle}>Upcoming Events</Text>
+      {upcomingEvents.length > 0 ? (
+        upcomingEvents.map((event, index) => (
+          <View key={index} 
+            style={event.community === 'Pacific Islander' ? styles.picEvent : styles.latinoEvent}>
+            <Text style={styles.eventTitle}>{event.name}</Text>
+            <Text style={styles.eventDate}>{event.date}</Text>
+            <Text style={styles.eventTime}>{event.time}</Text>
+            {event.description ? (
+              <RenderHTML
+                contentWidth={300}
+                source={{ html: formattedDescription(event.description) }}
+                defaultTextProps={{ selectable: true }}
+                renderersProps={{
+                  a: {
+                    onPress: handleLinkPress,
+                  },
+                }}
+              />
+            ) : (
+              <Text style={styles.eventTime}>No description available</Text>
+            )}
+          </View>
+        ))
+      ) : (
+        <Text style={styles.noUpcomingEventText}>No upcoming events</Text>
+      )}
       <Popup
         visible={popupVisible}
         onClose={() => setPopupVisible(false)}
@@ -203,14 +203,14 @@ const styles = StyleSheet.create({
   picEvent: {
     padding: 15, 
     borderRadius: 15,
-    backgroundColor: '#0B75B9', // red color
+    backgroundColor: 'rgba(11, 117, 185, 0.95)', // Increased opacity from 0.8 to 0.95
     marginHorizontal: 10,
     marginBottom: 10,
   },
   latinoEvent: {
     padding: 15,
     borderRadius: 15,
-    backgroundColor: '#71AD45', // blue color
+    backgroundColor: '#71AD45',
     marginHorizontal: 10,
     marginBottom: 10,
   },
@@ -228,14 +228,15 @@ const styles = StyleSheet.create({
   eventTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'white', // Make text white for better contrast
   },
   eventDate: {
     fontSize: 14,
-    color: '#555',
+    color: 'rgba(255, 255, 255, 0.9)', // Lighter text for better readability
   },
   eventTime: {
     fontSize: 14,
-    color: '#555',
+    color: 'rgba(255, 255, 255, 0.9)', // Lighter text for better readability
   },
   noUpcomingEventText: {
     fontSize: 16,

@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ImageBackground,
+  Alert
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '../supabase';
 
@@ -12,55 +21,60 @@ const RegisterScreen = ({ navigation }) => {
     last_name: '',
     email: '',
     password: '',
-    language: '',
-    community: ''
+    language: languages[0],
+    community: communities[0],
   });
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
     const { email, password, first_name, last_name, language, community } = form;
 
+    // Validate required fields
+    if (!email || !password || !first_name || !last_name) {
+      return Alert.alert('Please fill in all required fields');
+    }
+
     try {
-      console.log('Attempting signup with:', { email });
+      setLoading(true);
 
-      const { data, error } = await supabase.auth.signUp({ email, password });
-
-      if (error) {
-        console.error('Signup error:', error.message);
-        alert(error.message);
-        return;
-      }
-
-      const user = data?.user || data?.session?.user;
-      const userId = user?.id;
-
-      if (!userId) {
-        console.error('No user ID available after signup:', data);
-        return alert('User ID not available.');
-      }
-
-      const profile = {
-        id: userId,
+      // Create authentication user
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
-        first_name,
-        last_name,
-        language,
-        communities: community,
-      };
-
-      console.log('Profile object being inserted:', profile);
-
-      const { error: profileError } = await supabase.from('profiles').insert([profile]);
-
-      if (profileError) {
-        console.error('Profile insert error:', profileError);
-        return alert('Database error saving new user: ' + profileError.message);
+        password,
+      });
+      if (authError) {
+        return Alert.alert('Error creating account', authError.message);
+      }
+      if (!authData?.user?.id) {
+        return Alert.alert('Failed to get user ID from auth.');
       }
 
-      alert('Account created!');
+      // Normalize UUID dashes
+      const rawId = authData.user.id;
+      const cleanId = rawId.replace(/[\u2010-\u2015]/g, '-');
+
+      // Insert profile record
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([{
+          id:          cleanId,
+          first_name,
+          last_name,
+          email,
+          language:    language.trim(),
+          communities: community.trim(),
+        }]);
+      if (profileError) {
+        return Alert.alert('Database error', profileError.message);
+      }
+
+      // Success
+      Alert.alert('Account created!', 'Check your email to confirm your account.');
       navigation.navigate('Login');
     } catch (err) {
-      console.error('Unexpected error during registration:', err);
-      alert('Unexpected error: ' + err.message);
+      Alert.alert('Unexpected error', err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,7 +102,10 @@ const RegisterScreen = ({ navigation }) => {
 
           <Text style={styles.label}>Preferred Language:</Text>
           {languages.map((lang) => (
-            <TouchableOpacity key={lang} onPress={() => setForm({ ...form, language: lang })}>
+            <TouchableOpacity
+              key={lang}
+              onPress={() => setForm({ ...form, language: lang })}
+            >
               <Text style={[
                 styles.option,
                 form.language === lang && styles.selected
@@ -98,7 +115,10 @@ const RegisterScreen = ({ navigation }) => {
 
           <Text style={styles.label}>Community:</Text>
           {communities.map((com) => (
-            <TouchableOpacity key={com} onPress={() => setForm({ ...form, community: com })}>
+            <TouchableOpacity
+              key={com}
+              onPress={() => setForm({ ...form, community: com })}
+            >
               <Text style={[
                 styles.option,
                 form.community === com && styles.selected
@@ -106,8 +126,14 @@ const RegisterScreen = ({ navigation }) => {
             </TouchableOpacity>
           ))}
 
-          <TouchableOpacity style={styles.button} onPress={handleRegister}>
-            <Text style={styles.buttonText}>Sign Up</Text>
+          <TouchableOpacity
+            style={[styles.button, loading && styles.buttonDisabled]}
+            onPress={handleRegister}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? 'Creating Account...' : 'Sign Up'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -167,6 +193,10 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginTop: 20,
+  },
+  buttonDisabled: {
+    backgroundColor: '#6c88ba',
+    opacity: 0.7,
   },
   buttonText: {
     color: 'white',

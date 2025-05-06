@@ -1,9 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
-
-//setting up project URL and anon/public API key from Supabase dashboard
-const supabaseURL = 'https://fywwsvxhwbntsfmpfyuh.supabase.co';
-const supabaseKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5d3dzdnhod2JudHNmbXBmeXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1MjQyNjIsImV4cCI6MjA1ODEwMDI2Mn0.-D3Qo2YXG7Sf_YzwxxknbHfgqy_v0j9JcDJiBh-mNZU';
-export const supabase = createClient(supabaseURL, supabaseKEY);
+import { supabase } from '../supabase';
+import { getCurrentEnv } from '../config';
 
 /**
  * Fetches all events from the events table
@@ -15,27 +11,36 @@ export const supabase = createClient(supabaseURL, supabaseKEY);
  * - Includes detailed logging for debugging
  */
 export const getEvents = async () => {
-    console.log('Attempting to fetch events from Supabase...');
+    console.log(`Attempting to fetch events from Supabase (${getCurrentEnv()} schema)...`);
     
     try {
-        const { data: rawData, error } = await supabase
+        const { data, error } = await supabase
             .from('events')
-            .select('*');
+            .select('*')
+            .order('date', { ascending: true });
 
         if (error) {
             console.error('Error fetching events:', error);
             return [];
         }
 
-        // Format the data to match what the components expect
-        const formattedData = (rawData || []).map(event => {
-            // Combine date and time for start
+        console.log('Raw events data:', data);
+        
+        // Format the data to include all necessary fields for both calendar and upcoming events
+        const formattedData = data.map(event => {
             const startDateTime = `${event.date}T${event.time || '00:00:00'}`;
-            
             return {
                 ...event,
-                date: event.date,
-                // Add fields that the popup expects
+                // Calendar display fields
+                community: event.community === 'Pacific Islander Community' ? 'Pacific Islander' : 
+                          event.community === 'Latino Community' ? 'Latino' : 
+                          event.community,
+                // Upcoming events fields
+                name: event.title,
+                dateTime: startDateTime,
+                organizer: { email: event.organizer || 'unknown' },
+                isAllDay: !event.time,
+                // Additional fields for popup
                 summary: event.title,
                 start: {
                     dateTime: startDateTime,
@@ -44,18 +49,14 @@ export const getEvents = async () => {
                 end: {
                     dateTime: event.end_time ? `${event.date}T${event.end_time}` : startDateTime,
                     date: event.date
-                },
-                organizer: {
-                    email: event.organizer || 'unknown'
                 }
             };
         });
 
-        console.log('Formatted events for display:', formattedData);
+        console.log('Formatted events data:', formattedData);
         return formattedData;
-
-    } catch (e) {
-        console.error('Exception in getEvents:', e);
+    } catch (error) {
+        console.error('Error in getEvents:', error);
         return [];
     }
 };
@@ -128,15 +129,25 @@ export const getEventById = async (id) => {
  * - Includes error logging for debugging
  */
 export const createEvent = async (eventData) => {
-    const {data, error} = await supabase
-        .from('events')
-        .insert([eventData]);
+    console.log(`Attempting to create event in ${getCurrentEnv()} schema with data:`, eventData);
+    
+    try {
+        const { data, error } = await supabase
+            .from('events')
+            .insert([eventData])
+            .select();
 
-    if (error) {
-        console.error('Error creating event: ', error.message);
+        if (error) {
+            console.error('Error creating event:', error);
+            return false;
+        }
+
+        console.log('Successfully created event:', data);
+        return true;
+    } catch (e) {
+        console.error('Exception in createEvent:', e);
         return false;
     }
-    return data.user;
 };
 
 /**

@@ -6,6 +6,7 @@ import CalendarView from '../components/CalendarView';
 import Popup from '../components/PopUp';
 import CalendarBar from '../components/CalendarBar';
 import WebViewModal from '../components/WebViewModal';
+import { supabase } from '../supabase';
 
 // Import calendar events from supabase service
 import { getEvents } from '../services/SupabaseEventServices';
@@ -30,9 +31,59 @@ const CalendarScreen = ({ isGuest }) => {
   // Calendar Information. Key is the email related to the calendar
   //Value is the names that will be displayed for it in the dropdown
   const calendarOptions = [
-    { key: 'Pacific Islander Community', value: 'Pacific Islander Community' },
-    { value: 'Latino Community', value: 'Latino Community' }
+    { key: 'Pacific Islander', value: 'Pacific Islander Community' },
+    { key: 'Latino', value: 'Latino Community' }
   ];
+
+  // Fetch user's community and set initial selected calendar
+  useEffect(() => {
+    const fetchUserCommunity = async () => {
+      if (isGuest) {
+        // For guests, default to Pacific Islander
+        setSelectedCalendars(['Pacific Islander']);
+        return;
+      }
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          console.log('No user found, defaulting to Pacific Islander');
+          setSelectedCalendars(['Pacific Islander']);
+          return;
+        }
+
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('communities')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching profile:', error);
+          setSelectedCalendars(['Pacific Islander']);
+          return;
+        }
+
+        if (profile?.communities) {
+          // Map the community value to the calendar key
+          const communityKey = profile.communities === 'Pacific Islander Community' ? 'Pacific Islander' :
+                             profile.communities === 'Latino Community' ? 'Latino' :
+                             'Pacific Islander';
+          
+          console.log('Setting initial calendar to:', communityKey);
+          setSelectedCalendars([communityKey]);
+        } else {
+          console.log('No community found in profile, defaulting to Pacific Islander');
+          setSelectedCalendars(['Pacific Islander']);
+        }
+      } catch (error) {
+        console.error('Error in fetchUserCommunity:', error);
+        setSelectedCalendars(['Pacific Islander']);
+      }
+    };
+
+    fetchUserCommunity();
+  }, [isGuest]);
 
   // Handle URL links (open externally or in app browser)
   const callWebView = (url) => {
@@ -56,13 +107,19 @@ const CalendarScreen = ({ isGuest }) => {
 
       // Load all events from the database
       const allEvents = await getEvents();
+      console.log('All events:', allEvents);
+      console.log('Selected calendars:', selectedCalendars);
 
       // Filter events by selected calendars
-      const filtered = allEvents.filter(event => selectedCalendars.includes(event.community));
+      const filtered = allEvents.filter(event => {
+        console.log('Checking event:', event.title, 'community:', event.community);
+        return selectedCalendars.includes(event.community);
+      });
+      console.log('Filtered events:', filtered);
 
       // Group events by date
       const formattedEvents = filtered.reduce((acc, event) => {
-        const date = event.date.split('T')[0];
+        const date = event.date;
         if (!acc[date]) acc[date] = [];
 
         acc[date].push({
@@ -75,6 +132,7 @@ const CalendarScreen = ({ isGuest }) => {
         return acc;
       }, {});
 
+      console.log('Formatted events:', formattedEvents);
       setEvents(formattedEvents);
     }
 
@@ -108,6 +166,7 @@ const CalendarScreen = ({ isGuest }) => {
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
           isGuest={isGuest}
+          selectedCalendars={selectedCalendars}
         />
 
         <View style={styles.darken}>

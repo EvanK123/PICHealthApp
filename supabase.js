@@ -22,6 +22,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
   db: {
     schema: getCurrentEnv()
+  },
+  global: {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Prefer': 'return=representation'
+    }
   }
 });
 

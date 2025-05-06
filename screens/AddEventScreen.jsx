@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import {createEvent} from '../services/SupabaseEventService';
+import {createEvent} from '../services/SupabaseEventServices';
+import { supabase } from '../supabase';
+import { getCurrentEnv } from '../config';
 
 //allows screen an organizer to create a new event
 export default function AddEventScreen({navigation}){
@@ -13,20 +15,120 @@ export default function AddEventScreen({navigation}){
 
     //handler for form submission
     const handleCreateEvent = async () => {
-        const success = await createEvent({
-            title,
-            date,
-            time,
-            location,
-            description,
-            organizer: 'user-id-here', // Replace with logged-in user ID
-        });
+        try {
+            // Basic validation
+            if (!title.trim()) {
+                Alert.alert('Error', 'Please enter an event title');
+                return;
+            }
+            if (!date.trim()) {
+                Alert.alert('Error', 'Please enter a date');
+                return;
+            }
+            if (!time.trim()) {
+                Alert.alert('Error', 'Please enter a time');
+                return;
+            }
+            if (!location.trim()) {
+                Alert.alert('Error', 'Please enter a location');
+                return;
+            }
 
-        if (success) {
-            Alert.alert('Success', 'Event created!');
-            navigation.goBack();
-        } else {
-            Alert.alert('Error', 'Could not create event.');
+            const { data: { session } } = await supabase.auth.getSession();
+            const userId = session?.user?.id;
+            
+            if (!userId) {
+                Alert.alert('Error', 'You must be logged in to create an event');
+                return;
+            }
+
+            console.log('Current user ID:', userId);
+            console.log('Current schema:', getCurrentEnv());
+
+            // Get user's community from their profile
+            let userProfile = null;
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('communities')
+                .eq('id', userId)
+                .single();
+
+            if (profileError) {
+                console.error('Error fetching profile:', profileError);
+                console.error('Error details:', {
+                    code: profileError.code,
+                    message: profileError.message,
+                    details: profileError.details,
+                    hint: profileError.hint
+                });
+
+                if (profileError.code === 'PGRST116') {
+                    // Try to create a profile if it doesn't exist
+                    const { data: newProfile, error: createError } = await supabase
+                        .from('profiles')
+                        .insert([{
+                            id: userId,
+                            communities: 'Pacific Islander', // Default community
+                            first_name: session.user.user_metadata?.first_name || '',
+                            last_name: session.user.user_metadata?.last_name || '',
+                            email: session.user.email
+                        }])
+                        .select()
+                        .single();
+
+                    if (createError) {
+                        console.error('Error creating profile:', createError);
+                        Alert.alert(
+                            'Profile Error',
+                            'Could not create your profile. Please contact support.',
+                            [
+                                {
+                                    text: 'Go to Registration',
+                                    onPress: () => navigation.navigate('Register')
+                                },
+                                {
+                                    text: 'Cancel',
+                                    style: 'cancel'
+                                }
+                            ]
+                        );
+                        return;
+                    }
+
+                    userProfile = newProfile;
+                } else {
+                    Alert.alert('Error', 'Could not fetch your profile information');
+                    return;
+                }
+            } else {
+                userProfile = profile;
+            }
+
+            if (!userProfile?.communities) {
+                Alert.alert('Error', 'Your community information is missing. Please update your profile.');
+                return;
+            }
+
+            // Create the event with the user's community
+            const success = await createEvent({
+                title: title.trim(),
+                date: date.trim(),
+                time: time.trim(),
+                location: location.trim(),
+                description: description.trim(),
+                organizer: userId,
+                community: userProfile.communities
+            });
+
+            if (success) {
+                Alert.alert('Success', 'Event created!');
+                navigation.goBack();
+            } else {
+                Alert.alert('Error', 'Could not create event. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error creating event:', error);
+            Alert.alert('Error', 'An unexpected error occurred. Please try again.');
         }
     };
 
