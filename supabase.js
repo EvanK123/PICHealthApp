@@ -21,7 +21,14 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: true,
   },
   db: {
-    schema: 'public'
+    schema: getCurrentEnv()
+  },
+  global: {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Prefer': 'return=representation'
+    }
   }
 });
 

@@ -3,7 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-na
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from '@react-navigation/native';
 
-const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, calendarOptions, callWebView, isGuest }) => {
+const CalendarBar = ({ 
+  calendarMode, 
+  callWebView, 
+  setCalendarMode, 
+  setSelectedCalendars, 
+  calendarOptions,
+  isGuest,
+  selectedCalendars 
+}) => {
   const navigation = useNavigation();
 
   const viewBtn = () => {
@@ -38,7 +46,8 @@ const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, cale
           label='Select Calendars'
           placeholder='Select Calendar'
           dropdownStyles={styles.dropdown} 
-          boxStyles={styles.dropdownBox} 
+          boxStyles={styles.dropdownBox}
+          defaultSelected={selectedCalendars}
         />
       </View>
     </SafeAreaView>

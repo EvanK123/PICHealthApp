@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {createEvent} from '../services/SupabaseEventServices';
 import { supabase } from '../supabase';
+import { getCurrentEnv } from '../config';
 
 //allows screen an organizer to create a new event
 export default function AddEventScreen({navigation}){
@@ -41,18 +42,74 @@ export default function AddEventScreen({navigation}){
                 return;
             }
 
+            console.log('Current user ID:', userId);
+            console.log('Current schema:', getCurrentEnv());
+
             // Get user's community from their profile
-            const { data: profile } = await supabase
+            let userProfile = null;
+            const { data: profile, error: profileError } = await supabase
                 .from('profiles')
-                .select('community')
+                .select('communities')
                 .eq('id', userId)
                 .single();
 
-            if (!profile?.community) {
-                Alert.alert('Error', 'Could not determine your community');
+            if (profileError) {
+                console.error('Error fetching profile:', profileError);
+                console.error('Error details:', {
+                    code: profileError.code,
+                    message: profileError.message,
+                    details: profileError.details,
+                    hint: profileError.hint
+                });
+
+                if (profileError.code === 'PGRST116') {
+                    // Try to create a profile if it doesn't exist
+                    const { data: newProfile, error: createError } = await supabase
+                        .from('profiles')
+                        .insert([{
+                            id: userId,
+                            communities: 'Pacific Islander', // Default community
+                            first_name: session.user.user_metadata?.first_name || '',
+                            last_name: session.user.user_metadata?.last_name || '',
+                            email: session.user.email
+                        }])
+                        .select()
+                        .single();
+
+                    if (createError) {
+                        console.error('Error creating profile:', createError);
+                        Alert.alert(
+                            'Profile Error',
+                            'Could not create your profile. Please contact support.',
+                            [
+                                {
+                                    text: 'Go to Registration',
+                                    onPress: () => navigation.navigate('Register')
+                                },
+                                {
+                                    text: 'Cancel',
+                                    style: 'cancel'
+                                }
+                            ]
+                        );
+                        return;
+                    }
+
+                    userProfile = newProfile;
+                } else {
+                    Alert.alert('Error', 'Could not fetch your profile information');
+                    return;
+                }
+            } else {
+                userProfile = profile;
+            }
+
+            if (!userProfile?.communities) {
+                Alert.alert('Error', 'Your community information is missing. Please update your profile.');
                 return;
             }
 
+            // Create the event with the user's community
             const success = await createEvent({
                 title: title.trim(),
                 date: date.trim(),
@@ -60,7 +117,7 @@ export default function AddEventScreen({navigation}){
                 location: location.trim(),
                 description: description.trim(),
                 organizer: userId,
-                community: profile.community
+                community: userProfile.communities
             });
 
             if (success) {
