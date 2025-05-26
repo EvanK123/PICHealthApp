@@ -20,6 +20,7 @@ const sections = [
   {
     id: "umeke",
     title: "Umeke",
+    dontTranslateTitle: true,
     text: "Based in North County San Diego, UMEKE is a 501(c)(3) organization dedicated to the preservation, perpetuation and education of Hawaiian culture. Their vision is to educate local communities through cross-cultural learning, embracing an intersectional approach to work towards the equity and advancement of all marginalized and underserved populations.",
     links: [{ label: "Homepage", url: "https://www.umeke.org/" }],
   },
@@ -66,8 +67,14 @@ const CultureScreen = () => {
     async function localizeAll() {
       const ht = await translateText("Culture, Arts, & Language", lang);
       const secs = await Promise.all(
-        sections.map(async (sec) => {
-          const title = await translateText(sec.title, lang);
+        sections.map(async (sec) => {          
+          let title = sec.title;
+          const translateTitle = !sec.dontTranslateTitle;
+          console.log(`Translate title: ${title} - ${translateTitle}`);
+          if (translateTitle) {
+            title = await translateText(title, lang);
+          }
+
           const text = await translateText(sec.text, lang);
           const links = await Promise.all(
             sec.links.map(async (ln) => ({
