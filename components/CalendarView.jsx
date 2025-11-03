@@ -1,246 +1,268 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Linking, Platform } from 'react-native';
+// components/CalendarView.jsx
+import React, { useEffect, useState, useMemo } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import RenderHTML from 'react-native-render-html';
-import Popup from './PopUp'; // Make sure to import the Popup component
+import Popup from './PopUp';
 import WebViewModal from './WebViewModal';
 
-const CalendarView = ({ events, selectedCalendars, callWebView, closeModal }) => {
+// ===== Navy palette =====
+const COLORS = {
+  primary: '#2d4887',
+  navyText: '#091826',
+  navyBorder: 'rgba(45,72,135,0.18)',
+
+  accentPIC: '#0B75B9',
+  accentLatino: '#71AD45',
+  brand: '#0EA5B5',
+
+  ink: '#0f172a',
+  inkMute: '#475569',
+  panelBorder: '#E5EAF0',
+  sheetCard: '#f8fafc',
+  sheetBar1: '#10A6A6',
+  sheetBar2: '#0E7CA8',
+};
+
+// Calendar header theme (month title + arrows)
+const CAL_THEME = {
+  backgroundColor: 'transparent',
+  calendarBackground: 'transparent',
+  monthTextColor: COLORS.navyText,
+  textMonthFontWeight: '800',
+  textMonthFontSize: 18,
+  arrowColor: COLORS.navyText,
+  dayTextColor: COLORS.navyText,
+  textDisabledColor: 'rgba(9,24,38,0.35)',
+  todayTextColor: COLORS.brand,
+  textDayFontSize: 13,
+  textDayHeaderFontWeight: '700',
+};
+
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+// Parse "YYYY-MM-DD" as LOCAL to avoid UTC shifting a day back
+const toLocalDate = (isoDate) => {
+  const [y, m, d] = (isoDate || '').split('-').map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+};
+
+export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
   const [markedDates, setMarkedDates] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  // url is the link that the browser is opening to
-  const [modalConfig, setModalConfig] = useState({isVisible: false, url: ''});
+  // Compute day-cell size from actual width
+  const [calWidth, setCalWidth] = useState(0);
+  const CELL_MARGIN = 3;
+  const COLUMNS = 7;
+  const cellSize = calWidth
+    ? Math.floor((calWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS)
+    : 44;
 
-  // Helper function to add days
-  const addDays = (date, days) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
+  const colorFor = (email) => {
+    if (email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com') return COLORS.accentPIC;
+    if (email === '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com') return COLORS.accentLatino;
+    return '#BDBDBD';
   };
 
-  // Open links in description
-  const handleLinkPress = (event, href) => {
-    //Linking.openURL(href).catch(err => console.error('Failed to open URL:', err));
-    callWebView(href);
-  };
-
-  // Format description HTML to add <br> before links
-  const formattedDescription = (description) => {
-    return description.replace(/<a /g, '<br><a '); // adds <br> before each <a> tag to move links to new line
-  };
-
-  // Format and mark events on the calendar
+  // Mark dates + selected day
   useEffect(() => {
-    const formatEvents = (events) => {
-      const calendarColors = {
-        'PIC_Calendar_Email@gmail.com': '#0B75B9',
-        'Latino_Calendar_Email@group.calendar.google.com': '#71AD45',
+    const fm = {};
+    Object.keys(events || {}).forEach((date) => {
+      const list = events[date] || [];
+      const dots = list.slice(0, 3).map((e) => ({ color: colorFor(e.organizer?.email) }));
+      fm[date] = { dots };
+    });
+    if (selectedDate) {
+      fm[selectedDate] = {
+        ...(fm[selectedDate] || {}),
+        selected: true,
+        selectedColor: COLORS.primary,
+        selectedTextColor: '#fff',
       };
-
-      const formattedEvents = Object.keys(events).reduce((acc, date) => {
-        const eventList = events[date];
-        const dots = eventList.map(event => {
-          const calendarId = event.organizer.email;
-          const color = calendarColors[calendarId] || 'gray';
-          return { color };
-        });
-
-        acc[date] = { dots };
-        return acc;
-      }, {});
-
-      return formattedEvents;
-    };
-
-    if (selectedCalendars.length > 0) {
-      const formattedEvents = formatEvents(events);
-      setMarkedDates(formattedEvents);
-    } else {
-      setMarkedDates({});
     }
-  }, [events, selectedCalendars]);
-
-  // Filter upcoming events within the next 7 days
-  useEffect(() => {
-    const filterUpcomingEvents = () => {
-      const today = new Date();
-      const endDate = addDays(today, 7);
-      const upcomingEventsList = [];
-      
-      if (events && typeof events === 'object') {
-        Object.entries(events).forEach(([date, eventsOnDate = []]) => {
-          if (Array.isArray(eventsOnDate)) {
-            eventsOnDate.forEach(event => {
-              const isAllDay = !!event.start?.date;
-              const eventDateObj = new Date(event.start?.dateTime || event.start?.date);
-
-              if (!isNaN(eventDateObj) && eventDateObj >= today && eventDateObj <= endDate) {
-                upcomingEventsList.push({
-                  name: event.summary,
-                  date,
-                  time: isAllDay ? 'All Day' : new Date(event.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                  description: event.description || 'No description available',
-                  dateTime: event.start.dateTime || event.start.date,
-                  organizer: event.organizer,
-                  isAllDay,
-                });
-              }
-            });
-          }
-        });
-      }
-      
-      // Sort upcoming events by date and time
-      upcomingEventsList.sort((a, b) => {
-        const dateA = new Date(a.dateTime).getTime();
-        const dateB = new Date(b.dateTime).getTime();
-        
-        return dateA - dateB;
-      });
-
-      setUpcomingEvents(upcomingEventsList);
-    };
-
-    filterUpcomingEvents();
-  }, [events]);
+    setMarkedDates(selectedCalendars.length ? fm : {});
+  }, [events, selectedCalendars, selectedDate]);
 
   const handleDayPress = (day) => {
+    setSelectedDate(day.dateString);
     const selectedDateEvents = events[day.dateString] || [];
     setSelectedEvents(selectedDateEvents);
     setPopupVisible(true);
   };
 
+  // Custom day cell
+  const DayCell = ({ date, state }) => {
+    const key = date.dateString;
+    const list = events[key] || [];
+    const first = list[0];
+    const pillColor = first?.organizer?.email ? colorFor(first.organizer.email) : COLORS.accentPIC;
+
+    return (
+      <TouchableOpacity
+        onPress={() => handleDayPress(date)}
+        style={[
+          styles.dayCell,
+          { margin: CELL_MARGIN, width: cellSize, height: Math.max(46, Math.round(cellSize * 0.95)) },
+          state === 'disabled' && { opacity: 0.4 },
+          selectedDate === key && styles.dayCellSelected,
+        ]}
+      >
+        <Text style={styles.dayNum}>{date.day}</Text>
+        {first?.summary ? (
+          <View style={[styles.eventPill, { backgroundColor: pillColor }]}>
+            <Text numberOfLines={1} style={styles.eventPillText}>{first.summary}</Text>
+          </View>
+        ) : null}
+      </TouchableOpacity>
+    );
+  };
+
+  // Local label
+  const selectedLabel = useMemo(() => {
+    if (!selectedDate) return '';
+    const d = toLocalDate(selectedDate);
+    const wd = WEEKDAYS[d.getDay()];
+    const dd = d.getDate();
+    return `Events on ${wd} ${dd}`;
+  }, [selectedDate]);
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Calendar Section */}
-      <View>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 12 }}>
+      {/* Full-width white background behind calendar */}
+      <View
+        style={styles.whitePanel}
+        onLayout={(e) => setCalWidth(e.nativeEvent.layout.width)}
+      >
+        {/* Weekday strip */}
+        <View style={styles.weekStrip}>
+          {WEEKDAYS.map((d) => (
+            <View key={d} style={styles.weekCell}>
+              <Text style={styles.weekText}>{d}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Calendar grid */}
         <Calendar
+          style={styles.calendarStyle}
+          markingType="multi-dot"
           markedDates={markedDates}
-          markingType={'multi-dot'}
           onDayPress={handleDayPress}
+          enableSwipeMonths
+          firstDay={0}
+          hideExtraDays={false}
+          hideDayNames
+          theme={CAL_THEME}
+          renderHeader={(date) => {
+            const d = new Date(date);
+            const label = d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+            return <View style={styles.header}><Text style={styles.headerTitle}>{label}</Text></View>;
+          }}
+          dayComponent={({ date, state }) => <DayCell date={date} state={state} />}
         />
       </View>
-      
-      {/* wellness check & SOS Button Section */}
-      <View style={styles.middleBtns}>
-        <TouchableOpacity onPress={() => callWebView('https://www.healthcentral.com/quiz/stress-test')} style={{flex: 1, alignItems:'center'}}>
-          <View style={styles.wellnessSOS}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>How ya doin'👋</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => callWebView('https://www.cavshate.org/')} style={{flex: 1, alignItems:'center'}}>
-          <View style={styles.wellnessSOS}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>SOS⚠️</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
 
-      {/* Upcoming Events section*/}
-        <Text style={styles.upcomingTitle}>Upcoming Events</Text>
-        {upcomingEvents.length > 0 ? (
-          upcomingEvents.map((event, index) => (
-            <View key={index} 
-            style={event.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com' ? styles.picEvent : styles.latinoEvent}>
-              
-              <Text style={styles.eventTitle}>{event.name}</Text>
-              <Text style={styles.eventDate}>{event.date}</Text>
-              <Text style={styles.eventTime}>{event.time}</Text>
-              {event.description ? (
-                <RenderHTML
-                  contentWidth={300}
-                  source={{ html: formattedDescription(event.description) }}
-                  defaultTextProps={{ selectable: true }}
-                  renderersProps={{
-                    a: {
-                      onPress: handleLinkPress,
-                    },
-                  }}
-                />
-              ) : (
-                <Text style={styles.eventTime}> No description available</Text>
-              )}
-            </View>
-          ))
-        ) : (
-          <Text style={styles.noUpcomingEventText}>No upcoming events</Text>
-        )}
-      <Popup
-        visible={popupVisible}
-        onClose={() => setPopupVisible(false)}
-        events={selectedEvents}
-      />
-      {/*Web Browser*/}
-      <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} />
+      {/* Bottom sheet (unchanged) */}
+      {selectedDate && (
+        <View style={styles.sheet}>
+          <Text style={styles.sheetTitle}>{selectedLabel}</Text>
+          {selectedEvents.map((ev) => {
+            const isPic = ev.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com';
+            const bar = isPic ? styles.topBarTeal : styles.topBarBlue;
+            const timeText = ev.start?.date ? 'All Day'
+              : new Date(ev.start?.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            return (
+              <View key={ev.id || ev.summary + ev.start?.dateTime} style={styles.sheetCard}>
+                <View style={[styles.topBar, bar]} />
+                <View style={styles.sheetBody}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.sheetTitleText}>{ev.summary || '(No title)'}</Text>
+                    <Text style={styles.sheetMeta}>{timeText} {ev.location ? `• ${ev.location}` : ''}</Text>
+                  </View>
+                  <View style={styles.tag}><Text style={styles.tagText}>{isPic ? 'Free' : 'Family'}</Text></View>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      )}
+
+      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} />
+      <WebViewModal url={''} isVisible={false} onClose={closeModal} />
     </ScrollView>
   );
-};
-
-export default CalendarView;
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    contentContainerStyle: 'space-between',
+  container: { flex: 1 },
+
+  // Full-width white background container for the calendar
+  whitePanel: {
+    backgroundColor: '#fff',
+    borderRadius: 0,      // edge-to-edge look
+    paddingVertical: 8,
+    paddingHorizontal: 4, // tiny gutter so pills don’t touch edges
   },
-  middleBtns: {
-    display: 'flex',
+
+  calendarStyle: { backgroundColor: 'transparent' },
+
+  header: { paddingVertical: 6, alignItems: 'center' },
+  headerTitle: { color: COLORS.navyText, fontSize: 18, fontWeight: '800' },
+
+  weekStrip: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20, // Add space between calendar and buttons
+    justifyContent: 'space-between',
+    marginHorizontal: 2,
+    marginBottom: 6,
+    backgroundColor: '#fff',        // white to match panel
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.navyBorder,
+    paddingVertical: 6,
+    paddingHorizontal: 6,
   },
-  wellnessSOS: {
-    height: 50,
-    width: '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    marginBottom: 20,
+  weekCell: { flex: 1, alignItems: 'center' },
+  weekText: { fontSize: 12, fontWeight: '800', color: COLORS.navyText },
+
+  // Day cells
+  dayCell: {
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.navyBorder,
+    backgroundColor: '#fff',
+    padding: 6,
+    justifyContent: 'flex-start',
   },
-  picEvent: {
-    padding: 15, 
-    borderRadius: 15,
-    backgroundColor: '#0B75B9', // red color
-    marginHorizontal: 10,
-    marginBottom: 10,
+  dayCellSelected: { borderColor: COLORS.primary, borderWidth: 2 },
+  dayNum: { color: COLORS.ink, fontWeight: '700', marginBottom: 2, fontSize: 12 },
+  eventPill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 10, alignSelf: 'flex-start', maxWidth: '100%' },
+  eventPillText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+
+  // Bottom sheet
+  sheet: {
+    backgroundColor: '#fff',
+    marginTop: 12,
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
+    paddingTop: 12,
+    paddingBottom: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: -2 },
+    elevation: 6,
   },
-  latinoEvent: {
-    padding: 15,
-    borderRadius: 15,
-    backgroundColor: '#71AD45', // blue color
-    marginHorizontal: 10,
-    marginBottom: 10,
-  },
-  upcomingEventsContainer: {
-    height: 250,
-    paddingTop: 10,
-  },
-  upcomingTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  eventTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  eventDate: {
-    fontSize: 14,
-    color: '#555',
-  },
-  eventTime: {
-    fontSize: 14,
-    color: '#555',
-  },
-  noUpcomingEventText: {
-    fontSize: 16,
-    color: '#e8e6e6',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-})
+  sheetTitle: { textAlign: 'center', fontSize: 20, fontWeight: '900', color: COLORS.ink, marginBottom: 8 },
+  sheetCard: { marginHorizontal: 14, marginBottom: 12, backgroundColor: COLORS.sheetCard, borderRadius: 14, borderWidth: 1, borderColor: COLORS.panelBorder, overflow: 'hidden' },
+  topBar: { height: 6, width: '100%' },
+  topBarTeal: { backgroundColor: COLORS.sheetBar1 },
+  topBarBlue: { backgroundColor: COLORS.sheetBar2 },
+  sheetBody: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 12 },
+  sheetTitleText: { fontSize: 16, fontWeight: '800', color: COLORS.ink, marginBottom: 2 },
+  sheetMeta: { fontSize: 13, color: COLORS.inkMute },
+  tag: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14, backgroundColor: COLORS.brand },
+  tagText: { color: '#fff', fontWeight: '800' },
+});
