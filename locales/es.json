@@ -1,0 +1,266 @@
+{
+  "common": {
+    "languages": {
+      "english": "English",
+      "spanish": "Español",
+      "samoan": "Samoan",
+      "chamorro": "Chamorro",
+      "tongan": "Tongan"
+    },
+    "close": "Cerrar",
+    "getStarted": "Comenzar",
+    "submitEvent": "Enviar Evento",
+    "selectCalendars": "Seleccionar Calendarios",
+    "selectCalendar": "Seleccionar Calendario",
+    "selectLanguage": "Seleccionar Idioma",
+    "allDay": "Todo el día",
+    "noDescriptionAvailable": "No hay descripción disponible"
+  },
+  "app": {
+    "tabs": {
+      "home": "Inicio",
+      "health": "Salud",
+      "education": "Educación",
+      "culture": "Cultura",
+      "aboutUs": "Acerca de Nosotros"
+    }
+  },
+  "calendar": {
+    "title": "PIC Health",
+    "calendar": "Calendario",
+    "upcomingEvents": "Próximos Eventos",
+    "calendarOptions": {
+      "pacificIslander": "Comunidad de las Islas del Pacífico",
+      "latino": "Comunidad Latina"
+    }
+  },
+  "header": {
+    "submitEvent": "Enviar Evento"
+  },
+  "popup": {
+    "welcomeTitle": "¡Bienvenido a PIC Health!",
+    "beta": "Beta",
+    "disclaimer": "Descargo de responsabilidad:",
+    "disclaimerText": "Este sitio es solo para uso educativo. Consulte a un médico para obtener asesoramiento médico. En caso de emergencia, llame al 911."
+  },
+  "health": {
+    "title": "Salud",
+    "description": "La información proporcionada aquí es solo para fines informativos generales y no está destinada como asesoramiento médico. Siempre consulte con un proveedor de atención médica calificado para obtener asesoramiento sobre su condición médica específica, síntomas u opciones de tratamiento. No ignore el asesoramiento médico profesional ni retrase la búsqueda de tratamiento.",
+    "services": [
+      {
+        "id": "diabetes",
+        "title": "Detección de Diabetes",
+        "text": "Esta prueba se utiliza para identificar a las personas que pueden tener diabetes o están en riesgo de desarrollar la afección, a menudo antes de que muestren síntomas notables.",
+        "links": [
+          {
+            "label": "Prueba de Riesgo",
+            "url": "https://www.cdc.gov/prediabetes/risktest/index.html"
+          }
+        ]
+      },
+      {
+        "id": "mental",
+        "title": "Recursos de Bienestar Mental",
+        "text": "Los recursos de salud mental están diseñados para apoyar a las personas en el manejo de su bienestar emocional, psicológico y social. Su propósito es proporcionar herramientas, orientación y servicios para ayudar a las personas a comprender, hacer frente y abordar los desafíos mentales.",
+        "links": [
+          {
+            "label": "Salud Mental 101",
+            "url": "https://screening.mhanational.org/mental-health-101/"
+          },
+          {
+            "label": "Detección de Depresión",
+            "url": "https://screening.mhanational.org/screening-tools/depression/?ref"
+          }
+        ]
+      },
+      {
+        "id": "truecare",
+        "title": "True Care",
+        "text": "TrueCare es uno de los proveedores de atención médica más confiables en los condados de San Diego y Riverside. Su personal amigable y médicos compasivos se especializan en brindar servicios de atención médica y bienestar de calidad a las comunidades desatendidas para que las personas puedan recibir la atención que necesitan. Su objetivo es hacer que la atención médica esté disponible para todos en las comunidades a las que sirven, independientemente de sus ingresos o estado de seguro.",
+        "links": [
+          {
+            "label": "Página de inicio",
+            "url": "https://truecare.org/"
+          }
+        ]
+      },
+      {
+        "id": "vista",
+        "title": "Clínica Comunitaria Vista",
+        "text": "Atención Conectada Valiosa: Atendiendo las necesidades de salud y bienestar de nuestra comunidad. Una comunidad donde cada persona elige la salud.",
+        "links": [
+          {
+            "label": "Página de inicio",
+            "url": "https://www.vistacommunityclinic.org/"
+          }
+        ]
+      },
+      {
+        "id": "mindfulness",
+        "title": "Recursos de Atención Plena",
+        "text": "Los recursos de atención plena están diseñados para ayudar a las personas a cultivar la conciencia, la presencia y la aceptación del momento presente. Estos recursos tienen como objetivo promover el bienestar mental y emocional al enseñar prácticas que fomentan la atención plena, esencialmente la práctica de prestar atención de una manera particular: a propósito, en el momento presente y sin juicio.",
+        "links": [
+          {
+            "label": "Mindful CSUSM",
+            "url": "https://www.csusm.edu/mindfulcsusm/resources/index.html"
+          }
+        ]
+      },
+      {
+        "id": "movement",
+        "title": "Movimiento y Nutrición",
+        "text": "Los recursos de movimiento y nutrición empoderan a las personas para tomar el control de su salud al proporcionar las herramientas, el conocimiento y la orientación que necesitan para tomar decisiones informadas sobre la actividad física y las opciones dietéticas. El efecto combinado del movimiento regular y la nutrición adecuada apoya el bienestar general, reduce el riesgo de enfermedades, mejora la salud mental, aumenta la energía y promueve la longevidad.",
+        "links": [
+          {
+            "label": "Indicadores de Enfermedades Crónicas",
+            "url": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "title": "Otro",
+        "text": "La detección del cáncer le permite mejorar el pronóstico, reducir la mortalidad, identificar la detección temprana y darle tranquilidad.",
+        "links": [
+          {
+            "label": "Detección de Cáncer",
+            "url": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
+          }
+        ]
+      }
+    ]
+  },
+  "culture": {
+    "title": "Cultura, Artes e Idioma",
+    "services": [
+      {
+        "id": "umeke",
+        "title": "Umeke",
+        "dontTranslateTitle": true,
+        "text": "Con sede en el condado norte de San Diego, UMEKE es una organización 501(c)(3) dedicada a la preservación, perpetuación y educación de la cultura hawaiana. Su visión es educar a las comunidades locales a través del aprendizaje intercultural, adoptando un enfoque interseccional para trabajar hacia la equidad y el avance de todas las poblaciones marginadas y desatendidas.",
+        "links": [
+          {
+            "label": "Página de inicio",
+            "url": "https://www.umeke.org/"
+          }
+        ]
+      },
+      {
+        "id": "language",
+        "title": "Curso de Idioma",
+        "text": "Como parte del Proyecto CSUSM U-Act, encontrará información aquí sobre programas de idioma y educación para la Comunidad de las Islas del Pacífico. Estos programas son La Experiencia de Inmersión en el Idioma Chamoru y El Programa de Artes Escénicas del Idioma Gagana Samoa. La Experiencia de Inmersión en el Idioma Chamoru es una iniciativa educativa diseñada para sumergir a los participantes en el idioma y la cultura Chamoru. El Programa de Artes Escénicas del Idioma Gagana Samoa se enfoca en enseñar el idioma samoano (Gagana Samoa) y las artes escénicas samoanas tradicionales.",
+        "links": [
+          {
+            "label": "CSUSM U-ACT",
+            "url": "https://www.csusm.edu/apida/uact.html"
+          }
+        ]
+      },
+      {
+        "id": "movementCourse",
+        "title": "Curso de Movimiento",
+        "text": "Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) se erige como un hālau hula tradicional (escuela de hula), ubicado en la comunidad costera de Oceanside, CA. Nuestro hālau está apasionadamente comprometido con fomentar el aprendizaje cultural entre nuestros haumāna (estudiantes) a través del arte del hula. En el centro de nuestra misión está la dedicación a aprender, enseñar y perpetuar cada faceta del hula, extraído de nuestro linaje ancestral.",
+        "links": [
+          {
+            "label": "Página de inicio KHOI",
+            "url": "https://www.kahulaoilima.com/"
+          }
+        ]
+      },
+      {
+        "id": "mindfullMovement",
+        "title": "Movimiento MindFull",
+        "text": "MindFull Movement se trata de crear espacio para la pertenencia. El colectivo de danza y movimiento con sede en Oceanside es un refugio de autoexpresión saludable, bienestar y curación para nativos hawaianos e isleños del Pacífico (NHPI) e individuos negros, indígenas y personas de color (BIPOC).",
+        "links": [
+          {
+            "label": "Cuenta de Instagram",
+            "url": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "title": "Otro",
+        "text": "Próximamente",
+        "links": []
+      }
+    ]
+  },
+  "education": {
+    "title": "Educación",
+    "services": [
+      {
+        "id": "mana",
+        "title": "Academia Mana",
+        "text": "Mana es un programa de Mira Costa Community College que construye comunidad en el campus entre estudiantes nativos hawaianos e isleños del Pacífico (NHPI) y ofrece muchos servicios de apoyo hacia objetivos académicos, culturales y personales. Mana es un programa holístico que proporciona a los estudiantes una entrada culturalmente relevante a la educación superior mientras ofrece apoyo académico y de consejería.",
+        "links": [
+          {
+            "label": "Mana @ MiraCosta College",
+            "url": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
+          }
+        ]
+      },
+      {
+        "id": "apida",
+        "title": "CSUSM APIDA",
+        "text": "La Iniciativa de Éxito Asiático e Isleño del Pacífico y Desi Americano (APIDA) se esfuerza por inspirar y preparar a todos los estudiantes para el éxito en CSUSM con cuidado y apoyo. Para nuestros estudiantes de bajos ingresos, de primera generación y que regresan.",
+        "links": [
+          {
+            "label": "Página de inicio",
+            "url": "https://www.csusm.edu/apida/index.html"
+          }
+        ]
+      },
+      {
+        "id": "apply",
+        "title": "¿Cómo postularse a la universidad?",
+        "text": "Esto guiará a los estudiantes a través del proceso a menudo complejo, competitivo y sensible al tiempo de seleccionar y postularse a instituciones de educación superior. Estos recursos ayudan a asegurar que los estudiantes tomen decisiones informadas, presenten aplicaciones sólidas y finalmente obtengan acceso a las oportunidades educativas que mejor se ajusten a sus objetivos y necesidades.",
+        "links": [
+          {
+            "label": "CommonApp",
+            "url": "https://www.commonapp.org/"
+          }
+        ]
+      },
+      {
+        "id": "financialAid",
+        "title": "Ayuda Financiera",
+        "text": "FAFSA proporciona apoyo esencial para las personas que buscan asistencia financiera para la educación superior. El FAFSA es una herramienta clave para que los estudiantes accedan a la ayuda financiera federal, incluidas subvenciones, préstamos y oportunidades de trabajo y estudio, así como ayuda estatal e institucional.",
+        "links": [
+          {
+            "label": "Ayuda Federal para Estudiantes",
+            "url": "https://studentaid.gov/"
+          }
+        ]
+      },
+      {
+        "id": "youth",
+        "title": "Programa Juvenil de PIC Health",
+        "text": "Próximamente",
+        "links": []
+      },
+      {
+        "id": "testimonials",
+        "title": "Testimonios",
+        "text": "Próximamente",
+        "links": []
+      },
+      {
+        "id": "other",
+        "title": "Otro",
+        "text": "Próximamente",
+        "links": []
+      }
+    ]
+  },
+  "aboutUs": {
+    "title": "Acerca de Nosotros",
+    "description1": "Establecida en 2013, Pacific Islander Community Health (PIC Health) sirve a la región del Sur de California, avanzando en la equidad en salud y la justicia social para las comunidades de las Islas del Pacífico a través de iniciativas de salud centradas culturalmente e investigación centrada en la comunidad. PIC Health se dedica a promover el bienestar y la resiliencia al abordar las necesidades de salud únicas y las disparidades que nuestras comunidades Pasifika soportan y navegan todos los días.",
+    "description2": "Aprende más:",
+    "missionTitle": "Nuestra Misión",
+    "missionText": "En PIC Health, nuestra misión es empoderar y elevar la comunidad de las Islas del Pacífico mediante la promoción de iniciativas de salud y bienestar holísticas arraigadas en la sensibilidad cultural y el compromiso comunitario. A través de la investigación colaborativa, la defensa y la educación, nos esforzamos por abordar las disparidades de salud indígenas, fomentar el acceso equitativo a la atención médica y cultivar un entorno próspero donde cada individuo pueda lograr su más alto nivel de bienestar.",
+    "landTitle": "Reconocimiento de Tierras",
+    "landText": "Reconocemos que la tierra en la que nos reunimos es el territorio tradicional del pueblo Luiseño/Payómkawichum. PIC Health y sus áreas circundantes siguen siendo el hogar de las seis bandas reconocidas federalmente de La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum."
+  }
+}
+

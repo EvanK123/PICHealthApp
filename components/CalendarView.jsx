@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 0,      // edge-to-edge look
     paddingVertical: 8,
-    paddingHorizontal: 4, // tiny gutter so pills don’t touch edges
+    paddingHorizontal: 4, // tiny gutter so pills don't touch edges
   },
 
   calendarStyle: { backgroundColor: 'transparent' },

@@ -1,0 +1,266 @@
+{
+  "common": {
+    "languages": {
+      "english": "English",
+      "spanish": "Español",
+      "samoan": "Samoan",
+      "chamorro": "Chamorro",
+      "tongan": "Tongan"
+    },
+    "close": "Tumon",
+    "getStarted": "Tutungo",
+    "submitEvent": "Na'i Suetsueto",
+    "selectCalendars": "Agi' Kalendario",
+    "selectCalendar": "Agi' Kalendario",
+    "selectLanguage": "Agi' Lengguahe",
+    "allDay": "Todo i Dia",
+    "noDescriptionAvailable": "Ti guaha deskripsion"
+  },
+  "app": {
+    "tabs": {
+      "home": "Guma'",
+      "health": "Salud",
+      "education": "Edukasion",
+      "culture": "Kuttura",
+      "aboutUs": "Put I Taotao-ta"
+    }
+  },
+  "calendar": {
+    "title": "PIC Health",
+    "calendar": "Kalendario",
+    "upcomingEvents": "Suetsueto ni Ma Susede",
+    "calendarOptions": {
+      "pacificIslander": "Komunidat Pasifiku",
+      "latino": "Komunidat Latino"
+    }
+  },
+  "header": {
+    "submitEvent": "Na'i Suetsueto"
+  },
+  "popup": {
+    "welcomeTitle": "Bienbenido para PIC Health!",
+    "beta": "Beta",
+    "disclaimer": "Aviso:",
+    "disclaimerText": "Este sitio para u'uson edukasion ha'. Konsulta dokto para konseho mediku. Gi i emergensia, agang 911."
+  },
+  "health": {
+    "title": "Salud",
+    "description": "I informasion na u ma ofrese guini para u'uson informasion ha'. Ti para u ma usa komo konseho mediku. Siempre konsulta yan un dokto agaga' para konseho put i kondision mediku-mu, saina, pat opcion tratamentu. Chamo disidi i konseho mediku siha pat retasa i siesi tratamentu.",
+    "services": [
+      {
+        "id": "diabetes",
+        "title": "Prueba Diabetes",
+        "text": "Este na prueba u ma usa para u ma identifika taotao siha ni puede u ma diabetes pat manai riesto i diabetes, antes de u ma sotta i saina.",
+        "links": [
+          {
+            "label": "Prueba Riesto",
+            "url": "https://www.cdc.gov/prediabetes/risktest/index.html"
+          }
+        ]
+      },
+      {
+        "id": "mental",
+        "title": "Recursos para I Mental Wellness",
+        "text": "I recursos para i mental health siha u ma disenya para u ma apoya i taotao siha gi i mampulan i emosional, sikolohiku, yan sosial na bienestar. I propósitu-ñiha para u ma ofrese i herramientas, ayuda, yan servisiu siha para u ma ayuda i taotao siha u ma komprende, u ma afronta, yan u ma atiende i mental challenges.",
+        "links": [
+          {
+            "label": "Mental Health 101",
+            "url": "https://screening.mhanational.org/mental-health-101/"
+          },
+          {
+            "label": "Prueba Depression",
+            "url": "https://screening.mhanational.org/screening-tools/depression/?ref"
+          }
+        ]
+      },
+      {
+        "id": "truecare",
+        "title": "True Care",
+        "text": "TrueCare unu gui' i mas konfiansa na provider siha gi i San Diego yan Riverside Counties. I staff-ñiha siha amigable yan i dokto siha kompasinu u ma espesialisa gi i ofresimiento i kalidad na salud yan wellness na servisiu siha para i komunidat siha ti u ma apoya, para i taotao siha u ma sodda' i kuido ni u ma nesesita. I meta-ñiha para u ma faha i kuido disponible para todo i taotao gi i komunidat siha ni u ma sirbi, sin i nesesidat pat insuranse.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://truecare.org/"
+          }
+        ]
+      },
+      {
+        "id": "vista",
+        "title": "Vista Community Clinic",
+        "text": "Valioso na Kuido Konekto: Ma kontra i nesesidat salud yan wellness gi i komunidat-ta. Un komunidat ni kada taotao u ma ayek i salud.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://www.vistacommunityclinic.org/"
+          }
+        ]
+      },
+      {
+        "id": "mindfulness",
+        "title": "Recursos Mindfulness",
+        "text": "I recursos mindfulness u ma disenya para u ma ayuda i taotao siha u ma desarrolla i konosimiento, presensia, yan aseptasion i momento presente. Este na recursos u ma promuebe i mental yan emosional na bienestar gi i ma'anesi i praktika siha ni u ma ancha i mindfulness—i praktika na u ma atiende gi un manera partikular: gi i propósitu, gi i momento presente, yan sin juzgamiento.",
+        "links": [
+          {
+            "label": "Mindful CSUSM",
+            "url": "https://www.csusm.edu/mindfulcsusm/resources/index.html"
+          }
+        ]
+      },
+      {
+        "id": "movement",
+        "title": "Movimiento yan Nutrision",
+        "text": "I recursos movimiento yan nutrision u ma empodera i taotao siha para u ma kontrola i salud-ñiha gi i ma ofrese i herramientas, konosimiento, yan ayuda siha ni u ma nesesita para u ma disidi informadu put i aktibidad fisika yan i desision siha put i kumida. I efekto kombinadu i movimiento regular yan i nutrision apropiado u ma apoya i bienestar general, u ma rebaja i riesto na enfirmedat, u ma meyora i mental salud, u ma meyora i enerhiya, yan u ma promuebe i longevidad.",
+        "links": [
+          {
+            "label": "Indikador Enfermedat Kroniku",
+            "url": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "title": "Otro",
+        "text": "I prueba para i kanser u ma permite hao u ma meyora i pronostiku, u ma rebaja i mortalidad, u ma identifika i deteksion temprano, yan u ma na'i hao i pas i korason.",
+        "links": [
+          {
+            "label": "Prueba Kanser",
+            "url": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
+          }
+        ]
+      }
+    ]
+  },
+  "culture": {
+    "title": "Kuttura, Arte, yan Lengguahe",
+    "services": [
+      {
+        "id": "umeke",
+        "title": "Umeke",
+        "dontTranslateTitle": true,
+        "text": "Basi gi i North County San Diego, UMEKE un organizasion 501(c)(3) dedicado para i preservasion, perpetuasion yan edukasion i kuttura Hawaiana. I bisyon-ñiha para u ma edukaha i komunidat lokal gi i ma'anesi i apredisaje kuttural-kross, u ma abrasa un aproach interseksional para u ma trabaha para i ekuidad yan i adelanto i todo i populasion siha marginado yan ti u ma apoya.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://www.umeke.org/"
+          }
+        ]
+      },
+      {
+        "id": "language",
+        "title": "Kurso Lengguahe",
+        "text": "Komo un parte i Proyekto CSUSM U-Act, u ma sodda' informasion guini put i lengguahe yan edukasion na program siha para i Komunidat Pasifiku. Este na program siha i Chamoru Language Immersion Experience yan i Gagana Sāmoa Language Performing Arts Program. I Chamoru Language Immersion Experience un inisiativa edukasional disenyado para u ma sumerje i partisipante siha gi i lengguahe yan kuttura Chamoru. I Gagana Sāmoa Language Performing Arts Program u ma fokus gi i ma'anesi i lengguahe Sāmoa (Gagana Samoa) yan i arte siha tradisional na Sāmoa.",
+        "links": [
+          {
+            "label": "CSUSM U-ACT",
+            "url": "https://www.csusm.edu/apida/uact.html"
+          }
+        ]
+      },
+      {
+        "id": "movementCourse",
+        "title": "Kurso Movimiento",
+        "text": "Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) u ma para un hālau hula tradisional (eskuela hula), lokali gi i komunidat kostero gi i Oceanside, CA. I hālau-ta u ma dedika apasionadamente gi i ma fomenta i apredisaje kuttural gi i haumāna-ta (estudiante siha) gi i ma'anesi i arte hula. Gi i sentro i mision-ta u ma dedika gi i ma aprende, ma'anesi, yan u ma perpetua kada aspeto i hula, na ma chule' gi i linaje-ta.",
+        "links": [
+          {
+            "label": "KHOI Homepage",
+            "url": "https://www.kahulaoilima.com/"
+          }
+        ]
+      },
+      {
+        "id": "mindfullMovement",
+        "title": "MindFull Movement",
+        "text": "MindFull Movement todo put i kreado i espasio para i pertenensia. I kolektivo baila yan movimiento lokali gi i Oceanside un refugio i autoexpresion saludable, wellness, yan i kuradon para i Native Hawaiian yan Pacific Islander (NHPI) yan Black, Indigenous yan People of Color (BIPOC) na taotao siha.",
+        "links": [
+          {
+            "label": "Instagram Account",
+            "url": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "title": "Otro",
+        "text": "Ma susede",
+        "links": []
+      }
+    ]
+  },
+  "education": {
+    "title": "Edukasion",
+    "services": [
+      {
+        "id": "mana",
+        "title": "Akademia Mana",
+        "text": "Mana un programa i Mira Costa Community College ni u ma fomenta i komunidat gi i kampus entre i estudiante siha Native Hawaiian yan Pacific Islander (NHPI) yan u ma ofrese megae na servisiu siha para i meta siha akademiku, kuttural, yan personal. Mana un programa holistiku ni u ma ofrese i estudiante siha un entrada kuttural relevante gi i edukasion mas altu mientras u ma ofrese apoyo akademiku yan konseling.",
+        "links": [
+          {
+            "label": "Mana @ MiraCosta College",
+            "url": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
+          }
+        ]
+      },
+      {
+        "id": "apida",
+        "title": "CSUSM APIDA",
+        "text": "I Asian & Pacific Islander & Desi American (APIDA) Success Initiative u ma esfuersa para u ma insipira yan u ma prepara todo i estudiante siha para i eksito gi i CSUSM yan i kuido yan apoyo. Para i estudiante-ta siha ti u ma apoya, primer generasion, yan i ma rétorna.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://www.csusm.edu/apida/index.html"
+          }
+        ]
+      },
+      {
+        "id": "apply",
+        "title": "Kao Para U Ma Aplica Para I Kolegio?",
+        "text": "Este u ma guia i estudiante siha gi i proseso mas komplikado, kompetitivo, yan sensibel gi i tiempo para u ma ayek yan u ma aplica gi i institusion siha edukasion mas altu. Este na recursos u ma ayuda para u ma asegura i estudiante siha u ma disidi informadu, u ma submit i aplikasion fuerte, yan u ma sodda' i akseso gi i oportunidat edukasional siha ni u ma fetma i meta-ñiha yan i nesesidat-ñiha.",
+        "links": [
+          {
+            "label": "CommonApp",
+            "url": "https://www.commonapp.org/"
+          }
+        ]
+      },
+      {
+        "id": "financialAid",
+        "title": "Ayuda Finansiera",
+        "text": "FAFSA u ma ofrese apoyo esensial para i taotao siha ni u ma siesi ayuda finansiera para i edukasion mas altu. I FAFSA un herramienta klave para i estudiante siha u ma aksesa i ayuda finansiera federal, incluyendo grant siha, loan siha, yan oportunidat siha work-study, yan para i ayuda estatal yan institusional.",
+        "links": [
+          {
+            "label": "Federal Student Aid",
+            "url": "https://studentaid.gov/"
+          }
+        ]
+      },
+      {
+        "id": "youth",
+        "title": "Programa Joven PIC Health",
+        "text": "Ma susede",
+        "links": []
+      },
+      {
+        "id": "testimonials",
+        "title": "Testimonio",
+        "text": "Ma susede",
+        "links": []
+      },
+      {
+        "id": "other",
+        "title": "Otro",
+        "text": "Ma susede",
+        "links": []
+      }
+    ]
+  },
+  "aboutUs": {
+    "title": "Put I Taotao-ta",
+    "description1": "Establesido gi i 2013, Pacific Islander Community Health (PIC Health) u ma sirbi gi i rehiyon Southern California, gi i ma adelanta i ekuidad salud yan i justisia sosial para i komunidat siha Pasifiku gi i ma'anesi i inisiativa salud sentro kuttural yan i investigasion sentro komunidat. PIC Health u ma dedika gi i ma promuebe i wellness yan i resilensia gi i ma atiende i nesesidat salud uniku yan i disparidad siha i komunidat-ta Pasifika u ma soporta yan u ma navega kada dia.",
+    "description2": "Aprende mas:",
+    "missionTitle": "I Mision-Ta",
+    "missionText": "Gi i PIC Health, i mision-ta para u ma empodera yan u ma eleva i komunidat Pasifiku gi i ma promuebe i inisiativa salud yan wellness holistiku raigado gi i sensibilidad kuttural yan i involvensia komunidat. Gi i ma'anesi i investigasion kolaborativa, advokasia, yan edukasion, ta u ma trabaha para u ma atiende i disparidad salud indígena, u ma fomenta i akseso ekuitativo gi i kuido salud, yan u ma kultiva un ambiente próspero ni kada taotao u ma sodda' i nivet mas altu i bienestar.",
+    "landTitle": "Aknowledgment I Tano",
+    "landText": "Ta u ma aknowledgment i tano ni ta u ma asembla guini i teritori tradisional i taotao Luiseño/Payómkawichum. PIC Health yan i área siha ni u ma sirbi guini i siet na banda siha federalmente reconosido i La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum."
+  }
+}
+

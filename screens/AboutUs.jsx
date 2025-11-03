@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ImageBackground,
   View,
@@ -11,49 +11,25 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Picker } from "@react-native-picker/picker";
 import Seperator from "../components/Seperator";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
-import { translateText } from "../services/GoogleTranslateService";
 import { TranslationContext } from "../context/TranslationContext";
+import { useTranslation } from "../hooks/useTranslation";
 
 const AboutUs = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
   const { lang, setLang } = useContext(TranslationContext);
-  const [headerTitle, setHeaderTitle] = useState("About Us");
-  const [desc1, setDesc1] = useState(
-    "Established in 2013, Pacific Islander Community Health (PIC Health) serves the Southern California region, by advancing health equity and social justice for Pacific Islander communities through culturally centered health initiatives and community-centered research. PIC Health is dedicated to promoting wellness and resilience by addressing the unique health needs and disparities our Pasifika communities endure and navigate every day."
-  );
-  const [desc2, setDesc2] = useState("Learn more:");
-  const [missionTitle, setMissionTitle] = useState("Our Mission");
-  const [missionText, setMissionText] = useState(
-    "At PIC Health, our mission is to empower and uplift the Pacific Islander community by promoting holistic health and wellness initiatives rooted in cultural sensitivity and community engagement. Through collaborative research, advocacy, and education, we strive to address indigenous health disparities, foster equitable access to healthcare, and cultivate a thriving environment where every individual can achieve their highest level of well-being."
-  );
-  const [landTitle, setLandTitle] = useState("Land Acknowledgement");
-  const [landText, setLandText] = useState(
-    "We acknowledge that the land on which we gather is the traditional territory of the Luiseño/Payómkawichum people. PIC Health and its surrounding areas are still home to the six federally recognized bands of the La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum people."
-  );
-
-  useEffect(() => {
-    async function localizeAll() {
-      const ht = await translateText("About Us", lang);
-      const d1 = await translateText(desc1, lang);
-      const d2 = await translateText("Learn more:", lang);
-      const mt = await translateText("Our Mission", lang);
-      const mtxt = await translateText(missionText, lang);
-      const lt = await translateText("Land Acknowledgement", lang);
-      const ltxt = await translateText(landText, lang);
-      setHeaderTitle(ht);
-      setDesc1(d1);
-      setDesc2(d2);
-      setMissionTitle(mt);
-      setMissionText(mtxt);
-      setLandTitle(lt);
-      setLandText(ltxt);
-    }
-    localizeAll();
-  }, [lang]);
+  const { t } = useTranslation();
+  
+  // Get localized content
+  const headerTitle = t("aboutUs.title");
+  const desc1 = t("aboutUs.description1");
+  const desc2 = t("aboutUs.description2");
+  const missionTitle = t("aboutUs.missionTitle");
+  const missionText = t("aboutUs.missionText");
+  const landTitle = t("aboutUs.landTitle");
+  const landText = t("aboutUs.landText");
 
   const callWebView = (url) => {
     Platform.OS === "web"
@@ -129,15 +105,6 @@ const AboutUs = () => {
           isVisible={modalConfig.isVisible}
           onClose={closeModal}
         />
-        <View style={styles.langPickerFloating}>
-          <Picker selectedValue={lang} onValueChange={setLang} mode="dropdown">
-            <Picker.Item label="English" value="en" />
-            <Picker.Item label="Español" value="es" />
-            <Picker.Item label="Samoan" value="sm" />
-            <Picker.Item label="Chamorro" value="ch" />
-            <Picker.Item label="Tongan" value="to" />
-          </Picker>
-        </View>
       </SafeAreaView>
     </View>
   );
@@ -170,21 +137,6 @@ const styles = StyleSheet.create({
     width: 350,
     marginTop: 10,
     borderRadius: 10,
-  },
-  langPickerFloating: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
-    width: 140,
-    backgroundColor: "rgba(255,255,255,0.9)",
-    borderRadius: 8,
-    overflow: "hidden",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    zIndex: 1000,
   },
 });
 

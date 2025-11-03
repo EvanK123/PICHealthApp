@@ -1,7 +1,10 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { useTranslation } from '../hooks/useTranslation';
 
 const DisclaimerModal = ({ visible, onClose, title, message }) => {
+  const { t } = useTranslation();
+  
   return (
     <Modal
       transparent={true}
@@ -28,7 +31,7 @@ const DisclaimerModal = ({ visible, onClose, title, message }) => {
           <Text style={styles.message}>{message}</Text>
           
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Close</Text>
+            <Text style={styles.closeButtonText}>{t('common.close')}</Text>
           </TouchableOpacity>
         </View>
       </View>

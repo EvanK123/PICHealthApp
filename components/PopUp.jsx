@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
+import { useTranslation } from '../hooks/useTranslation';
 
 // Popup component to display event details or welcome message in a modal
 const Popup = ({ visible, onClose, mode = "event", events }) => {
   if (mode === "event" && (!events || events.length === 0)) return null;
   
+  const { t } = useTranslation();
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '' });
 
   // Function to handle link presses within the HTML content
@@ -49,7 +51,7 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
                       renderersProps={{ a: { onPress: handleLinkPress } }}
                     />
                   ) : (
-                    <Text style={styles.noDescription}>No description available</Text>
+                    <Text style={styles.noDescription}>{t('common.noDescriptionAvailable')}</Text>
                   )}
                   <Text style={styles.eventTime}>
                     {new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}
@@ -65,13 +67,13 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
                 style={styles.welcomeLogo}
                 resizeMode='contain'
               />
-              <Text style={styles.welcomeTitle}>Welcome to PIC Health!</Text>
-              <Text style={styles.betaText}>Beta</Text>
+              <Text style={styles.welcomeTitle}>{t('popup.welcomeTitle')}</Text>
+              <Text style={styles.betaText}>{t('popup.beta')}</Text>
               <Text style={styles.disclaimerText}>
-                <Text style={styles.disclaimerBold}>Disclaimer:</Text> This site is for educational use only. Consult a doctor for medical advice. In an emergency, call 911.
+                <Text style={styles.disclaimerBold}>{t('popup.disclaimer')}</Text> {t('popup.disclaimerText')}
               </Text>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Get Started</Text>
+                <Text style={styles.closeButtonText}>{t('common.getStarted')}</Text>
               </TouchableOpacity>
             </View>
           )}

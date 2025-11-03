@@ -9,10 +9,12 @@ import CalendarView from '../components/CalendarView';
 import ListView from '../components/ListView';
 import Popup from '../components/PopUp';
 import WebViewModal from '../components/WebViewModal';
+import { useTranslation } from '../hooks/useTranslation';
 
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 
 const CalendarScreen = () => {
+  const { t } = useTranslation();
   const [calendarMode, setCalendarMode] = useState(true); // true = Month, false = Upcoming
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -21,8 +23,8 @@ const CalendarScreen = () => {
   const [selectedCalendars, setSelectedCalendars] = useState([]);
 
   const calendarOptions = [
-    { key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com', value: 'Pacific Islander Community' },
-    { key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com', value: 'Latino Community' },
+    { key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com', value: t('calendar.calendarOptions.pacificIslander') },
+    { key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com', value: t('calendar.calendarOptions.latino') },
   ];
 
   const callWebView = (url) => {
@@ -41,7 +43,7 @@ const CalendarScreen = () => {
         const key = startStr.split('T')[0];
         const isAllDay = !!ev.start?.date && !ev.start?.dateTime;
         const timeLabel = isAllDay
-          ? 'All Day'
+          ? t('common.allDay')
           : new Date(ev.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         if (!acc[key]) acc[key] = [];
@@ -66,7 +68,7 @@ const CalendarScreen = () => {
     <SafeAreaView edges={['top']} style={styles.container}>
       <ImageBackground source={require('../assets/basket.jpg')} resizeMode="cover" style={styles.image} blurRadius={0}>
         <Header
-          title="PIC Health"
+          title={t('calendar.title')}
           onPressLanguage={() => {}}
           onPressSubmit={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')}
         />

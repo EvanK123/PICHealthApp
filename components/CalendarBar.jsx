@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { useTranslation } from '../hooks/useTranslation';
 
 const COLORS = {
   primary: '#2d4887',
@@ -17,6 +18,7 @@ export default function CalendarBar({
   setSelectedCalendars,
   calendarOptions = [],
 }) {
+  const { t } = useTranslation();
   const onPressCalendar = () => setCalendarMode(true);
   const onPressUpcoming = () => setCalendarMode(false);
 
@@ -30,7 +32,7 @@ export default function CalendarBar({
             style={[styles.segmentBtn, calendarMode && styles.segmentBtnActive]}
           >
             <Text style={[styles.segmentText, calendarMode && styles.segmentTextActive]}>
-              Calendar
+              {t('calendar.calendar')}
             </Text>
           </TouchableOpacity>
 
@@ -39,7 +41,7 @@ export default function CalendarBar({
             style={[styles.segmentBtn, !calendarMode && styles.segmentBtnActive]}
           >
             <Text style={[styles.segmentText, !calendarMode && styles.segmentTextActive]}>
-              Upcoming Events
+              {t('calendar.upcomingEvents')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -51,8 +53,8 @@ export default function CalendarBar({
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save="key"
-          label="Select Calendars"
-          placeholder="Select Calendar"
+          label={t('common.selectCalendars')}
+          placeholder={t('common.selectCalendar')}
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />

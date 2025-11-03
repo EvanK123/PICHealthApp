@@ -1,0 +1,33 @@
+{
+  "en": {
+    "code": "en",
+    "name": "English",
+    "nativeName": "English",
+    "translationKey": "common.languages.english"
+  },
+  "es": {
+    "code": "es",
+    "name": "Spanish",
+    "nativeName": "Español",
+    "translationKey": "common.languages.spanish"
+  },
+  "sm": {
+    "code": "sm",
+    "name": "Samoan",
+    "nativeName": "Samoan",
+    "translationKey": "common.languages.samoan"
+  },
+  "ch": {
+    "code": "ch",
+    "name": "Chamorro",
+    "nativeName": "Chamoru",
+    "translationKey": "common.languages.chamorro"
+  },
+  "to": {
+    "code": "to",
+    "name": "Tongan",
+    "nativeName": "Tongan",
+    "translationKey": "common.languages.tongan"
+  }
+}
+

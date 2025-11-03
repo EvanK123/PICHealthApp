@@ -1,0 +1,266 @@
+{
+  "common": {
+    "languages": {
+      "english": "English",
+      "spanish": "Español",
+      "samoan": "Samoan",
+      "chamorro": "Chamorro",
+      "tongan": "Tongan"
+    },
+    "close": "Close",
+    "getStarted": "Get Started",
+    "submitEvent": "Submit Event",
+    "selectCalendars": "Select Calendars",
+    "selectCalendar": "Select Calendar",
+    "selectLanguage": "Select Language",
+    "allDay": "All Day",
+    "noDescriptionAvailable": "No description available"
+  },
+  "app": {
+    "tabs": {
+      "home": "Home",
+      "health": "Health",
+      "education": "Education",
+      "culture": "Culture",
+      "aboutUs": "About Us"
+    }
+  },
+  "calendar": {
+    "title": "PIC Health",
+    "calendar": "Calendar",
+    "upcomingEvents": "Upcoming Events",
+    "calendarOptions": {
+      "pacificIslander": "Pacific Islander Community",
+      "latino": "Latino Community"
+    }
+  },
+  "header": {
+    "submitEvent": "Submit Event"
+  },
+  "popup": {
+    "welcomeTitle": "Welcome to PIC Health!",
+    "beta": "Beta",
+    "disclaimer": "Disclaimer:",
+    "disclaimerText": "This site is for educational use only. Consult a doctor for medical advice. In an emergency, call 911."
+  },
+  "health": {
+    "title": "Health",
+    "description": "The information provided here is for general informational purposes only and is not intended as medical advice. Always consult with a qualified healthcare provider for advice regarding your specific medical condition, symptoms, or treatment options. Do not disregard professional medical advice or delay seeking treatment.",
+    "services": [
+      {
+        "id": "diabetes",
+        "title": "Diabetes Screening",
+        "text": "This test is used to identify individuals who may have diabetes or are at risk of developing the condition, often before they show any noticeable symptoms.",
+        "links": [
+          {
+            "label": "Risk Test",
+            "url": "https://www.cdc.gov/prediabetes/risktest/index.html"
+          }
+        ]
+      },
+      {
+        "id": "mental",
+        "title": "Mental Wellness Resources",
+        "text": "Mental health resources are designed to support individuals in managing their emotional, psychological, and social well‑being. Their purpose is to provide tools, guidance, and services to help people understand, cope with, and address mental challenges.",
+        "links": [
+          {
+            "label": "Mental Health 101",
+            "url": "https://screening.mhanational.org/mental-health-101/"
+          },
+          {
+            "label": "Depression Screening",
+            "url": "https://screening.mhanational.org/screening-tools/depression/?ref"
+          }
+        ]
+      },
+      {
+        "id": "truecare",
+        "title": "True Care",
+        "text": "TrueCare is one of the most trusted healthcare providers in San Diego and Riverside Counties. Their friendly staff and compassionate physicians specialize in providing quality healthcare and wellness services to underserved communities so people can get the care they need. Their goal is to make healthcare available to everyone in the communities they serve, regardless of income or insurance status.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://truecare.org/"
+          }
+        ]
+      },
+      {
+        "id": "vista",
+        "title": "Vista Community Clinic",
+        "text": "Valuable Connected Care: Meeting the health and wellness needs of our community. A community where every person chooses health.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://www.vistacommunityclinic.org/"
+          }
+        ]
+      },
+      {
+        "id": "mindfulness",
+        "title": "Mindfulness Resources",
+        "text": "Mindfulness resources are designed to help individuals cultivate awareness, presence, and acceptance of the present moment. These resources aim to promote mental and emotional well‑being by teaching practices that encourage mindfulness—essentially the practice of paying attention in a particular way: on purpose, in the present moment, and without judgment.",
+        "links": [
+          {
+            "label": "Mindful CSUSM",
+            "url": "https://www.csusm.edu/mindfulcsusm/resources/index.html"
+          }
+        ]
+      },
+      {
+        "id": "movement",
+        "title": "Movement & Nutrition",
+        "text": "Movement and nutrition resources empower individuals to take charge of their health by providing the tools, knowledge, and guidance they need to make informed decisions about physical activity and dietary choices. The combined effect of regular movement and proper nutrition supports overall well‑being, reduces disease risk, enhances mental health, improves energy, and promotes longevity.",
+        "links": [
+          {
+            "label": "Chronic Disease Indicators",
+            "url": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "title": "Other",
+        "text": "Screening for cancer allows you to improve prognosis, reduce mortality, identify early detection, and give you peace of mind.",
+        "links": [
+          {
+            "label": "Cancer Screening",
+            "url": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
+          }
+        ]
+      }
+    ]
+  },
+  "culture": {
+    "title": "Culture, Arts, & Language",
+    "services": [
+      {
+        "id": "umeke",
+        "title": "Umeke",
+        "dontTranslateTitle": true,
+        "text": "Based in North County San Diego, UMEKE is a 501(c)(3) organization dedicated to the preservation, perpetuation and education of Hawaiian culture. Their vision is to educate local communities through cross-cultural learning, embracing an intersectional approach to work towards the equity and advancement of all marginalized and underserved populations.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://www.umeke.org/"
+          }
+        ]
+      },
+      {
+        "id": "language",
+        "title": "Language Course",
+        "text": "As a part of the CSUSM U-Act Project you will find information here on language and education programs for the Pacific Islander Community. These programs are The Chamoru Language Immersion Experience and The Gagana Sāmoa Language Performing Arts Program. The Chamoru Language Immersion Experience is an educational initiative designed to immerse participants in the Chamoru language and culture. The Gagana Sāmoa Language Performing Arts Program focuses on teaching the Sāmoan language (Gagana Samoa) and traditional Samoan performing arts.",
+        "links": [
+          {
+            "label": "CSUSM U-ACT",
+            "url": "https://www.csusm.edu/apida/uact.html"
+          }
+        ]
+      },
+      {
+        "id": "movementCourse",
+        "title": "Movement Course",
+        "text": "Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) stands as a traditional hālau hula (hula school), located in the coastal community of Oceanside, CA. Our hālau is passionately committed to fostering cultural learning among our haumāna (students) through the art of hula. At the core of our mission is the dedication to learning, teaching, and perpetuating every facet of hula, drawn from our ancestral lineage.",
+        "links": [
+          {
+            "label": "KHOI Homepage",
+            "url": "https://www.kahulaoilima.com/"
+          }
+        ]
+      },
+      {
+        "id": "mindfullMovement",
+        "title": "MindFull Movement",
+        "text": "MindFull Movement is all about creating space for belonging. The Oceanside-based dance and movement collective is a haven of healthy self-expression, wellness, and healing for Native Hawaiian and Pacific Islander (NHPI) and Black, Indigenous and People of Color (BIPOC) individuals.",
+        "links": [
+          {
+            "label": "Instagram Account",
+            "url": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "title": "Other",
+        "text": "Coming soon",
+        "links": []
+      }
+    ]
+  },
+  "education": {
+    "title": "Education",
+    "services": [
+      {
+        "id": "mana",
+        "title": "Mana Academy",
+        "text": "Mana is a program of Mira Costa Community College that builds community on campus among Native Hawaiian and Pacific Islander (NHPI) students and offers many support services toward academic, cultural, and personal goals. Mana is a holistic program which provides students with a culturally relevant entry into higher education whilst offering academic and counseling support.",
+        "links": [
+          {
+            "label": "Mana @ MiraCosta College",
+            "url": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
+          }
+        ]
+      },
+      {
+        "id": "apida",
+        "title": "CSUSM APIDA",
+        "text": "The Asian & Pacific Islander & Desi American (APIDA) Success Initiative strives to inspire and prepare all students for success at CSUSM with care and support. For our low-income, first-generation, and returning students.",
+        "links": [
+          {
+            "label": "Homepage",
+            "url": "https://www.csusm.edu/apida/index.html"
+          }
+        ]
+      },
+      {
+        "id": "apply",
+        "title": "How to Apply to College?",
+        "text": "This will guide students through the often complex, competitive, and time-sensitive process of selecting and applying to higher education institutions. These resources help ensure that students make informed decisions, submit strong applications, and ultimately gain access to the educational opportunities that best fit their goals and needs.",
+        "links": [
+          {
+            "label": "CommonApp",
+            "url": "https://www.commonapp.org/"
+          }
+        ]
+      },
+      {
+        "id": "financialAid",
+        "title": "Financial Aid",
+        "text": "FAFSA provides essential support for individuals seeking financial assistance for higher education. The FAFSA is a key tool for students to access federal financial aid, including grants, loans, and work-study opportunities, as well as for state and institutional aid.",
+        "links": [
+          {
+            "label": "Federal Student Aid",
+            "url": "https://studentaid.gov/"
+          }
+        ]
+      },
+      {
+        "id": "youth",
+        "title": "PIC Health Youth Program",
+        "text": "Coming soon",
+        "links": []
+      },
+      {
+        "id": "testimonials",
+        "title": "Testimonials",
+        "text": "Coming soon",
+        "links": []
+      },
+      {
+        "id": "other",
+        "title": "Other",
+        "text": "Coming soon",
+        "links": []
+      }
+    ]
+  },
+  "aboutUs": {
+    "title": "About Us",
+    "description1": "Established in 2013, Pacific Islander Community Health (PIC Health) serves the Southern California region, by advancing health equity and social justice for Pacific Islander communities through culturally centered health initiatives and community-centered research. PIC Health is dedicated to promoting wellness and resilience by addressing the unique health needs and disparities our Pasifika communities endure and navigate every day.",
+    "description2": "Learn more:",
+    "missionTitle": "Our Mission",
+    "missionText": "At PIC Health, our mission is to empower and uplift the Pacific Islander community by promoting holistic health and wellness initiatives rooted in cultural sensitivity and community engagement. Through collaborative research, advocacy, and education, we strive to address indigenous health disparities, foster equitable access to healthcare, and cultivate a thriving environment where every individual can achieve their highest level of well-being.",
+    "landTitle": "Land Acknowledgement",
+    "landText": "We acknowledge that the land on which we gather is the traditional territory of the Luiseño/Payómkawichum people. PIC Health and its surrounding areas are still home to the six federally recognized bands of the La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum people."
+  }
+}
+
