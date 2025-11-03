@@ -1,92 +1,85 @@
+// components/CalendarBar.jsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 
-const CalendarBar = ({ calendarMode, setCalendarMode, setSelectedCalendars, calendarOptions, callWebView }) => {
-  // 'Today' button functionality can be customized as needed
-  // Toggles between Calendar and List view, state is in CalendarScreen
-  const viewBtn = () => {
-    setCalendarMode(prevMode => !prevMode);
-  };
+const COLORS = {
+  primary: '#2d4887',
+  brand:   '#0EA5B5',
+  onPrimary: '#ffffff',
+  borderOnPrimary: 'rgba(255,255,255,0.25)',
+  white: '#ffffff',
+};
+
+export default function CalendarBar({
+  calendarMode,                 // true = calendar view, false = upcoming list
+  setCalendarMode,
+  setSelectedCalendars,
+  calendarOptions = [],
+}) {
+  const onPressCalendar = () => setCalendarMode(true);
+  const onPressUpcoming = () => setCalendarMode(false);
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        {/*Form submission button*/}
-        <TouchableOpacity onPress={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')} style={styles.flexItem}>
-          <View style={styles.buttons}>
-            <Text style={styles.buttonText}>Submit Event</Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={[styles.flexItem, styles.title]}>Calendar</Text>
-        {/*View switch button*/}
-        <TouchableOpacity onPress={viewBtn} style={styles.flexItem}>
-          <View style={styles.buttons}>
-            <Text style={styles.buttonText}>
-              {/*Switches based on the state of calendarMode*/}
-              {calendarMode ? 'List' : 'Calendar'}
+    <SafeAreaView style={styles.safe}>
+      {/* Segmented control: Calendar | Upcoming Events */}
+      <View style={styles.segmentWrap}>
+        <View style={styles.segment}>
+          <TouchableOpacity
+            onPress={onPressCalendar}
+            style={[styles.segmentBtn, calendarMode && styles.segmentBtnActive]}
+          >
+            <Text style={[styles.segmentText, calendarMode && styles.segmentTextActive]}>
+              Calendar
             </Text>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={onPressUpcoming}
+            style={[styles.segmentBtn, !calendarMode && styles.segmentBtnActive]}
+          >
+            <Text style={[styles.segmentText, !calendarMode && styles.segmentTextActive]}>
+              Upcoming Events
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={calendarMode ? {} : {display: 'none'}}>
+
+      {/* Calendar multi-select dropdown */}
+      <View>
         <MultipleSelectList
           setSelected={setSelectedCalendars}
           data={calendarOptions}
-          save='key'
-          label='Select Calendars'
-          placeholder='Select Calendar'
-          dropdownStyles={styles.dropdown} // Apply custom styles to the dropdown
-          boxStyles={styles.dropdownBox} // Apply custom styles to the box
+          save="key"
+          label="Select Calendars"
+          placeholder="Select Calendar"
+          dropdownStyles={styles.dropdown}
+          boxStyles={styles.dropdownBox}
         />
       </View>
     </SafeAreaView>
   );
-};
-
-export default CalendarBar;
+}
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#2d4887',
+  safe: { backgroundColor: COLORS.primary },
+
+  segmentWrap: { alignItems: 'center', paddingTop: 8, paddingBottom: 6 },
+  segment: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 65,
-    shadowRadius: 3,
-    shadowOffset: 4,
-    paddingHorizontal: 10,
-  },
-  flexItem: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-  },
-  buttons: {
-    margin: 10,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderRadius: 22,
+    padding: 4,
+    gap: 6,
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    borderColor: '#808080',
-    minWidth: 100,
+    borderColor: COLORS.borderOnPrimary,
   },
-  buttonText: {
-    alignSelf: 'center',
-    color: '#FFFFFF',
-  },
-  dropdown: {
-    backgroundColor: '#fff', // White background for the dropdown
-    borderRadius: 0,
-    marginTop: 0,
-    marginBottom: 10,
-  },
-  dropdownBox: {
-    backgroundColor: '#fff', // White background for the box
-    borderColor: '#fff', // Optional: Add border color
-    borderRadius: 0
-  },
+  segmentBtn: { paddingVertical: 6, paddingHorizontal: 16, borderRadius: 18, backgroundColor: 'transparent' },
+  segmentBtnActive: { backgroundColor: COLORS.brand },
+  segmentText: { color: COLORS.onPrimary, fontWeight: '700' },
+  segmentTextActive: { color: COLORS.white },
+
+  dropdown: { backgroundColor: COLORS.white, borderRadius: 10, marginTop: 6, marginBottom: 8 },
+  dropdownBox: { backgroundColor: COLORS.white, borderColor: COLORS.white, borderRadius: 10 },
 });
+
