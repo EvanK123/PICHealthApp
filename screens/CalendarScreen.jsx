@@ -69,7 +69,7 @@ const CalendarScreen = () => {
       <ImageBackground source={require('../assets/basket.jpg')} resizeMode="cover" style={styles.image} blurRadius={0}>
         <Header
           title={t('calendar.title')}
-          onPressLanguage={() => {}}
+          showSubmit                                     // ← show the button on Home
           onPressSubmit={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')}
         />
 
@@ -99,8 +99,14 @@ const CalendarScreen = () => {
         </View>
       </ImageBackground>
 
-      <Popup visible={popupVisible} onClose={closePopup} event={selectedEvent}
-        onGoing={() => console.log('Going')} onNotGoing={() => console.log('Not Going')} onMaybe={() => console.log('Maybe')} />
+      <Popup
+        visible={popupVisible}
+        onClose={closePopup}
+        event={selectedEvent}
+        onGoing={() => console.log('Going')}
+        onNotGoing={() => console.log('Not Going')}
+        onMaybe={() => console.log('Maybe')}
+      />
 
       <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} />
     </SafeAreaView>

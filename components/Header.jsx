@@ -6,9 +6,6 @@ import { TranslationContext } from '../context/TranslationContext';
 import { useTranslation } from '../hooks/useTranslation';
 import languagesConfig from '../locales/languages.config.json';
 
-// Get all languages as array
-const getAllLanguages = () => Object.values(languagesConfig);
-
 const COLORS = {
   primary: '#2d4887',
   onPrimary: '#ffffff',
@@ -16,29 +13,24 @@ const COLORS = {
   brand: '#0EA5B5',
 };
 
+const getAllLanguages = () => Object.values(languagesConfig);
+
 export default function Header({
-  title = 'Calendar',
-  onPressLanguage = () => {},
+  title = 'PIC Health',
+  showSubmit = false,            // <- only show button on Home
   onPressSubmit = () => {},
 }) {
   const { lang, setLang } = useContext(TranslationContext);
   const { t } = useTranslation();
-  
-  // Get all available languages from configuration
-  // If translation key doesn't exist, fall back to nativeName from config
-  const languages = getAllLanguages().map(langInfo => {
-    const translatedName = t(langInfo.translationKey);
-    const label = translatedName && translatedName !== langInfo.translationKey 
-      ? translatedName 
-      : langInfo.nativeName || langInfo.name;
-    return {
-      code: langInfo.code,
-      label,
-    };
+
+  const languages = getAllLanguages().map(l => {
+    const translated = t(l.translationKey);
+    const label = translated && translated !== l.translationKey ? translated : (l.nativeName || l.name);
+    return { code: l.code, label };
   });
-  
-  const currentLanguage = languages.find(l => l.code === lang)?.label || lang.toUpperCase();
-  
+
+  const currentLabel = languages.find(l => l.code === lang)?.label || lang.toUpperCase();
+
   return (
     <View style={styles.container}>
       {/* Left: logo + title */}
@@ -47,32 +39,26 @@ export default function Header({
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      {/* Right: Language Dropdown + Submit Event */}
+      {/* Right: language chip + optional Submit */}
       <View style={styles.right}>
-        <View style={styles.languagePickerContainer}>
-          <Text style={styles.languagePickerLabel}>
-            {currentLanguage}
-          </Text>
+        <View style={styles.langChip}>
+          <Text numberOfLines={1} style={styles.langText}>{currentLabel}</Text>
+
+          {/* Invisible overlay fills the chip; keeps chip height fixed */}
           <Picker
             selectedValue={lang}
             onValueChange={setLang}
-            style={styles.languagePicker}
-            dropdownIconColor={COLORS.onPrimary}
-            itemStyle={styles.pickerItem}
             mode="dropdown"
+            dropdownIconColor="transparent"
+            style={styles.langPickerOverlay}
           >
-            {languages.map((langOption) => (
-              <Picker.Item
-                key={langOption.code}
-                label={langOption.label}
-                value={langOption.code}
-                color={COLORS.primary}
-              />
+            {languages.map(opt => (
+              <Picker.Item key={opt.code} label={opt.label} value={opt.code} color={COLORS.primary} />
             ))}
           </Picker>
         </View>
 
-        {onPressSubmit && (
+        {showSubmit && (
           <TouchableOpacity style={styles.ctaBtn} onPress={onPressSubmit}>
             <Text style={styles.ctaText}>{t('header.submitEvent')}</Text>
           </TouchableOpacity>
@@ -100,53 +86,38 @@ const styles = StyleSheet.create({
 
   right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
 
-  languagePickerContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+  // Compact language chip (fixed height)
+  langChip: {
+    position: 'relative',
+    minWidth: 88,
+    maxWidth: 140,
+    height: 36,
+    paddingHorizontal: 12,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: COLORS.border,
-    backgroundColor: 'transparent',
-    minWidth: 100,
-    position: 'relative',
-    overflow: 'visible',
     justifyContent: 'center',
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
   },
-  languagePickerLabel: {
+  langText: {
     color: COLORS.onPrimary,
     fontWeight: '700',
-    fontSize: 14,
-    position: 'absolute',
-    left: 12,
-    top: '50%',
-    marginTop: -8,
-    zIndex: 1,
-    pointerEvents: 'none',
+    fontSize: 13,
   },
-  languagePicker: {
+  // Invisible overlay so the native picker doesn't inflate the chip
+  langPickerOverlay: {
+    position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
+    opacity: Platform.OS === 'web' ? 0.01 : 0.01,
     color: 'transparent',
-    height: 40,
-    width: '100%',
-    ...(Platform.OS === 'web' ? {
-      WebkitAppearance: 'none',
-      MozAppearance: 'none',
-      appearance: 'none',
-      opacity: 0.01,
-    } : {
-      opacity: 0.01, // Nearly transparent but still clickable
-    }),
-  },
-  pickerItem: {
-    color: COLORS.primary,
-    backgroundColor: '#fff',
   },
 
   ctaBtn: {
     backgroundColor: COLORS.brand,
     paddingHorizontal: 14,
-    paddingVertical: 8,
+    height: 36,
     borderRadius: 14,
+    justifyContent: 'center',
   },
   ctaText: { color: '#ffffff', fontWeight: '800' },
 });
-
