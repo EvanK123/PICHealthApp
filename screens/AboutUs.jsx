@@ -1,3 +1,4 @@
+// screens/AboutUs.jsx
 import React, { useContext, useState } from "react";
 import {
   ImageBackground,
@@ -19,10 +20,9 @@ import { useTranslation } from "../hooks/useTranslation";
 
 const AboutUs = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  const { lang, setLang } = useContext(TranslationContext);
   const { t } = useTranslation();
-  
-  // Get localized content
+
+  // Localized strings
   const headerTitle = t("aboutUs.title");
   const desc1 = t("aboutUs.description1");
   const desc2 = t("aboutUs.description2");
@@ -37,9 +37,7 @@ const AboutUs = () => {
       : setModalConfig({ isVisible: true, url });
   };
 
-  const closeModal = () => {
-    setModalConfig((p) => ({ ...p, isVisible: false }));
-  };
+  const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
 
   return (
     <View style={{ flex: 1 }}>
@@ -50,37 +48,34 @@ const AboutUs = () => {
           blurRadius={0}
           resizeMode="cover"
         >
-          <Header title={headerTitle} />
+          {/* Hide Submit button on About Us */}
+          <Header title={headerTitle} showSubmit={false} />
+
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "row",
-                padding: 20,
-              }}
-            >
+            <View style={styles.logoRow}>
               <Image
                 source={require("../assets/pic-health-logo-TEXT.png")}
-                style={{ height: 150, width: 350 }}
-                resizeMode="stretch"
+                style={styles.logoImg}
+                resizeMode="contain"
               />
             </View>
 
             <View style={styles.textBoxContainer}>
               <Text style={textBox.text}>{desc1}</Text>
               <Text style={textBox.text}>{desc2}</Text>
+
               <TouchableOpacity
                 onPress={() =>
                   callWebView(
                     "https://pacificislandercommunityhealth.weebly.com/about-us.html"
                   )
                 }
+                activeOpacity={0.8}
               >
                 <Image
                   source={require("../assets/picteam.jpeg")}
                   style={styles.groupPhoto}
-                  resizeMode="stretch"
+                  resizeMode="cover"
                 />
               </TouchableOpacity>
             </View>
@@ -100,6 +95,7 @@ const AboutUs = () => {
             </View>
           </ScrollView>
         </ImageBackground>
+
         <WebViewModal
           url={modalConfig.url}
           isVisible={modalConfig.isVisible}
@@ -113,19 +109,20 @@ const AboutUs = () => {
 export default AboutUs;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  image: { flex: 1, width: "100%", height: "100%" },
+  scrollContent: { paddingVertical: 10 },
+  logoRow: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
   },
-  image: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
-  scrollContent: {
-    paddingVertical: 10,
+  logoImg: {
+    width: "85%",
+    height: 120,
+    maxWidth: 420,
   },
   textBoxContainer: {
-    backgroundColor: "rgba(255, 255, 255, .9)",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
     marginHorizontal: 20,
     marginBottom: 20,
     padding: 20,
@@ -133,10 +130,11 @@ const styles = StyleSheet.create({
   },
   groupPhoto: {
     alignSelf: "center",
-    height: 250,
-    width: 350,
-    marginTop: 10,
+    width: "100%",
+    height: 220,
+    maxWidth: 520,
     borderRadius: 10,
+    marginTop: 10,
   },
 });
 

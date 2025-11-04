@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+// screens/EducationScreen.jsx
+import React, { useState } from "react";
 import {
   ImageBackground,
   Text,
@@ -12,15 +13,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
-import { TranslationContext } from "../context/TranslationContext";
 import { useTranslation } from "../hooks/useTranslation";
 
 const EducationScreen = () => {
-  const { lang, setLang } = useContext(TranslationContext);
   const { t, getServices } = useTranslation();
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  
-  // Get localized content
+
+  // Localized content
   const headerTitle = t("education.title");
   const localizedSections = getServices("education");
 
@@ -30,9 +29,7 @@ const EducationScreen = () => {
       : setModalConfig({ isVisible: true, url });
   };
 
-  const closeModal = () => {
-    setModalConfig((p) => ({ ...p, isVisible: false }));
-  };
+  const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
 
   return (
     <SafeAreaView edges={["top"]} style={styles.container}>
@@ -42,17 +39,21 @@ const EducationScreen = () => {
         style={styles.image}
         blurRadius={0}
       >
+        {/* Header on Education WITHOUT Submit button */}
         <Header title={headerTitle} />
+
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={{ margin: 5, borderRadius: 10 }}>
             {localizedSections.map((sec) => (
               <View key={sec.id} style={textBox.container}>
                 <Text style={textBox.title}>{sec.title}</Text>
                 <Text style={textBox.text}>{sec.text}</Text>
+
                 {sec.links.map((ln, idx) => (
                   <TouchableOpacity
                     key={`${sec.id}-link-${idx}`}
                     onPress={() => callWebView(ln.url)}
+                    activeOpacity={0.8}
                   >
                     <Text style={textBox.link}>{ln.label}</Text>
                   </TouchableOpacity>
@@ -75,17 +76,9 @@ const EducationScreen = () => {
 export default EducationScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
-  scrollContent: {
-    paddingVertical: 10,
-  },
+  container: { flex: 1 },
+  image: { flex: 1, width: "100%", height: "100%" },
+  scrollContent: { paddingVertical: 10 },
 });
 
 const textBox = StyleSheet.create({
@@ -100,13 +93,12 @@ const textBox = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "rgba(45, 72, 135, 1)",
+    marginBottom: 6,
   },
-  text: {
-    color: "black",
-  },
+  text: { color: "black", marginBottom: 8 },
   link: {
-    padding: 0,
     color: "rgba(45, 72, 135, 1)",
     fontSize: 18,
+    paddingVertical: 2,
   },
 });
