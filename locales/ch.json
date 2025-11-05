@@ -7,6 +7,15 @@
       "chamorro": "Chamorro",
       "tongan": "Tongan"
     },
+    "days": {
+      "sunday": "Damenggo",
+      "monday": "Lunes",
+      "tuesday": "Måttes",
+      "wednesday": "Mekkoles",
+      "thursday": "Huebes",
+      "friday": "Biernes",
+      "saturday": "Såbalu"
+    },
     "close": "Tumon",
     "getStarted": "Tutungo",
     "submitEvent": "Na'i Suetsueto",

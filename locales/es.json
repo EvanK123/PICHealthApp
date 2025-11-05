@@ -7,6 +7,15 @@
       "chamorro": "Chamorro",
       "tongan": "Tongan"
     },
+    "days": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
     "close": "Cerrar",
     "getStarted": "Comenzar",
     "submitEvent": "Enviar Evento",

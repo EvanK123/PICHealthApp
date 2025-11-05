@@ -1,38 +1,16 @@
 
 const languagesConfig = require('../locales/languages.config.json');
+const { loadTranslations } = require('./translation-loader');
 
 
 const getLanguageCodes = () => Object.keys(languagesConfig);
 
 
-const enTranslations = require('../locales/en.json');
-const esTranslations = require('../locales/es.json');
-const smTranslations = require('../locales/sm.json');
-const chTranslations = require('../locales/ch.json');
-const toTranslations = require('../locales/to.json');
-
-
-const translations = {
-  en: enTranslations,
-  es: esTranslations,
-  sm: smTranslations,
-  ch: chTranslations,
-  to: toTranslations,
-};
-
-
-const languageCodes = getLanguageCodes();
-languageCodes.forEach(code => {
-  if (!translations[code]) {
-    console.warn(`Warning: Translation file for language "${code}" is missing. Falling back to English.`);
-    translations[code] = enTranslations;
-  }
-});
-
-
-if (!translations.en) {
-  translations.en = enTranslations;
-}
+// Load all translations dynamically
+// This will automatically pick up any language in languages.config.json
+// To add a new language: create fr.json and add fr entry to languages.config.json
+// Then add the require statement in translation-loader.js
+const translations = loadTranslations();
 
 /**
  * Get a translation value from the locale files

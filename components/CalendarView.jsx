@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { Calendar } from 'react-native-calendars';
 import Popup from './PopUp';
 import WebViewModal from './WebViewModal';
+import { useTranslation } from '../hooks/useTranslation';
 
 // ===== Navy palette =====
 const COLORS = {
@@ -38,7 +39,8 @@ const CAL_THEME = {
   textDayHeaderFontWeight: '700',
 };
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// Map day index (0-6, Sunday = 0) to translation key
+const DAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 // Parse "YYYY-MM-DD" as LOCAL to avoid UTC shifting a day back
 const toLocalDate = (isoDate) => {
@@ -47,10 +49,16 @@ const toLocalDate = (isoDate) => {
 };
 
 export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
+  const { t } = useTranslation();
   const [markedDates, setMarkedDates] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  
+  // Get localized weekday names (full names) - memoized to recalculate when language changes
+  const WEEKDAYS = useMemo(() => {
+    return DAY_KEYS.map(key => t(`common.days.${key}`));
+  }, [t]);
 
   // Compute day-cell size from actual width
   const [calWidth, setCalWidth] = useState(0);
@@ -119,14 +127,15 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     );
   };
 
-  // Local label
+  // Local label with full day name
   const selectedLabel = useMemo(() => {
     if (!selectedDate) return '';
     const d = toLocalDate(selectedDate);
-    const wd = WEEKDAYS[d.getDay()];
+    const dayIndex = d.getDay();
+    const wd = WEEKDAYS[dayIndex];
     const dd = d.getDate();
-    return `Events on ${wd} ${dd}`;
-  }, [selectedDate]);
+    return `${t('calendar.upcomingEvents')} ${wd} ${dd}`;
+  }, [selectedDate, WEEKDAYS, t]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 12 }}>

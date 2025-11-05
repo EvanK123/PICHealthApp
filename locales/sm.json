@@ -7,6 +7,15 @@
       "chamorro": "Chamorro",
       "tongan": "Tongan"
     },
+    "days": {
+      "sunday": "Aso Sa",
+      "monday": "Aso Gafua",
+      "tuesday": "Aso Lua",
+      "wednesday": "Aso Lulu",
+      "thursday": "Aso Tofi",
+      "friday": "Aso Faraile",
+      "saturday": "Aso To'ona'i"
+    },
     "close": "Tali",
     "getStarted": "Amata",
     "submitEvent": "Tu'u se Mea Tutupu",

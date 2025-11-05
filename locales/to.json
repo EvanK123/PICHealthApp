@@ -7,6 +7,15 @@
       "chamorro": "Chamorro",
       "tongan": "Tongan"
     },
+    "days": {
+      "sunday": "Sāpate",
+      "monday": "Mōnite",
+      "tuesday": "Tūsite",
+      "wednesday": "Pulelulu",
+      "thursday": "Tuʻapulelulu",
+      "friday": "Falaite",
+      "saturday": "Tokonaki"
+    },
     "close": "Tali",
     "getStarted": "Kamata",
     "submitEvent": "Tuku ha Me'a Hoko",
