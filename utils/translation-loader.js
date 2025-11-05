@@ -8,8 +8,6 @@
  * 2. Add fr entry to locales/languages.config.json
  * 3. Add ONE line below: const frTranslations = require('../locales/fr.json');
  * 4. Add ONE line to translationMap: fr: frTranslations,
- * 
- * That's it! The language will be automatically available.
  */
 
 const languagesConfig = require('../locales/languages.config.json');
