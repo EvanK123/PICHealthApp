@@ -1,60 +1,62 @@
-// components/CalendarBar.jsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
-import { useTranslation } from '../hooks/useTranslation';
 
 const COLORS = {
-  primary: '#2d4887',
-  brand:   '#0EA5B5',
-  onPrimary: '#ffffff',
-  borderOnPrimary: 'rgba(255,255,255,0.25)',
-  white: '#ffffff',
+  headerBg: '#2d4887',
+  pillGroupBg: 'rgba(255,255,255,0.12)',
+  pillBg: '#27427a',
+  pillActiveBg: '#0EA5B5',
+  pillText: 'rgba(255,255,255,0.75)',
+  pillTextActive: '#ffffff',
 };
 
 export default function CalendarBar({
-  calendarMode,                 // true = calendar view, false = upcoming list
+  calendarMode,              // true = Calendar view, false = Upcoming list
   setCalendarMode,
   setSelectedCalendars,
-  calendarOptions = [],
+  calendarOptions,
 }) {
-  const { t } = useTranslation();
-  const onPressCalendar = () => setCalendarMode(true);
-  const onPressUpcoming = () => setCalendarMode(false);
+  const goUpcoming = () => setCalendarMode(false);
+  const goCalendar = () => setCalendarMode(true);
 
   return (
-    <SafeAreaView style={styles.safe}>
-      {/* Segmented control: Calendar | Upcoming Events */}
-      <View style={styles.segmentWrap}>
-        <View style={styles.segment}>
+    <SafeAreaView style={{ backgroundColor: COLORS.headerBg }}>
+      {/* Unified pill group (matches your design) */}
+      <View style={styles.pillRow}>
+        <View style={styles.pillGroup}>
+          {/* LEFT: Upcoming Events */}
           <TouchableOpacity
-            onPress={onPressCalendar}
-            style={[styles.segmentBtn, calendarMode && styles.segmentBtnActive]}
+            onPress={goUpcoming}
+            activeOpacity={0.9}
+            style={[styles.pill, !calendarMode && styles.pillActive]}
           >
-            <Text style={[styles.segmentText, calendarMode && styles.segmentTextActive]}>
-              {t('calendar.calendar')}
+            <Text style={[styles.pillText, !calendarMode && styles.pillTextActive]}>
+              Upcoming Events
             </Text>
           </TouchableOpacity>
 
+          {/* RIGHT: Calendar */}
           <TouchableOpacity
-            onPress={onPressUpcoming}
-            style={[styles.segmentBtn, !calendarMode && styles.segmentBtnActive]}
+            onPress={goCalendar}
+            activeOpacity={0.9}
+            style={[styles.pill, styles.pillRight, calendarMode && styles.pillActive]}
           >
-            <Text style={[styles.segmentText, !calendarMode && styles.segmentTextActive]}>
-              {t('calendar.upcomingEvents')}
+            <Text style={[styles.pillText, calendarMode && styles.pillTextActive]}>
+              Calendar
             </Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Calendar multi-select dropdown */}
-      <View>
+      {/* Only show calendar selector when Calendar view is active */}
+      <View style={calendarMode ? styles.dropdownWrap : { display: 'none' }}>
         <MultipleSelectList
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save="key"
-          label={t('common.selectCalendars')}
-          placeholder={t('common.selectCalendar')}
+          label="Select Calendars"
+          placeholder="Select Calendar"
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />
@@ -64,24 +66,49 @@ export default function CalendarBar({
 }
 
 const styles = StyleSheet.create({
-  safe: { backgroundColor: COLORS.primary },
-
-  segmentWrap: { alignItems: 'center', paddingTop: 8, paddingBottom: 6 },
-  segment: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(255,255,255,0.12)',
-    borderRadius: 22,
-    padding: 4,
-    gap: 6,
-    borderWidth: 1,
-    borderColor: COLORS.borderOnPrimary,
+  pillRow: {
+    backgroundColor: COLORS.headerBg,
+    paddingTop: 8,
+    paddingBottom: 10,
+    paddingHorizontal: 16,
+    alignItems: 'center',
   },
-  segmentBtn: { paddingVertical: 6, paddingHorizontal: 16, borderRadius: 18, backgroundColor: 'transparent' },
-  segmentBtnActive: { backgroundColor: COLORS.brand },
-  segmentText: { color: COLORS.onPrimary, fontWeight: '700' },
-  segmentTextActive: { color: COLORS.white },
+  pillGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.pillGroupBg,
+    padding: 6,
+    borderRadius: 20,
+  },
+  pill: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 18,
+    backgroundColor: COLORS.pillBg,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.25)',
+  },
+  pillRight: { marginLeft: 10 },
+  pillActive: {
+    backgroundColor: COLORS.pillActiveBg,
+    borderColor: 'transparent',
+  },
+  pillText: {
+    color: COLORS.pillText,
+    fontWeight: '700',
+  },
+  pillTextActive: { color: COLORS.pillTextActive },
 
-  dropdown: { backgroundColor: COLORS.white, borderRadius: 10, marginTop: 6, marginBottom: 8 },
-  dropdownBox: { backgroundColor: COLORS.white, borderColor: COLORS.white, borderRadius: 10 },
+  dropdownWrap: { backgroundColor: COLORS.headerBg },
+  dropdown: {
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    marginTop: 0,
+    marginBottom: 10,
+  },
+  dropdownBox: {
+    backgroundColor: '#fff',
+    borderColor: '#fff',
+    borderRadius: 0,
+  },
 });
-

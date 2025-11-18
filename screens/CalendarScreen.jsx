@@ -1,6 +1,6 @@
 // screens/CalendarScreen.jsx
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, View, StyleSheet, Linking, Platform } from 'react-native';
+import { ImageBackground, View, StyleSheet, Linking, Platform, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '../components/Header';
@@ -15,7 +15,8 @@ import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 
 const CalendarScreen = () => {
   const { t } = useTranslation();
-  const [calendarMode, setCalendarMode] = useState(true); // true = Month, false = Upcoming
+  // false = Upcoming (default), true = Calendar
+  const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '' });
@@ -66,10 +67,10 @@ const CalendarScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
-      <ImageBackground source={require('../assets/basket.jpg')} resizeMode="cover" style={styles.image} blurRadius={0}>
+      <ImageBackground source={require('../assets/beach-bg.jpg')} resizeMode="cover" style={styles.image} blurRadius={0}>
         <Header
           title={t('calendar.title')}
-          showSubmit                                     // ← show the button on Home
+          showSubmit
           onPressSubmit={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')}
         />
 
@@ -82,13 +83,38 @@ const CalendarScreen = () => {
 
         <View style={styles.darken}>
           {calendarMode ? (
-            <CalendarView
-              events={events}
-              selectedCalendars={selectedCalendars}
-              callWebView={callWebView}
-              closeModal={closeModal}
-              onEventPress={handleEventPress}
-            />
+            <>
+              <CalendarView
+                events={events}
+                selectedCalendars={selectedCalendars}
+                callWebView={callWebView}
+                closeModal={closeModal}
+                onEventPress={handleEventPress}
+              />
+
+              {/* Wellness + SOS UNDER the calendar (Calendar view only) */}
+              <View style={styles.middleBtns}>
+                <TouchableOpacity
+                  onPress={() => callWebView('https://www.healthcentral.com/quiz/stress-test')}
+                  style={{ flex: 1, alignItems: 'center' }}
+                  activeOpacity={0.85}
+                >
+                  <View style={styles.wellnessSOS}>
+                    <Text style={styles.middleBtnText}>How ya doin' 👋</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => callWebView('https://www.cavshate.org/')}
+                  style={{ flex: 1, alignItems: 'center' }}
+                  activeOpacity={0.85}
+                >
+                  <View style={styles.wellnessSOS}>
+                    <Text style={styles.middleBtnText}>SOS ⚠️</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </>
           ) : (
             <ListView
               onEventPress={handleEventPress}
@@ -119,4 +145,29 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   image: { flex: 1, width: '100%', height: '100%' },
   darken: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
+
+  // Row placed UNDER the calendar
+  middleBtns: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: 12,
+    paddingHorizontal: 12,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  wellnessSOS: {
+    height: 50,
+    width: '95%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(0,0,0,0.06)',
+  },
+  middleBtnText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1f2937',
+  },
 });
