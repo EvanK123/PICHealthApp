@@ -1,5 +1,5 @@
 // screens/AboutUs.jsx
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   ImageBackground,
   View,
@@ -15,21 +15,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Seperator from "../components/Seperator";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
-import { TranslationContext } from "../context/TranslationContext";
 import { useTranslation } from "../hooks/useTranslation";
 
 const AboutUs = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  const { t } = useTranslation();
+  const { t, getAboutUsSections } = useTranslation();
 
   // Localized strings
   const headerTitle = t("aboutUs.title");
   const desc1 = t("aboutUs.description1");
   const desc2 = t("aboutUs.description2");
-  const missionTitle = t("aboutUs.missionTitle");
-  const missionText = t("aboutUs.missionText");
-  const landTitle = t("aboutUs.landTitle");
-  const landText = t("aboutUs.landText");
+  const sections = getAboutUsSections();
 
   const callWebView = (url) => {
     Platform.OS === "web"
@@ -65,11 +61,10 @@ const AboutUs = () => {
               <Text style={textBox.text}>{desc2}</Text>
 
               <TouchableOpacity
-                onPress={() =>
-                  callWebView(
-                    "https://pacificislandercommunityhealth.weebly.com/about-us.html"
-                  )
-                }
+                onPress={() => {
+                  const links = require('../locales/links.json');
+                  callWebView(links.aboutUs.aboutUsPage);
+                }}
                 activeOpacity={0.8}
               >
                 <Image
@@ -80,19 +75,16 @@ const AboutUs = () => {
               </TouchableOpacity>
             </View>
 
-            <Seperator />
-
-            <View style={styles.textBoxContainer}>
-              <Text style={textBox.title}>{missionTitle}</Text>
-              <Text style={textBox.text}>{missionText}</Text>
-            </View>
-
-            <Seperator />
-
-            <View style={styles.textBoxContainer}>
-              <Text style={textBox.title}>{landTitle}</Text>
-              <Text style={textBox.text}>{landText}</Text>
-            </View>
+            {/* Dynamically render sections */}
+            {sections.map((section, index) => (
+              <React.Fragment key={section.id}>
+                <Seperator />
+                <View style={styles.textBoxContainer}>
+                  <Text style={textBox.title}>{section.title}</Text>
+                  <Text style={textBox.text}>{section.text}</Text>
+                </View>
+              </React.Fragment>
+            ))}
           </ScrollView>
         </ImageBackground>
 

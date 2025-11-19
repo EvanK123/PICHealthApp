@@ -1,0 +1,66 @@
+{
+  "health": {
+    "diabetes": {
+      "riskTest": "https://www.cdc.gov/prediabetes/risktest/index.html"
+    },
+    "mental": {
+      "mentalHealth101": "https://screening.mhanational.org/mental-health-101/",
+      "depressionScreening": "https://screening.mhanational.org/screening-tools/depression/?ref"
+    },
+    "truecare": {
+      "homepage": "https://truecare.org/"
+    },
+    "vista": {
+      "homepage": "https://www.vistacommunityclinic.org/"
+    },
+    "mindfulness": {
+      "mindfulCSUSM": "https://www.csusm.edu/mindfulcsusm/resources/index.html"
+    },
+    "movement": {
+      "chronicDiseaseIndicators": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
+    },
+    "other": {
+      "cancerScreening": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
+    },
+    "mentalHealthAssessment": "https://www.psychologytoday.com/us/tests/health/mental-health-assessment"
+  },
+  "culture": {
+    "umeke": {
+      "homepage": "https://www.umeke.org/"
+    },
+    "language": {
+      "csusmUact": "https://www.csusm.edu/apida/uact.html"
+    },
+    "movementCourse": {
+      "khoiHomepage": "https://www.kahulaoilima.com/"
+    },
+    "mindfullMovement": {
+      "instagramAccount": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
+    }
+  },
+  "education": {
+    "mana": {
+      "manaMiraCosta": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
+    },
+    "apida": {
+      "homepage": "https://www.csusm.edu/apida/index.html"
+    },
+    "apply": {
+      "commonApp": "https://www.commonapp.org/"
+    },
+    "financialAid": {
+      "federalStudentAid": "https://studentaid.gov/"
+    }
+  },
+  "calendar": {
+    "submitEvent": "https://forms.gle/JwAusA65SNBHkdED9",
+    "wellnessButtons": {
+      "howYaDoin": "https://www.healthcentral.com/quiz/stress-test",
+      "sos": "https://www.cavshate.org/"
+    }
+  },
+  "aboutUs": {
+    "aboutUsPage": "https://pacificislandercommunityhealth.weebly.com/about-us.html"
+  }
+}
+

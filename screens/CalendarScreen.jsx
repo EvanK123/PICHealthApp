@@ -13,6 +13,38 @@ import { useTranslation } from '../hooks/useTranslation';
 
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 
+// Reusable Wellness Buttons Component
+const WellnessButtons = ({ callWebView }) => {
+  const { t } = useTranslation();
+  const links = require('../locales/links.json');
+  const howYaDoin = t('calendar.wellnessButtons.howYaDoin');
+  const sos = t('calendar.wellnessButtons.sos');
+
+  return (
+    <View style={styles.middleBtns}>
+      <TouchableOpacity
+        onPress={() => callWebView(links.calendar.wellnessButtons[howYaDoin.linkId])}
+        style={{ flex: 1, alignItems: 'center' }}
+        activeOpacity={0.85}
+      >
+        <View style={styles.wellnessSOS}>
+          <Text style={styles.middleBtnText}>{howYaDoin.label}</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => callWebView(links.calendar.wellnessButtons[sos.linkId])}
+        style={{ flex: 1, alignItems: 'center' }}
+        activeOpacity={0.85}
+      >
+        <View style={styles.wellnessSOS}>
+          <Text style={styles.middleBtnText}>{sos.label}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const CalendarScreen = () => {
   const { t } = useTranslation();
   // false = Upcoming (default), true = Calendar
@@ -23,10 +55,11 @@ const CalendarScreen = () => {
   const [events, setEvents] = useState({});
   const [selectedCalendars, setSelectedCalendars] = useState([]);
 
-  const calendarOptions = [
+  // Recalculate calendar options when language changes
+  const calendarOptions = React.useMemo(() => [
     { key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com', value: t('calendar.calendarOptions.pacificIslander') },
     { key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com', value: t('calendar.calendarOptions.latino') },
-  ];
+  ], [t]);
 
   const callWebView = (url) => {
     if (Platform.OS === 'web') Linking.openURL(url);
@@ -51,7 +84,7 @@ const CalendarScreen = () => {
         acc[key].push({
           name: ev.summary,
           time: timeLabel,
-          description: ev.description || 'No description available',
+          description: ev.description || t('common.noDescriptionAvailable'),
           organizer: ev.organizer || {},
           ...ev,
         });
@@ -71,7 +104,10 @@ const CalendarScreen = () => {
         <Header
           title={t('calendar.title')}
           showSubmit
-          onPressSubmit={() => callWebView('https://forms.gle/JwAusA65SNBHkdED9')}
+          onPressSubmit={() => {
+            const links = require('../locales/links.json');
+            callWebView(links.calendar.submitEvent);
+          }}
         />
 
         <CalendarBar
@@ -93,34 +129,18 @@ const CalendarScreen = () => {
               />
 
               {/* Wellness + SOS UNDER the calendar (Calendar view only) */}
-              <View style={styles.middleBtns}>
-                <TouchableOpacity
-                  onPress={() => callWebView('https://www.healthcentral.com/quiz/stress-test')}
-                  style={{ flex: 1, alignItems: 'center' }}
-                  activeOpacity={0.85}
-                >
-                  <View style={styles.wellnessSOS}>
-                    <Text style={styles.middleBtnText}>How ya doin' 👋</Text>
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => callWebView('https://www.cavshate.org/')}
-                  style={{ flex: 1, alignItems: 'center' }}
-                  activeOpacity={0.85}
-                >
-                  <View style={styles.wellnessSOS}>
-                    <Text style={styles.middleBtnText}>SOS ⚠️</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <WellnessButtons callWebView={callWebView} />
             </>
           ) : (
-            <ListView
-              onEventPress={handleEventPress}
-              events={events}
-              selectedCalendars={selectedCalendars}
-            />
+            <>
+              <ListView
+                onEventPress={handleEventPress}
+                events={events}
+                selectedCalendars={selectedCalendars}
+              />
+              {/* Wellness + SOS buttons on Upcoming Events page */}
+              <WellnessButtons callWebView={callWebView} />
+            </>
           )}
         </View>
       </ImageBackground>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
 import Popup from './PopUp'; // Make sure to import the Popup component
+import { useTranslation } from '../hooks/useTranslation';
 
 const ListView = ({ events, selectedCalendars }) => {
+  const { t } = useTranslation();
   const [error, setError] = useState(null);
   // State for when popup should be displayed, when a event is pressed
   const [popupVisible, setPopupVisible] = useState(false);
@@ -67,7 +69,7 @@ const ListView = ({ events, selectedCalendars }) => {
         <Text style={styles.errorText}>Error: {error}</Text>
         // No calendar is selected from the CalendarView
       ) : selectedCalendars.length === 0 ? (
-        <Text style={styles.noEventsText}>Please select a calendar to view events</Text>
+        <Text style={styles.noEventsText}>{t('calendar.messages.pleaseSelectCalendar')}</Text>
       ) : sortedEventsArray.length > 0 ? (
         <SectionList
           stickySectionHeadersEnabled
@@ -91,7 +93,7 @@ const ListView = ({ events, selectedCalendars }) => {
           )}
         />
       ) : (
-        <Text style={styles.noEventsText}>No events available</Text>
+        <Text style={styles.noEventsText}>{t('calendar.messages.noEventsAvailable')}</Text>
       )}
       <Popup
         visible={popupVisible}
