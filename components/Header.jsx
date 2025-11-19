@@ -33,9 +33,12 @@ export default function Header({
 
   return (
     <View style={styles.container}>
-      {/* Left: logo + title */}
+      {/* Left: logo (with BETA under it) + title */}
       <View style={styles.left}>
-        <Image source={require('../assets/pic-logo.png')} style={styles.logo} resizeMode="contain" />
+        <View style={styles.brandWrap}>
+          <Image source={require('../assets/pic-logo.png')} style={styles.logo} resizeMode="contain" />
+          <Text style={styles.beta}>BETA</Text>
+        </View>
         <Text style={styles.title}>{title}</Text>
       </View>
 
@@ -80,8 +83,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  left: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+
+  // Logo + BETA stacked vertically
+  brandWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 34,
+  },
   logo: { width: 34, height: 34 },
+  beta: {
+    marginTop: 2,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1,
+    color: 'rgba(255,255,255,0.9)',
+    opacity: 0.9,
+  },
+
   title: { fontSize: 22, fontWeight: '800', color: COLORS.onPrimary },
 
   right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
