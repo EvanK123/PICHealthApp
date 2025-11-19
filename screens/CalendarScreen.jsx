@@ -1,7 +1,16 @@
 // screens/CalendarScreen.jsx
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, View, StyleSheet, Linking, Platform, Text, TouchableOpacity } from 'react-native';
+import {
+  ImageBackground,
+  View,
+  StyleSheet,
+  Linking,
+  Platform,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 import Header from '../components/Header';
 import CalendarBar from '../components/CalendarBar';
@@ -12,41 +21,15 @@ import WebViewModal from '../components/WebViewModal';
 import { useTranslation } from '../hooks/useTranslation';
 
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
-
-// Reusable Wellness Buttons Component
-const WellnessButtons = ({ callWebView }) => {
-  const { t } = useTranslation();
-  const links = require('../locales/links.json');
-  const howYaDoin = t('calendar.wellnessButtons.howYaDoin');
-  const sos = t('calendar.wellnessButtons.sos');
-
-  return (
-    <View style={styles.middleBtns}>
-      <TouchableOpacity
-        onPress={() => callWebView(links.calendar.wellnessButtons[howYaDoin.linkId])}
-        style={{ flex: 1, alignItems: 'center' }}
-        activeOpacity={0.85}
-      >
-        <View style={styles.wellnessSOS}>
-          <Text style={styles.middleBtnText}>{howYaDoin.label}</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => callWebView(links.calendar.wellnessButtons[sos.linkId])}
-        style={{ flex: 1, alignItems: 'center' }}
-        activeOpacity={0.85}
-      >
-        <View style={styles.wellnessSOS}>
-          <Text style={styles.middleBtnText}>{sos.label}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import { useAuth } from '../context/AuthContext';
 
 const CalendarScreen = () => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+  const { user } = useAuth();
+
+  const avatarUrl = user?.user_metadata?.avatar_url ?? null;
+
   // false = Upcoming (default), true = Calendar
   const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
@@ -55,59 +38,92 @@ const CalendarScreen = () => {
   const [events, setEvents] = useState({});
   const [selectedCalendars, setSelectedCalendars] = useState([]);
 
-  // Recalculate calendar options when language changes
-  const calendarOptions = React.useMemo(() => [
-    { key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com', value: t('calendar.calendarOptions.pacificIslander') },
-    { key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com', value: t('calendar.calendarOptions.latino') },
-  ], [t]);
+  const calendarOptions = [
+    {
+      key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com',
+      value: t('calendar.calendarOptions.pacificIslander'),
+    },
+    {
+      key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com',
+      value: t('calendar.calendarOptions.latino'),
+    },
+  ];
 
   const callWebView = (url) => {
     if (Platform.OS === 'web') Linking.openURL(url);
     else setModalConfig({ isVisible: true, url });
   };
-  const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
+
+  const closeModal = () =>
+    setModalConfig((prev) => ({ ...prev, isVisible: false }));
 
   useEffect(() => {
     async function loadEvents() {
-      if (selectedCalendars.length === 0) { setEvents({}); return; }
+      if (selectedCalendars.length === 0) {
+        setEvents({});
+        return;
+      }
+
       const fetched = await fetchCalendarEvents(selectedCalendars);
       const grouped = fetched.reduce((acc, ev) => {
         const startStr = ev.start?.dateTime || ev.start?.date;
         if (!startStr) return acc;
+
         const key = startStr.split('T')[0];
         const isAllDay = !!ev.start?.date && !ev.start?.dateTime;
         const timeLabel = isAllDay
           ? t('common.allDay')
-          : new Date(ev.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          : new Date(ev.start.dateTime).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            });
 
         if (!acc[key]) acc[key] = [];
+
         acc[key].push({
           name: ev.summary,
           time: timeLabel,
-          description: ev.description || t('common.noDescriptionAvailable'),
+          description: ev.description || 'No description available',
           organizer: ev.organizer || {},
           ...ev,
         });
+
         return acc;
       }, {});
+
       setEvents(grouped);
     }
+
     loadEvents();
   }, [selectedCalendars]);
 
-  const handleEventPress = (event) => { setSelectedEvent(event); setPopupVisible(true); };
-  const closePopup = () => { setPopupVisible(false); setSelectedEvent(null); };
+  const handleEventPress = (event) => {
+    setSelectedEvent(event);
+    setPopupVisible(true);
+  };
+
+  const closePopup = () => {
+    setPopupVisible(false);
+    setSelectedEvent(null);
+  };
+
+  const handleProfilePress = () => {
+    navigation.navigate('Account');
+  };
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
-      <ImageBackground source={require('../assets/beach-bg.jpg')} resizeMode="cover" style={styles.image} blurRadius={0}>
+      <ImageBackground
+        source={require('../assets/beach-bg.jpg')}
+        resizeMode="cover"
+        style={styles.image}
+      >
         <Header
           title={t('calendar.title')}
           showSubmit
-          onPressSubmit={() => {
-            const links = require('../locales/links.json');
-            callWebView(links.calendar.submitEvent);
-          }}
+          onPressSubmit={() =>
+            callWebView('https://forms.gle/JwAusA65SNBHkdED9')
+          }
         />
 
         <CalendarBar
@@ -115,6 +131,8 @@ const CalendarScreen = () => {
           setCalendarMode={setCalendarMode}
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
+          onPressProfile={handleProfilePress}
+          avatarUrl={avatarUrl}
         />
 
         <View style={styles.darken}>
@@ -129,18 +147,38 @@ const CalendarScreen = () => {
               />
 
               {/* Wellness + SOS UNDER the calendar (Calendar view only) */}
-              <WellnessButtons callWebView={callWebView} />
+              <View style={styles.middleBtns}>
+                <TouchableOpacity
+                  onPress={() =>
+                    callWebView(
+                      'https://www.healthcentral.com/quiz/stress-test'
+                    )
+                  }
+                  style={{ flex: 1, alignItems: 'center' }}
+                  activeOpacity={0.85}
+                >
+                  <View style={styles.wellnessSOS}>
+                    <Text style={styles.middleBtnText}>How ya doin' 👋</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => callWebView('https://www.cavshate.org/')}
+                  style={{ flex: 1, alignItems: 'center' }}
+                  activeOpacity={0.85}
+                >
+                  <View style={styles.wellnessSOS}>
+                    <Text style={styles.middleBtnText}>SOS ⚠️</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </>
           ) : (
-            <>
-              <ListView
-                onEventPress={handleEventPress}
-                events={events}
-                selectedCalendars={selectedCalendars}
-              />
-              {/* Wellness + SOS buttons on Upcoming Events page */}
-              <WellnessButtons callWebView={callWebView} />
-            </>
+            <ListView
+              onEventPress={handleEventPress}
+              events={events}
+              selectedCalendars={selectedCalendars}
+            />
           )}
         </View>
       </ImageBackground>
@@ -149,12 +187,13 @@ const CalendarScreen = () => {
         visible={popupVisible}
         onClose={closePopup}
         event={selectedEvent}
-        onGoing={() => console.log('Going')}
-        onNotGoing={() => console.log('Not Going')}
-        onMaybe={() => console.log('Maybe')}
       />
 
-      <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} />
+      <WebViewModal
+        url={modalConfig.url}
+        isVisible={modalConfig.isVisible}
+        onClose={closeModal}
+      />
     </SafeAreaView>
   );
 };
@@ -166,7 +205,6 @@ const styles = StyleSheet.create({
   image: { flex: 1, width: '100%', height: '100%' },
   darken: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
 
-  // Row placed UNDER the calendar
   middleBtns: {
     flexDirection: 'row',
     justifyContent: 'space-around',
