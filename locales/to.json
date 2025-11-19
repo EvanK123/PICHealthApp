@@ -5,193 +5,204 @@
       "spanish": "Español",
       "samoan": "Samoan",
       "chamorro": "Chamorro",
-      "tongan": "Tongan"
+      "tongan": "Lea faka-Tonga"
     },
     "days": {
       "sunday": "Sāpate",
       "monday": "Mōnite",
       "tuesday": "Tūsite",
       "wednesday": "Pulelulu",
-      "thursday": "Tuʻapulelulu",
+      "thursday": "Tu'apulelulu",
       "friday": "Falaite",
       "saturday": "Tokonaki"
     },
-    "close": "Tali",
+    "close": "Tapuni",
     "getStarted": "Kamata",
-    "submitEvent": "Tuku ha Me'a Hoko",
-    "selectCalendars": "Filifili Kalenda",
-    "selectCalendar": "Filifili Kalenda",
-    "selectLanguage": "Filifili Lea",
-    "allDay": "Aho Kotoa",
-    "noDescriptionAvailable": "ʻIkai ha fakamatala"
+    "submitEvent": "Tuku atu e Ngaahi Ngaue",
+    "selectCalendars": "Fili e Kalānitā",
+    "selectCalendar": "Fili e Kalānitā",
+    "selectLanguage": "Fili e Lea",
+    "allDay": "ʻAho kotoa",
+    "noDescriptionAvailable": "ʻOku ʻikai ke ʻi ai ha fakamatala"
   },
   "app": {
     "tabs": {
       "home": "ʻApi",
-      "health": "Moʻui Lelei",
+      "health": "Moʻui lelei",
       "education": "Ako",
-      "culture": "Fakatotolo",
-      "aboutUs": "Kau ki ai"
+      "culture": "Anga faka-Tonga",
+      "aboutUs": "Kau ki Mautolu"
     }
   },
   "calendar": {
     "title": "PIC Health",
-    "calendar": "Kalenda",
-    "upcomingEvents": "Ngaahi Me'a Hoko",
+    "calendar": "Kalānitā",
+    "upcomingEvents": "Ngaahi Ngaue ʻe Hoko",
+    "selectCalendar": "Fili e Kalānitā",
+    "selectCalendars": "Fili e Ngaahi Kalānitā",
+    "search": "Kumi",
     "calendarOptions": {
-      "pacificIslander": "Komuniti Pasifiki",
-      "latino": "Komuniti Latino"
+      "pacificIslander": "Komunitī ʻo e Pasifiki",
+      "latino": "Komunitī Latino"
+    },
+    "wellnessButtons": {
+      "howYaDoin": {
+        "label": "Fēfē hoku hingoa? 👋",
+        "linkId": "howYaDoin"
+      },
+      "sos": {
+        "label": "SOS ⚠️",
+        "linkId": "sos"
+      }
+    },
+    "messages": {
+      "pleaseSelectCalendar": "Kataki fili ha kalānitā ke sio ki he ngaahi ngaue",
+      "noEventsAvailable": "ʻOku ʻikai ha ngaue ʻoku maʻu"
     }
   },
   "header": {
-    "submitEvent": "Tuku ha Me'a Hoko"
+    "submitEvent": "Tuku atu e Ngaue"
   },
   "popup": {
-    "welcomeTitle": "Mālō e lelei ki he PIC Health!",
+    "welcomeTitle": "Mālō e lava mai ki he PIC Health!",
     "beta": "Beta",
-    "disclaimer": "Fakapapauʻi:",
-    "disclaimerText": "Ko e ngaahi meʻa ʻi he siti ko ʻeni ko e ngāue fakafaiako pe. Fakafofonga ha tōketā ki he fakatotolo fakafomaʻi. ʻI he taimi fakamatalaʻi, telefoni 911."
+    "disclaimer": "Fakamatala:",
+    "disclaimerText": "Ko e peesi ko ʻeni ki he ako pe. Kataki ʻo ʻalu ki ha toketaʻ mo e fakatonutonu fakafaitoʻo. ʻI ha taimi fakaʻuliua, telefoni 911."
   },
   "health": {
     "title": "Moʻui Lelei",
-    "description": "Ko e fakamatala ʻoku ʻomai ʻi he ʻoku ne fakamatala pe ʻa e fakatotolo fakafomaʻi. Taimi kotoa pē fakaʻauʻa mo ha tōketā lelei ki he fakatotolo fakafomaʻi ʻa e maʻu moʻui māu, ngaahi fakaʻilonga, pe ngaahi fili fakafoʻou. ʻOua te ʻikai te ke ngaueʻaki e fakatotolo fakafomaʻi fakapuleʻanga pe ngalo te ke ʻiloʻilo e fakaʻauʻau.",
+    "description": "Ko e fakamatala ʻoku ʻomai ʻi heni ko e fakamatala lahi ange ia ʻoku ʻikai ke fakafofongaʻi ha fakatonutonu fakafaitoʻo. Kataki ʻo ʻalu ki ha toketaʻ mo e fakatonutonu ki hoʻo tuʻunga fakafaitoʻo, hā ʻa e toʻo, pe ngaahi fili mo e faitoʻo. ʻOua ʻe teʻeki ke tokoniʻi ha fakatonutonu fakafaitoʻo pe fakaʻuliʻuli e ʻalu ki he faitoʻo.",
     "services": [
       {
         "id": "diabetes",
-        "title": "Sivi Diabetes",
-        "text": "Ko e sivi ko ʻeni ʻoku ne fakamatalaʻi ha taha ʻoku ʻi ai ha diabetes pe ʻoku ʻi he tupuʻa ʻo e diabetes, taimi lahi ʻi muʻa ʻi he ʻoku ʻikai ha fakaʻilonga.",
+        "title": "Sivi ʻo e Sukā",
+        "text": "Ko e sivi ko ʻeni ʻoku ngāueʻaki ke ʻiloʻi ʻa e kakai ʻoku nau ʻi ai ʻa e sukā pe ʻoku nau ʻi he tūpangá ni ʻo maʻu ai ʻa e pātesi, ʻo ʻikai haʻane ʻasi mai ha toʻo ʻoku ʻiloʻi.",
         "links": [
           {
-            "label": "Sivi Tupuʻa",
-            "url": "https://www.cdc.gov/prediabetes/risktest/index.html"
+            "label": "Sivi ʻo e Tūpanga",
+            "linkId": "riskTest"
           }
         ]
       },
       {
         "id": "mental",
-        "title": "Ngaahi Meʻa Moʻui Lelei Moʻui",
-        "text": "Ko e ngaahi meʻa moʻui lelei ʻoku ne fakaleleiʻi ha taha ʻoku ne fakafoʻou ʻa e moʻui lelei, moʻui lelei, mo e moʻui lelei fakakomunitī. Ko hono fakaʻauʻau ʻoku ne fakamatalaʻi e ngaahi meʻa ngāue, fakatotolo, mo e ngaahi meʻa ngāue ke tokoniʻi ha taha ʻoku ne ʻilo, fakaʻauʻau, mo e fakaʻauʻau ʻa e ngaahi fakaʻauʻau moʻui.",
+        "title": "Ngaahi Ngaue Fakaʻofoʻofa ki he Moʻui Lelei ʻo e ʻAtamai",
+        "text": "Ko e ngaahi ngaue fakaʻofoʻofa ki he moʻui lelei ʻo e ʻatamai ʻoku nau fakaleleiʻi ke tokoniʻi ʻa e kakai ʻi honau puleʻi ʻenau anga fakalotofonua, fakasosiale, mo e moʻui lelei fakalaumālie. Ko ʻenau puna ke ʻomai ʻa e ngaahi meʻa ngāue, tokoni, mo e ngaahi sevisesi ke tokoniʻi ʻa e kakai ke nau ʻilo, pukeʻi, mo fokoutua ʻa e ngaahi fehingaʻaki ʻo e ʻatamai.",
         "links": [
           {
-            "label": "Moʻui Lelei Moʻui 101",
-            "url": "https://screening.mhanational.org/mental-health-101/"
+            "label": "Moʻui Lelei ʻo e ʻAtamai 101",
+            "linkId": "mentalHealth101"
           },
           {
-            "label": "Sivi Depression",
-            "url": "https://screening.mhanational.org/screening-tools/depression/?ref"
+            "label": "Sivi ʻo e Fakaʻavanga",
+            "linkId": "depressionScreening"
           }
         ]
       },
       {
         "id": "truecare",
         "title": "True Care",
-        "text": "Ko TrueCare ko e taha ʻo e ngaahi tōketā fakatuʻutāmaki ʻi he San Diego mo e Riverside Counties. Ko e ngaahi kau ngāue fakaʻofa mo e ngaahi tōketā fakaʻofa ʻoku nau fakamatalaʻi ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei mo e ngaahi meʻa ngāue moʻui lelei ki he ngaahi komuniti ʻoku ʻikai te nau tokoniʻi ke ʻilo e taha ʻoku ne ʻilo ʻa e ngaahi meʻa ngāue ʻoku ne ʻilo. Ko hono fakaʻauʻau ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei ke ʻilo ʻa e taha ʻi he ngaahi komuniti ʻoku nau tokoniʻi, ʻoku ʻikai te nau ʻilo ʻa e ngaahi meʻa ngāue pe ko e tuʻunga insuranse.",
+        "text": "Ko True Care ko e taha ia ʻo e kau ʻoku faʻa tuʻuta moʻui lelei tukuʻatu ʻoku faʻa tuʻuta ʻi San Diego mo e Riverside Counties. Ko ʻenau kau ngāue ʻofa mo e kau faitoʻo ʻofa ʻoku nau ʻilo lelei ʻi hono ʻomai ʻo e ngaahi sevisesi lelei ʻo e moʻui lelei mo e ngaahi meʻa fakaʻofoʻofa ki he komunitī ʻoku siʻisiʻi ʻenau maʻu sevisesi ke lava ʻe he kakai ʻa e tokoni ʻoku nau fiemaʻu. Ko ʻenau puna ke lava maʻu ʻe he kakai kotoa ʻa e ngaahi sevisesi moʻui lelei ʻi he komunitī ʻoku nau tuku atu ai, tatau pe ko e hā hoʻo maʻu paʻanga pe ko e hā hoʻo tuʻunga ʻinisiua.",
         "links": [
           {
-            "label": "Homepage",
-            "url": "https://truecare.org/"
+            "label": "Peisi Lahi",
+            "linkId": "homepage"
           }
         ]
       },
       {
         "id": "vista",
         "title": "Vista Community Clinic",
-        "text": "Valuable Connected Care: ʻOku ne fakaʻauʻau ʻa e ngaahi meʻa ngāue moʻui lelei mo e ngaahi meʻa ngāue moʻui lelei ʻo e komunitī ʻoku ne tokoniʻi. Ha komuniti ʻoku ne fili ʻa e taha ʻoku ne fili ʻa e moʻui lelei.",
+        "text": "Ngaahi Tokoni Mahuʻinga mo Fetuʻutaki: ʻOku feʻungaʻaki mo e fiemaʻu ʻo e moʻui lelei mo e ngaahi meʻa fakaʻofoʻofa ʻo ʻema komunitī. Ko e komunitī ʻoku fili ai ʻe he kakai kotoa ʻa e moʻui lelei.",
         "links": [
           {
-            "label": "Homepage",
-            "url": "https://www.vistacommunityclinic.org/"
+            "label": "Peisi Lahi",
+            "linkId": "homepage"
           }
         ]
       },
       {
         "id": "mindfulness",
-        "title": "Ngaahi Meʻa Mindfulness",
-        "text": "Ko e ngaahi meʻa mindfulness ʻoku ne fakamatalaʻi ke tokoniʻi ha taha ʻoku ne fakamatalaʻi ʻa e moʻui lelei, moʻui lelei, mo e moʻui lelei ʻo e taimi ʻoku ne ʻi ai. Ko e ngaahi meʻa ko ʻeni ʻoku ne fakamatalaʻi ʻa e moʻui lelei moʻui lelei mo e moʻui lelei fakakomunitī ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e mindfulness—ko e fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue: ʻi he fakaʻauʻau, ʻi he taimi ʻoku ne ʻi ai, mo e ʻikai ha fakatotolo.",
+        "title": "Ngaahi Ngaue Fakaʻofoʻofa ki he Fakakaukau Taʻengata",
+        "text": "Ko e ngaahi ngaue fakaʻofoʻofa ki he fakakaukau taʻengata ʻoku nau fakaleleiʻi ke tokoniʻi ʻa e kakai ke nau tupuʻi ʻa e ʻilo, ʻi he taimi ni, mo talia ʻa e taimi ni. Ko e ngaahi ngaue fakaʻofoʻofa ko ʻeni ʻoku nau puna ke fakalakalakaʻi ʻa e moʻui lelei ʻo e ʻatamai mo e laumālie ʻaki e akoʻi ʻa e ngaahi anga ʻoku fakamalosiʻi ai ʻa e fakakaukau taʻengata — ko ʻene ʻuhinga lahi ʻa e anga ʻo e tokangaʻi ʻi ha founga pehē: ʻi he puna, ʻi he taimi ni, mo ʻikai ha fakamaau.",
         "links": [
           {
             "label": "Mindful CSUSM",
-            "url": "https://www.csusm.edu/mindfulcsusm/resources/index.html"
+            "linkId": "mindfulCSUSM"
           }
         ]
       },
       {
         "id": "movement",
-        "title": "Fakalelei mo e Meʻakai",
-        "text": "Ko e ngaahi meʻa fakalelei mo e meʻakai ʻoku ne fakamatalaʻi ha taha ʻoku ne fakamatalaʻi ʻa e moʻui lelei ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue, ʻilo, mo e fakatotolo ʻoku ne ʻilo ke fakamatalaʻi ʻa e ngaahi fili fakafoʻou ʻa e ngaahi meʻa ngāue fakamatātā mo e ngaahi fili fakafoʻou ʻa e ngaahi meʻa ngāue meʻakai. Ko e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue fakamatātā mo e ngaahi meʻa ngāue meʻakai fakafoʻou ʻoku ne fakamatalaʻi ʻa e moʻui lelei fakafoʻou, fakamatalaʻi ʻa e tupuʻa maʻu, fakamatalaʻi ʻa e moʻui lelei moʻui, fakamatalaʻi ʻa e ngaahi meʻa ngāue, mo e fakamatalaʻi ʻa e moʻui lelei.",
+        "title": "Lauʻanga mo e Meʻakai",
+        "text": "Ko e ngaahi ngaue fakaʻofoʻofa lauʻanga mo e meʻakai ʻoku nau fakamalosi ʻa e kakai ke nau puleʻi ʻenau moʻui lelei ʻaki hono ʻomai ʻa e ngaahi meʻa ngāue, ʻilo, mo e tokoni ʻoku nau fiemaʻu ke nau lava ʻo fili lelei ʻa e ngaahi meʻa fai ʻo e sino mo e ngaahi fili ʻo e meʻakai. Ko e tukufakahoko ʻo e lauʻanga faʻa ʻaho mo e meʻakai tatau ʻoku ne tokoniʻi ʻa e moʻui lelei kotoa, holo ifo ʻa e tūpanga ʻo e pātesi, lahi ange ʻa e moʻui lelei ʻo e ʻatamai, lahi ange ʻa e ivi, mo fakalakalakaʻi ʻa e moʻui loa.",
         "links": [
           {
-            "label": "Ngaahi Fakaʻilonga Maʻu Fakaʻilonga",
-            "url": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
+            "label": "Chronic Disease Indicators",
+            "linkId": "chronicDiseaseIndicators"
           }
         ]
       },
       {
-        "id": "other",
-        "title": "Kehe",
-        "text": "Ko e sivi ʻo e kenesā ʻoku ne fakamatalaʻi ke ʻilo ʻa e ngaahi meʻa ngāue, fakamatalaʻi ʻa e ngaahi meʻa ngāue, fakamatalaʻi ʻa e ngaahi meʻa ngāue, mo e fakamatalaʻi ʻa e ngaahi meʻa ngāue.",
+        "id": "cancer",
+        "title": "Sivi ʻo e Kanesā",
+        "text": "Ko e sivi ʻo e kanesā ʻe lava ke ne fakaleleiʻi ʻa e vahá, holo ifo ʻa e mate, ʻilo vave, mo ʻomai ha loto mokopūna.",
         "links": [
           {
-            "label": "Sivi Kenesā",
-            "url": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
+            "label": "Sivi ʻo e Kanesā",
+            "linkId": "cancerScreening"
           }
         ]
       }
     ]
   },
   "culture": {
-    "title": "Fakatotolo, Ngaahi Fakaʻauʻau, mo e Lea",
+    "title": "Anga faka-Tonga, Fakaʻatiʻati, mo e Lea",
     "services": [
       {
         "id": "umeke",
         "title": "Umeke",
         "dontTranslateTitle": true,
-        "text": "Ko e ʻoku ʻi he North County San Diego, ko e UMEKE ko e fakafoʻou 501(c)(3) ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue, fakamatalaʻi, mo e ako ʻa e fakatotolo Hawaiʻi. Ko hono fakaʻauʻau ʻoku ne fakamatalaʻi ʻa e ngaahi komuniti lokal ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue fakatotolo-kross, fakamatalaʻi ʻa e ngaahi meʻa ngāue interseksional ke fakamatalaʻi ʻa e ngaahi meʻa ngāue ke fakamatalaʻi ʻa e ngaahi meʻa ngāue ekuidad mo e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi populasi ʻoku ʻikai te nau tokoniʻi.",
+        "text": "ʻOku ʻi North County San Diego, UMEKE ko e faingataʻa 501(c)(3) ʻoku ne fakapapauʻi ʻa e tauhi, tuku hulu, mo e ako ʻo e anga faka-Hawaʻi. Ko ʻenau sīpinga ko e akoʻi ʻa e ngaahi komunitī feituʻu ʻaki e ako fakafekauʻaki, ʻomi ha founga feʻauʻaki ke ngāue ki he tatau mo e hokohoko ʻo e kakai kotoa pē ʻoku tuʻulovela mo siʻisiʻi ʻenau maʻu ha sevisesi.",
         "links": [
           {
-            "label": "Homepage",
-            "url": "https://www.umeke.org/"
+            "label": "Peisi Lahi",
+            "linkId": "homepage"
           }
         ]
       },
       {
         "id": "language",
-        "title": "Kosi Lea",
-        "text": "Ko e taha ʻo e ngaahi meʻa ngāue CSUSM U-Act ʻoku ne fakamatalaʻi ke ʻilo ʻa e ngaahi fakamatalaʻi ʻi he lea mo e ngaahi meʻa ngāue ako ʻa e Komuniti Pasifiki. Ko e ngaahi meʻa ngāue ko ʻeni ko e Chamoru Language Immersion Experience mo e Gagana Sāmoa Language Performing Arts Program. Ko e Chamoru Language Immersion Experience ko e fakafoʻou ako ʻoku ne fakamatalaʻi ke fakamatalaʻi ʻa e ngaahi partisipante ʻi he lea mo e fakatotolo Chamoru. Ko e Gagana Sāmoa Language Performing Arts Program ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻi he lea Sāmoa (Gagana Samoa) mo e ngaahi fakaʻauʻau fakafoʻou ʻa e ngaahi meʻa ngāue Sāmoa.",
+        "title": "Language Course",
+        "text": "ʻI he ʻo ha paʻanga ʻo e Poloseki CSUSM U-Act te ke maʻu ai ha fakamatala ʻi heni ki he ngaahi polokalama lea mo ako ki he Komunitī ʻo e Pasifiki. Ko e ngaahi polokalama ko ʻeni ko The Chamoru Language Immersion Experience mo The Gagana Sāmoa Language Performing Arts Program. Ko e The Chamoru Language Immersion Experience ko e kamataʻanga ako ʻoku ne fakaleleiʻi ke fakamole ʻa e kau ʻaʻahi ʻi he lea mo e anga faka-Chamoru. Ko e The Gagana Sāmoa Language Performing Arts Program ʻoku ne fakakakato ki he akoʻi ʻo e lea faka-Sāmoa (Gagana Samoa) mo e ngaahi fakaʻatiʻati tukufakaholo faka-Sāmoa.",
         "links": [
           {
             "label": "CSUSM U-ACT",
-            "url": "https://www.csusm.edu/apida/uact.html"
+            "linkId": "csusmUact"
           }
         ]
       },
       {
         "id": "movementCourse",
-        "title": "Kosi Fakalelei",
-        "text": "Ko e Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) ʻoku ne tuʻu ʻi he hālau hula fakafoʻou (ʻapi ako hula), ʻoku ne ʻi he komuniti ʻoku ne ʻi he Oceanside, CA. Ko e hālau ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue fakatotolo ʻi he haumāna (ngaahi ako) ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue hula. ʻI he fakaʻauʻau ʻo e mision ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ke ako, fakamatalaʻi, mo e fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue hula, ʻoku ne fakamatalaʻi ʻi he linaje.",
+        "title": "Movement Course",
+        "text": "Ko Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) ʻoku tuʻu ko e hālau hula tukufakaholo (ako hula), ʻoku ʻi he komunitī matātahi ʻo Oceanside, CA. Ko ʻema hālau ʻoku loto lahi mo fakapapauʻi ki he tupuʻi ʻo e ako anga ʻi he vahaʻa ʻo ʻema haumāna (kau ako) ʻaki e fakaʻatiʻati ʻo e hula. ʻI he lotolotonga ʻo ʻema misiona ko e tauhi leva ʻo e ako, ako atu, mo tuku hulu ʻo e kātoa ʻo e hula, ne toʻo mei heʻema hokohoko.",
         "links": [
           {
             "label": "KHOI Homepage",
-            "url": "https://www.kahulaoilima.com/"
+            "linkId": "khoiHomepage"
           }
         ]
       },
       {
         "id": "mindfullMovement",
         "title": "MindFull Movement",
-        "text": "Ko e MindFull Movement ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ke fakamatalaʻi ʻa e ngaahi meʻa ngāue ke fakamatalaʻi. Ko e kolektivo fakalelei mo e fakalelei ʻoku ne ʻi he Oceanside ko e fakamatalaʻi ʻa e ngaahi meʻa ngāue fakamatalaʻi, moʻui lelei, mo e fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻa e Native Hawaiian mo e Pacific Islander (NHPI) mo e Black, Indigenous mo e People of Color (BIPOC) ngaahi taha.",
+        "text": "Ko e MindFull Movement ʻoku ne fakakakato kotoa ki he langa ha vā ʻokú ne ʻaʻahi ki ai. Ko e kulupu hiva mo e lauʻanga ʻi Oceanside ko e malaʻe malu ʻo e fakahā ʻa e sino, moʻui lelei, mo e tokanga ki he kakai ʻo Hawaiʻi mo e Pasifiki (NHPI) mo e kakai ʻUlī, Tupuʻanga, mo e Lanu (BIPOC).",
         "links": [
           {
             "label": "Instagram Account",
-            "url": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
+            "linkId": "instagramAccount"
           }
         ]
-      },
-      {
-        "id": "other",
-        "title": "Kehe",
-        "text": "ʻOku ʻi he taimi",
-        "links": []
       }
     ]
   },
@@ -200,76 +211,65 @@
     "services": [
       {
         "id": "mana",
-        "title": "Akademia Mana",
-        "text": "Ko e Mana ko e meʻa ngāue ʻa e Mira Costa Community College ʻoku ne fakamatalaʻi ʻa e komuniti ʻi he kampus ʻi he ngaahi ako Native Hawaiian mo e Pacific Islander (NHPI) mo e ngaahi meʻa ngāue tokoni fakafoʻou ki he ngaahi meʻa ngāue ako, fakatotolo, mo e ngaahi meʻa ngāue taha. Ko e Mana ko e meʻa ngāue holistiku ʻoku ne fakamatalaʻi ʻa e ngaahi ako ʻi he ngaahi meʻa ngāue fakatotolo fakafoʻou ʻi he ako ʻoku ne fakafoʻou ʻi he ngaahi meʻa ngāue ako mo e ngaahi meʻa ngāue tokoni.",
+        "title": "Mana Academy",
+        "text": "Ko Mana ko e polokalama ʻa e Mira Costa Community College ʻoku ne langa ha komunitī ʻi he pā ako ʻi he vahaʻa ʻo e kau ako ʻo Hawaiʻi mo e Pasifiki (NHPI) mo ʻomai ha ngaahi sevisesi tokoni lahi ki he ngaahi puna ako, anga, mo e fakalakalaka ʻo e sino. Ko Mana ko e polokalama kotoa ʻoku ne ʻomai ha ʻuluaki hū ʻo e anga ʻoku feʻunga ki he ako maʻolunga ʻi he taimi tataʻata ʻoku ne ʻomai ai ʻa e tokoni ako mo e fakahinohino.",
         "links": [
           {
             "label": "Mana @ MiraCosta College",
-            "url": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
+            "linkId": "manaMiraCosta"
           }
         ]
       },
       {
         "id": "apida",
         "title": "CSUSM APIDA",
-        "text": "Ko e Asian & Pacific Islander & Desi American (APIDA) Success Initiative ʻoku ne fakamatalaʻi ke fakamatalaʻi mo e fakamatalaʻi ʻa e ngaahi ako ʻoku ne fakamatalaʻi ke fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻi he CSUSM mo e ngaahi meʻa ngāue kuido mo e ngaahi meʻa ngāue tokoni. ʻOku ne fakamatalaʻi ʻa e ngaahi ako ʻoku ʻikai te nau ʻilo ʻa e ngaahi meʻa ngāue, fakamatalaʻi, mo e fakamatalaʻi ʻa e ngaahi ako.",
+        "text": "Ko e Asian & Pacific Islander & Desi American (APIDA) Success Initiative ʻoku ne ʻamanaki ke fakafelavai mo teuteuʻi ʻa e kau ako kotoa ke nau lava ʻi he CSUSM ʻaki e tokanga mo e tokoni. Ki heʻema kau ako maʻamaʻa paʻanga, huluaki tupuʻanga, mo e kau ako ʻoku toe hū mai.",
         "links": [
           {
-            "label": "Homepage",
-            "url": "https://www.csusm.edu/apida/index.html"
+            "label": "Peisi Lahi",
+            "linkId": "homepage"
           }
         ]
       },
       {
         "id": "apply",
-        "title": "Koeʻuhi ke Fakamatalaʻi ki he Kolegio?",
-        "text": "Ko e meʻa ngāue ko ʻeni ʻoku ne fakamatalaʻi ʻa e ngaahi ako ʻi he ngaahi meʻa ngāue komplikado, kompetitivo, mo e ngaahi meʻa ngāue taimi-sensibel ke fakamatalaʻi mo e fakamatalaʻi ʻa e ngaahi meʻa ngāue ako ʻoku ne fakafoʻou. Ko e ngaahi meʻa ngāue ko ʻeni ʻoku ne tokoniʻi ke fakamatalaʻi ʻa e ngaahi ako ke fakamatalaʻi ʻa e ngaahi fili fakafoʻou, fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou, mo e fakamatalaʻi ʻa e ngaahi meʻa ngāue ke fakamatalaʻi ʻa e ngaahi meʻa ngāue ako ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ke fakamatalaʻi ʻa e ngaahi meʻa ngāue.",
+        "title": "How to Apply to College?",
+        "text": "Ko e meʻa ko ʻeni te ne talangeangeʻi ʻa e kau ako ʻi he founga faingataʻa, feinga, mo vave ʻo e taimi ʻo e fili mo e fokotuʻu atu ki he ngaahi ʻapi ako maʻolunga. Ko e ngaahi ngaue fakaʻofoʻofa ko ʻeni ʻoku nau tokoni ke fakapapauʻi ʻoku fili lelei ʻe he kau ako, ʻoku nau fokotuʻu atu ha ngaahi talá ʻoku malohi, mo ʻi he ʻosi ʻoku nau maʻu ai ʻa e ngaahi avanoa ako ʻoku feʻunga tatau mo ʻenau ngaahi puna mo e fiemaʻu.",
         "links": [
           {
             "label": "CommonApp",
-            "url": "https://www.commonapp.org/"
+            "linkId": "commonApp"
           }
         ]
       },
       {
         "id": "financialAid",
-        "title": "Tokoni Fakapaʻanga",
-        "text": "Ko e FAFSA ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi taha ʻoku ne fakamatalaʻi ke fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue ako ʻoku ne fakafoʻou. Ko e FAFSA ko e meʻa ngāue fakafoʻou ʻa e ngaahi ako ke fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou fakafoʻou, ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue, ngaahi meʻa ngāue, mo e ngaahi meʻa ngāue work-study, mo e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue fakafoʻou.",
+        "title": "Financial Aid",
+        "text": "ʻOku ʻomai ʻe he FAFSA ʻa e tokoni mahuʻinga ki he kakai ʻoku nau ʻamanaki ke maʻu ha tokoni paʻanga ki he ako maʻolunga. Ko e FAFSA ko e meʻa ngāue mahuʻinga ia ki he kau ako ke nau lava ʻo maʻu ha tokoni paʻanga faka-falani, kau ai ʻa e ngaahi koloa, loan, mo e ngaahi avanoa ngāue-ako, pea mo e tokoni faka-puleʻanga mo fakavaʻe.",
         "links": [
           {
             "label": "Federal Student Aid",
-            "url": "https://studentaid.gov/"
+            "linkId": "federalStudentAid"
           }
         ]
-      },
-      {
-        "id": "youth",
-        "title": "Polokalama Taha PIC Health",
-        "text": "ʻOku ʻi he taimi",
-        "links": []
-      },
-      {
-        "id": "testimonials",
-        "title": "Ngaahi Fakamatalaʻi",
-        "text": "ʻOku ʻi he taimi",
-        "links": []
-      },
-      {
-        "id": "other",
-        "title": "Kehe",
-        "text": "ʻOku ʻi he taimi",
-        "links": []
       }
     ]
   },
   "aboutUs": {
-    "title": "Kau ki ai",
-    "description1": "Ko e ʻoku ne fakamatalaʻi ʻi he 2013, ko e Pacific Islander Community Health (PIC Health) ʻoku ne tokoniʻi ʻi he rehiyon Southern California, ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei ekuidad mo e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi komuniti Pasifiki ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei sentro fakatotolo mo e ngaahi meʻa ngāue investigasi ʻoku ne sentro komuniti. Ko e PIC Health ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ke fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei mo e ngaahi meʻa ngāue resilensia ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakafoʻou ʻa e ngaahi meʻa ngāue moʻui lelei mo e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi komuniti Pasifika ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakafoʻou ʻa e ngaahi meʻa ngāue ʻoku ne fakafoʻou ʻa e ngaahi meʻa ngāue.",
-    "description2": "ʻAko kehe:",
-    "missionTitle": "Ko e Mision ʻa Mātou",
-    "missionText": "ʻI he PIC Health, ko e mision ʻa mātou ʻoku ne fakamatalaʻi ke fakamatalaʻi mo e fakamatalaʻi ʻa e komuniti Pasifiki ʻi he fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei holistiku mo e ngaahi meʻa ngāue moʻui lelei ʻoku ne fakamatalaʻi ʻi he sensibilidad fakatotolo mo e ngaahi meʻa ngāue involvensia komuniti. ʻI he fakamatalaʻi ʻa e ngaahi meʻa ngāue investigasi kolaborativa, advokasia, mo e ako, ta u ma trabaha ke fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue moʻui lelei indígena, ke fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue ke fakamatalaʻi ʻa e ngaahi meʻa ngāue moʻui lelei, mo e fakamatalaʻi ʻa e ngaahi meʻa ngāue fakafoʻou ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue.",
-    "landTitle": "Fakamatalaʻi ʻa e Tano",
-    "landText": "Ta u ma fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue Luiseño/Payómkawichum. Ko e PIC Health mo e ngaahi meʻa ngāue ʻoku ne ʻi he ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue ʻoku ne fakamatalaʻi ʻa e ngaahi meʻa ngāue La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum."
+    "title": "Kau ki Mautolu",
+    "description1": "Naʻe faʻu ʻi he 2013, Pacific Islander Community Health (PIC Health) ʻoku ne tuku atu ki he feituʻu ʻo Kalifōnia-tonga, ʻaki e fakalakalaka ʻo e tatau ʻo e moʻui lelei mo e totonu fakasosiale ki he ngaahi komunitī ʻo e Pasifiki ʻaki e ngaahi kamataʻanga moʻui lelei ʻoku fakakakato ki he anga mo e fakatotolo ʻoku fakakakato ki he komunitī. ʻOku fakapapauʻi ʻa e PIC Health ki he fakalakalaka ʻo e moʻui lelei mo e loto toutai ʻaki hono fokoutua ʻa e ngaahi fiemaʻu moʻui lelei ʻoku makehe mo e ngaahi meʻa kehe ʻoku feʻauʻaki mo hokohoko atu ʻe ʻema komunitī Pasifika ʻi he ʻaho kotoa pē.",
+    "description2": "Ako lahi atu:",
+    "sections": [
+      {
+        "id": "mission",
+        "title": "ʻEma Misiona",
+        "text": "ʻI he PIC Health, ko ʻema misiona ke fakamalosi mo hiki ʻa e komunitī ʻo e Pasifiki ʻaki e fakalakalaka ʻo e ngaahi kamataʻanga moʻui lelei kotoa ʻoku nau tupu mei he anga ʻoku ʻofa mo e ngaue fakataha ʻa e komunitī. ʻAki e fakatotolo fakataha, lau leʻo, mo e ako, ʻoku mau feinga ke fokoutua ʻa e ngaahi meʻa kehe ʻo e moʻui lelei faka-tupuʻanga, tupuʻi ha maʻu tatau ʻo e tokoni moʻui lelei, mo tanaki ha ʻapi ʻoku ne tupu lelei ai ʻa e kakai kotoa ke nau lava ʻo aʻu ki honau tuʻunga maʻolunga taha ʻo e moʻui lelei."
+      },
+      {
+        "id": "land",
+        "title": "Fakamoʻoni ʻo e Fonua",
+        "text": "ʻOku mau fakamoʻoni ʻoku ʻi he fonua ʻoku mau potopoto ai ko e teritōli tukufakaholo ʻa e kakai Luiseño/Payómkawichum. ʻOku ʻi ai pe ʻa e PIC Health mo ʻene ngaahi feituʻu ʻoku ʻi ai ʻa e ongoongo vahe ʻoku fakamoʻoniʻi ʻe he puleʻanga ʻo La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum."
+      }
+    ]
   }
 }
-

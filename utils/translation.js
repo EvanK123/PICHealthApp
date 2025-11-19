@@ -1,16 +1,56 @@
+// Load all translation files
+// To add a new language: 
+// 1. Create [code].json in the locales directory
+// 2. Add [code] entry to locales/languages.config.json
+// 3. Add one line below: const [code]Translations = require('../locales/[code].json');
+// 4. Add one line to translations object: [code]: [code]Translations,
+const enTranslations = require('../locales/en.json');
+const esTranslations = require('../locales/es.json');
+const smTranslations = require('../locales/sm.json');
+const chTranslations = require('../locales/ch.json');
+const toTranslations = require('../locales/to.json');
+const links = require('../locales/links.json');
 
-const languagesConfig = require('../locales/languages.config.json');
-const { loadTranslations } = require('./translation-loader');
+const translations = {
+  en: enTranslations,
+  es: esTranslations,
+  sm: smTranslations,
+  ch: chTranslations,
+  to: toTranslations,
+};
 
-
-const getLanguageCodes = () => Object.keys(languagesConfig);
-
-
-// Load all translations dynamically
-// This will automatically pick up any language in languages.config.json
-// To add a new language: create fr.json and add fr entry to languages.config.json
-// Then add the require statement in translation-loader.js
-const translations = loadTranslations();
+/**
+ * Merge link IDs with URLs from centralized links.json
+ * @param {object} service - Service object with links array
+ * @param {string} section - Section name (health, culture, education)
+ * @returns {object} - Service with merged URLs
+ */
+function mergeLinks(service, section) {
+  if (!service.links || !Array.isArray(service.links)) {
+    return service;
+  }
+  
+  const sectionLinks = links[section];
+  if (!sectionLinks || !sectionLinks[service.id]) {
+    return service;
+  }
+  
+  const serviceLinks = sectionLinks[service.id];
+  const mergedLinks = service.links.map(link => {
+    if (link.linkId && serviceLinks[link.linkId]) {
+      return {
+        ...link,
+        url: serviceLinks[link.linkId]
+      };
+    }
+    return link; // Keep original if no linkId or URL not found
+  });
+  
+  return {
+    ...service,
+    links: mergedLinks
+  };
+}
 
 /**
  * Get a translation value from the locale files
@@ -58,12 +98,23 @@ export function getSection(lang, section) {
  * Get services for a specific section
  * @param {string} lang - Language code
  * @param {string} section - Section name (e.g., "health", "culture", "education")
- * @returns {array} - Array of services
+ * @returns {array} - Array of services with merged URLs from links.json
  */
 export function getServices(lang, section) {
   const sectionData = getSection(lang, section);
-  return sectionData.services || [];
+  const services = sectionData.services || [];
+  return services.map(service => mergeLinks(service, section));
 }
 
-export default { t, getSection, getServices };
+/**
+ * Get sections for About Us page
+ * @param {string} lang - Language code
+ * @returns {array} - Array of aboutUs sections
+ */
+export function getAboutUsSections(lang) {
+  const aboutUsData = getSection(lang, 'aboutUs');
+  return aboutUsData.sections || [];
+}
+
+export default { t, getSection, getServices, getAboutUsSections };
 

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { TranslationContext } from '../context/TranslationContext';
-import { t, getSection, getServices } from '../utils/translation';
+import { t, getSection, getServices, getAboutUsSections } from '../utils/translation';
 
 /**
  * Hook to access translations
@@ -14,6 +14,7 @@ export function useTranslation() {
     t: (path) => t(lang, path),
     getSection: (section) => getSection(lang, section),
     getServices: (section) => getServices(lang, section),
+    getAboutUsSections: () => getAboutUsSections(lang),
   };
 }
 

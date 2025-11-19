@@ -38,9 +38,26 @@
     "title": "PIC Health",
     "calendar": "Calendar",
     "upcomingEvents": "Upcoming Events",
+    "selectCalendar": "Select Calendar",
+    "selectCalendars": "Select Calendars",
+    "search": "Search",
     "calendarOptions": {
       "pacificIslander": "Pacific Islander Community",
       "latino": "Latino Community"
+    },
+    "wellnessButtons": {
+      "howYaDoin": {
+        "label": "How ya doin' 👋",
+        "linkId": "howYaDoin"
+      },
+      "sos": {
+        "label": "SOS ⚠️",
+        "linkId": "sos"
+      }
+    },
+    "messages": {
+      "pleaseSelectCalendar": "Please select a calendar to view events",
+      "noEventsAvailable": "No events available"
     }
   },
   "header": {
@@ -63,7 +80,7 @@
         "links": [
           {
             "label": "Risk Test",
-            "url": "https://www.cdc.gov/prediabetes/risktest/index.html"
+            "linkId": "riskTest"
           }
         ]
       },
@@ -74,11 +91,11 @@
         "links": [
           {
             "label": "Mental Health 101",
-            "url": "https://screening.mhanational.org/mental-health-101/"
+            "linkId": "mentalHealth101"
           },
           {
             "label": "Depression Screening",
-            "url": "https://screening.mhanational.org/screening-tools/depression/?ref"
+            "linkId": "depressionScreening"
           }
         ]
       },
@@ -89,7 +106,7 @@
         "links": [
           {
             "label": "Homepage",
-            "url": "https://truecare.org/"
+            "linkId": "homepage"
           }
         ]
       },
@@ -100,7 +117,7 @@
         "links": [
           {
             "label": "Homepage",
-            "url": "https://www.vistacommunityclinic.org/"
+            "linkId": "homepage"
           }
         ]
       },
@@ -111,7 +128,7 @@
         "links": [
           {
             "label": "Mindful CSUSM",
-            "url": "https://www.csusm.edu/mindfulcsusm/resources/index.html"
+            "linkId": "mindfulCSUSM"
           }
         ]
       },
@@ -122,18 +139,18 @@
         "links": [
           {
             "label": "Chronic Disease Indicators",
-            "url": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
+            "linkId": "chronicDiseaseIndicators"
           }
         ]
       },
       {
-        "id": "other",
-        "title": "Other",
+        "id": "cancer",
+        "title": "Cancer Screening",
         "text": "Screening for cancer allows you to improve prognosis, reduce mortality, identify early detection, and give you peace of mind.",
         "links": [
           {
             "label": "Cancer Screening",
-            "url": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
+            "linkId": "cancerScreening"
           }
         ]
       }
@@ -150,7 +167,7 @@
         "links": [
           {
             "label": "Homepage",
-            "url": "https://www.umeke.org/"
+            "linkId": "homepage"
           }
         ]
       },
@@ -161,7 +178,7 @@
         "links": [
           {
             "label": "CSUSM U-ACT",
-            "url": "https://www.csusm.edu/apida/uact.html"
+            "linkId": "csusmUact"
           }
         ]
       },
@@ -172,7 +189,7 @@
         "links": [
           {
             "label": "KHOI Homepage",
-            "url": "https://www.kahulaoilima.com/"
+            "linkId": "khoiHomepage"
           }
         ]
       },
@@ -183,15 +200,9 @@
         "links": [
           {
             "label": "Instagram Account",
-            "url": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
+            "linkId": "instagramAccount"
           }
         ]
-      },
-      {
-        "id": "other",
-        "title": "Other",
-        "text": "Coming soon",
-        "links": []
       }
     ]
   },
@@ -205,7 +216,7 @@
         "links": [
           {
             "label": "Mana @ MiraCosta College",
-            "url": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
+            "linkId": "manaMiraCosta"
           }
         ]
       },
@@ -216,7 +227,7 @@
         "links": [
           {
             "label": "Homepage",
-            "url": "https://www.csusm.edu/apida/index.html"
+            "linkId": "homepage"
           }
         ]
       },
@@ -227,7 +238,7 @@
         "links": [
           {
             "label": "CommonApp",
-            "url": "https://www.commonapp.org/"
+            "linkId": "commonApp"
           }
         ]
       },
@@ -238,27 +249,9 @@
         "links": [
           {
             "label": "Federal Student Aid",
-            "url": "https://studentaid.gov/"
+            "linkId": "federalStudentAid"
           }
         ]
-      },
-      {
-        "id": "youth",
-        "title": "PIC Health Youth Program",
-        "text": "Coming soon",
-        "links": []
-      },
-      {
-        "id": "testimonials",
-        "title": "Testimonials",
-        "text": "Coming soon",
-        "links": []
-      },
-      {
-        "id": "other",
-        "title": "Other",
-        "text": "Coming soon",
-        "links": []
       }
     ]
   },
@@ -266,10 +259,18 @@
     "title": "About Us",
     "description1": "Established in 2013, Pacific Islander Community Health (PIC Health) serves the Southern California region, by advancing health equity and social justice for Pacific Islander communities through culturally centered health initiatives and community-centered research. PIC Health is dedicated to promoting wellness and resilience by addressing the unique health needs and disparities our Pasifika communities endure and navigate every day.",
     "description2": "Learn more:",
-    "missionTitle": "Our Mission",
-    "missionText": "At PIC Health, our mission is to empower and uplift the Pacific Islander community by promoting holistic health and wellness initiatives rooted in cultural sensitivity and community engagement. Through collaborative research, advocacy, and education, we strive to address indigenous health disparities, foster equitable access to healthcare, and cultivate a thriving environment where every individual can achieve their highest level of well-being.",
-    "landTitle": "Land Acknowledgement",
-    "landText": "We acknowledge that the land on which we gather is the traditional territory of the Luiseño/Payómkawichum people. PIC Health and its surrounding areas are still home to the six federally recognized bands of the La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum people."
+    "sections": [
+      {
+        "id": "mission",
+        "title": "Our Mission",
+        "text": "At PIC Health, our mission is to empower and uplift the Pacific Islander community by promoting holistic health and wellness initiatives rooted in cultural sensitivity and community engagement. Through collaborative research, advocacy, and education, we strive to address indigenous health disparities, foster equitable access to healthcare, and cultivate a thriving environment where every individual can achieve their highest level of well-being."
+      },
+      {
+        "id": "land",
+        "title": "Land Acknowledgement",
+        "text": "We acknowledge that the land on which we gather is the traditional territory of the Luiseño/Payómkawichum people. PIC Health and its surrounding areas are still home to the six federally recognized bands of the La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum people."
+      }
+    ]
   }
 }
 

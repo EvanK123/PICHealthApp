@@ -39,8 +39,9 @@ const CAL_THEME = {
   textDayHeaderFontWeight: '700',
 };
 
-// Map day index (0-6, Sunday = 0) to translation key
-const DAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+// English day abbreviations (calendar always in English)
+const WEEKDAYS_ABBREV = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const WEEKDAYS_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // Parse "YYYY-MM-DD" as LOCAL to avoid UTC shifting a day back
 const toLocalDate = (isoDate) => {
@@ -54,11 +55,6 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-  
-  // Get localized weekday names (full names) - memoized to recalculate when language changes
-  const WEEKDAYS = useMemo(() => {
-    return DAY_KEYS.map(key => t(`common.days.${key}`));
-  }, [t]);
 
   // Compute day-cell size from actual width
   const [calWidth, setCalWidth] = useState(0);
@@ -127,15 +123,15 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     );
   };
 
-  // Local label with full day name
+  // Label with English day name
   const selectedLabel = useMemo(() => {
     if (!selectedDate) return '';
     const d = toLocalDate(selectedDate);
     const dayIndex = d.getDay();
-    const wd = WEEKDAYS[dayIndex];
+    const wd = WEEKDAYS_FULL[dayIndex];
     const dd = d.getDate();
     return `${t('calendar.upcomingEvents')} ${wd} ${dd}`;
-  }, [selectedDate, WEEKDAYS, t]);
+  }, [selectedDate, t]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 12 }}>
@@ -146,7 +142,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
       >
         {/* Weekday strip */}
         <View style={styles.weekStrip}>
-          {WEEKDAYS.map((d) => (
+          {WEEKDAYS_ABBREV.map((d) => (
             <View key={d} style={styles.weekCell}>
               <Text style={styles.weekText}>{d}</Text>
             </View>
@@ -166,7 +162,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
           theme={CAL_THEME}
           renderHeader={(date) => {
             const d = new Date(date);
-            const label = d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+            const label = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
             return <View style={styles.header}><Text style={styles.headerTitle}>{label}</Text></View>;
           }}
           dayComponent={({ date, state }) => <DayCell date={date} state={state} />}
@@ -181,7 +177,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
             const isPic = ev.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com';
             const bar = isPic ? styles.topBarTeal : styles.topBarBlue;
             const timeText = ev.start?.date ? 'All Day'
-              : new Date(ev.start?.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              : new Date(ev.start?.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             return (
               <View key={ev.id || ev.summary + ev.start?.dateTime} style={styles.sheetCard}>
