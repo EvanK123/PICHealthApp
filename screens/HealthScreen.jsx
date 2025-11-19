@@ -16,20 +16,23 @@ import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
 import { useTranslation } from "../hooks/useTranslation";
 
+const QUIZ_URL =
+  "https://www.psychologytoday.com/us/tests/health/mental-health-assessment";
+
 const HealthScreen = () => {
   const { lang, setLang } = useContext(TranslationContext);
   const { t, getServices } = useTranslation();
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
+
   // Get localized content
   const headerTitle = t("health.title");
   const headerDesc = t("health.description");
   const localizedSections = getServices("health");
 
-  const callWebView = (url) => {
+  const callWebView = (url, title = "Browser") => {
     Platform.OS === "web"
       ? Linking.openURL(url)
-      : setModalConfig({ isVisible: true, url });
+      : setModalConfig({ isVisible: true, url, title });
   };
 
   const closeModal = () => {
@@ -47,7 +50,23 @@ const HealthScreen = () => {
         <Header title={headerTitle}>
           <Disclaimer description={headerDesc} />
         </Header>
+
         <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* >>> NEW: Mental Health Assessment card */}
+          <View style={textBox.container}>
+            <Text style={textBox.title}>Mental Health Assessment</Text>
+            <Text style={textBox.text}>
+              Take Psychology Today’s mental health questionnaire. Your answers are not
+              stored by this app; closing this window or leaving the screen resets the quiz.
+            </Text>
+            <TouchableOpacity
+              onPress={() => callWebView(QUIZ_URL, "Mental Health Assessment")}
+            >
+              <Text style={textBox.link}>Start the assessment</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <<< END NEW */}
+
           <View style={{ margin: 5, borderRadius: 10 }}>
             {localizedSections.map((sec) => (
               <View key={sec.id} style={textBox.container}>
@@ -56,7 +75,7 @@ const HealthScreen = () => {
                 {sec.links.map((ln, idx) => (
                   <TouchableOpacity
                     key={`${sec.id}-link-${idx}`}
-                    onPress={() => callWebView(ln.url)}
+                    onPress={() => callWebView(ln.url, ln.label)}
                   >
                     <Text style={textBox.link}>{ln.label}</Text>
                   </TouchableOpacity>
@@ -71,6 +90,7 @@ const HealthScreen = () => {
         url={modalConfig.url}
         isVisible={modalConfig.isVisible}
         onClose={closeModal}
+        title={modalConfig.title}
       />
     </SafeAreaView>
   );
@@ -97,7 +117,7 @@ const textBox = StyleSheet.create({
     fontWeight: "bold",
     color: "rgba(45, 72, 135, 1)",
   },
-  text: { color: "black" },
+  text: { color: "black", marginBottom: 8 },
   link: {
     padding: 0,
     color: "rgba(45, 72, 135, 1)",

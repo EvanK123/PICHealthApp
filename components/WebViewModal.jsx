@@ -1,68 +1,79 @@
-import React from 'react';
-import { Modal, View, TouchableOpacity, Text, StyleSheet, Platform } from 'react-native';
-import WebView from 'react-native-webview';
+import React, { useEffect, useRef, useState } from "react";
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
 
-const WebViewModal = ({ url, isVisible, onClose }) => {
+// Conditional WebView import to avoid web issues
+const RNWebView = Platform.OS === "web" ? null : require("react-native-webview").WebView;
+
+export default function WebViewModal({ url, isVisible, onClose, title = "Browser" }) {
+  const [webKey, setWebKey] = useState(0);
+  const webRef = useRef(null);
+
+  useEffect(() => {
+    if (isVisible) setWebKey(k => k + 1); // new key = fresh WebView each open
+  }, [isVisible]);
+
+  const handleClose = () => onClose?.();
+
+  const isWeb = Platform.OS === "web";
+
   return (
-    // Basis of the WebView Popup
-    <Modal
-      animationType='slide'
-      // State for when it should appear, on pages that use it
-      visible={isVisible} 
-      onRequestClose={onClose}
-    >
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => onClose()}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
+    <Modal visible={isVisible} animationType="slide" onRequestClose={handleClose}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{title}</Text>
+        <TouchableOpacity onPress={handleClose} style={styles.closeBtn}>
+          <Text style={styles.closeText}>Close</Text>
+        </TouchableOpacity>
+      </View>
 
-          <View style={styles.webviewContainer}>
-            <WebView
-              source={{ uri: url }}
-              style={styles.webview}
-              onError={onClose}
-            />
-          </View>
+      {isWeb ? (
+        <View style={styles.webFallback}>
+          <Text style={{ marginBottom: 8 }}>
+            The embedded view isn’t supported in web preview. This link should open in a new tab:
+          </Text>
+          <Text style={{ color: "#2d4887" }}>{url}</Text>
         </View>
+      ) : (
+        <View style={styles.webContainer}>
+          <RNWebView
+            key={webKey}
+            ref={webRef}
+            source={{ uri: url }}
+            incognito
+            cacheEnabled={false}
+            sharedCookiesEnabled={false}
+            thirdPartyCookiesEnabled={false}
+            javaScriptEnabled
+            domStorageEnabled
+            originWhitelist={["*"]}
+            setSupportMultipleWindows={false}
+            startInLoadingState
+            onShouldStartLoadWithRequest={(req) => true}
+            injectedJavaScriptBeforeContentLoaded={`
+              try { sessionStorage.clear(); localStorage.clear(); } catch (e) {}
+              true;
+            `}
+            onContentProcessDidTerminate={() => webRef.current?.reload()}
+          />
+        </View>
+      )}
     </Modal>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginTop: Platform.OS === 'ios' ? 50 : 0,
-  },
   header: {
-    flexDirection: 'row',
-    backgroundColor: '#f8f8f8',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    padding: 10,
-    minHeight: 44,
+    height: 56,
+    paddingHorizontal: 16,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "#e5e5e5",
   },
-  closeButton: {
-    padding: 8,
-    marginLeft: 10,
-  },
-  closeButtonText: {
-    color: '#007AFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  webviewContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  webview: {
-    flex: 1,
-  },
+  headerTitle: { fontSize: 16, fontWeight: "700" },
+  closeBtn: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, backgroundColor: "#eef2ff" },
+  closeText: { color: "#2d4887", fontWeight: "600" },
+  webFallback: { padding: 16, backgroundColor: "#fff", flex: 1 },
+  webContainer: { flex: 1, backgroundColor: "#fff" },
 });
-
-export default WebViewModal;
