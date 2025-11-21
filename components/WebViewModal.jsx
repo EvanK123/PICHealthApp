@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { TranslationContext } from "../context/TranslationContext";
 
 // Conditional WebView import to avoid web issues
 const RNWebView = Platform.OS === "web" ? null : require("react-native-webview").WebView;
 
-export default function WebViewModal({ url, isVisible, onClose, title = "Browser" }) {
+export default function WebViewModal({ url, isVisible, onClose, title }) {
+  const { t } = useContext(TranslationContext);
+  const defaultTitle = title || t('common.browser');
   const [webKey, setWebKey] = useState(0);
   const webRef = useRef(null);
 
@@ -19,16 +22,16 @@ export default function WebViewModal({ url, isVisible, onClose, title = "Browser
   return (
     <Modal visible={isVisible} animationType="slide" onRequestClose={handleClose}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>{title}</Text>
+        <Text style={styles.headerTitle}>{defaultTitle}</Text>
         <TouchableOpacity onPress={handleClose} style={styles.closeBtn}>
-          <Text style={styles.closeText}>Close</Text>
+          <Text style={styles.closeText}>{t('common.close')}</Text>
         </TouchableOpacity>
       </View>
 
       {isWeb ? (
         <View style={styles.webFallback}>
           <Text style={{ marginBottom: 8 }}>
-            The embedded view isn’t supported in web preview. This link should open in a new tab:
+            {t('webView.notSupported')}
           </Text>
           <Text style={{ color: "#2d4887" }}>{url}</Text>
         </View>

@@ -1,11 +1,11 @@
 {
   "common": {
     "languages": {
-      "english": "English",
-      "spanish": "Español",
+      "english": "Fa'aperetania",
+      "spanish": "Fa'asipaniolo",
       "samoan": "Gagana Samoa",
-      "chamorro": "Chamorro",
-      "tongan": "Tongan"
+      "chamorro": "Gagana Chamorro",
+      "tongan": "Gagana Tonga"
     },
     "days": {
       "sunday": "Aso Sa",
@@ -17,39 +17,39 @@
       "saturday": "Aso To'ona'i"
     },
     "close": "Tapuni",
-    "getStarted": "Amata",
-    "submitEvent": "Tu'u atu Mea e Fai",
-    "selectCalendars": "Filifili Kalena",
-    "selectCalendar": "Filifili Kalena",
-    "selectLanguage": "Filifili Gagana",
-    "allDay": "Aso Atoa",
-    "noDescriptionAvailable": "Leai se fa'amatalaga o maua"
+    "browser": "Su'esu'e",
+    "or": "po'o",
+    "somethingWentWrong": "Ua i ai se mea na faaletonu"
   },
-
   "app": {
     "tabs": {
       "home": "Aiga",
       "health": "Soifua Maloloina",
       "education": "A'oa'oga",
       "culture": "Aganu'u",
-      "aboutUs": "E Uiga ia i Matou"
-    }
+      "aboutUs": "Fa'amatalaga e uiga ia i matou"
+    },
+    "name": "PIC Health"
   },
-
   "calendar": {
     "title": "PIC Health",
     "calendar": "Kalena",
-    "upcomingEvents": "Mea e Fai o Loma",
-    "selectCalendar": "Filifili Kalena",
-    "selectCalendars": "Filifili Kalena",
+    "upcomingEvents": "Mea e soso'o mai",
+    "selectCalendar": "Filifili se Kalena",
+    "selectCalendars": "Filifili ni Kalena",
     "search": "Su'e",
+    "allDay": "Aso Atoa",
+    "noDescriptionAvailable": "Leai se fa'amatalaga o maua",
+    "noTitle": "(Leai se Ulutala)",
+    "free": "Sa'oloto",
+    "family": "Aiga",
     "calendarOptions": {
-      "pacificIslander": "Nu'u o le Pasefika",
-      "latino": "Nu'u Latino"
+      "pacificIslander": "Komupiuti a le Pasefika",
+      "latino": "Komupiuti Latino"
     },
     "wellnessButtons": {
       "howYaDoin": {
-        "label": "O ā mai oe? 👋",
+        "label": "O a mai oe 👋",
         "linkId": "howYaDoin"
       },
       "sos": {
@@ -59,32 +59,63 @@
     },
     "messages": {
       "pleaseSelectCalendar": "Fa'amolemole filifili se kalena e va'ai i mea e fai",
-      "noEventsAvailable": "Leai se mea e fai"
+      "noEventsAvailable": "Leai ni mea e fai"
     }
   },
-
   "header": {
-    "submitEvent": "Tu'u atu Mea e Fai"
+    "submitEvent": "Tu'u mai se Mea e Fai"
   },
-
+  "login": {
+    "title": "PIC Health",
+    "subtitle": "Saini i totonu e fa'afeso'ota'i ma lou komupiuti.",
+    "logIn": "Saini i totonu",
+    "signUp": "Saini i luga",
+    "createAccount": "Fausia se Fa'amatalaga",
+    "email": "Imeli",
+    "password": "Upu fa'ataga",
+    "emailPlaceholder": "oe@fa'ata'ita'iga.com",
+    "passwordPlaceholder": "••••••••",
+    "continueWithGoogle": "Fa'aauau ma Google",
+    "enterEmailPassword": "Tu'u le imeli ma le upu fa'ataga.",
+    "googleSignInWebOnly": "O le saini i le Google e na'o le upega tafa'ilagi o lo'o fa'aogaina i le taimi nei.",
+    "googleSignInFailed": "Ua le manuia le saini i le Google"
+  },
+  "profile": {
+    "title": "Fa'amatalaga",
+    "unknownUser": "Tagata e le iloa",
+    "signedInTo": "Ua saini i totonu i le PIC Health",
+    "userId": "ID o le Tagata",
+    "changeProfilePhoto": "Suia le Ata o le Tofiga",
+    "signOut": "Saini i fafo",
+    "signOutMessage": "O le a e toe fo'i i le app pe a uma ona saini i fafo.",
+    "permissionRequired": "E mana'omia le fa'atagaga e maua ai ata e seti ai se ata fa'apitoa.",
+    "uploadFailed": "Ua le mafai ona lafoina le ata o le tofiga.",
+    "avatarUrlFailed": "Le mafai ona maua le URL o le avatar.",
+    "saveAvatarFailed": "Ua le mafai ona sefe le URL o le avatar.",
+    "profileUpdated": "Ua fa'afou le ata o le tofiga! Atonu e umi se taimi e toe fa'afou ai.",
+    "avatarChangeError": "Ua i ai se mea na faaletonu a'o e suia lau avatar."
+  },
   "popup": {
-    "welcomeTitle": "Susū mai i le PIC Health!",
+    "welcomeTitle": "Susu maia i le PIC Health!",
     "beta": "Beta",
-    "disclaimer": "Fa'ailoa:",
-    "disclaimerText": "O lenei 'upega tafa'ilagi e na'o a'oa'oga. Fa'afeso'ota'i se foma'i mo fautuaga fa'afoma'i. I se fa'alavelave fa'afuase'i, vili le 911."
+    "disclaimer": "Fa'aaliga:",
+    "disclaimerText": "O lenei 'upega tafa'ilagi e na'o a'oa'oga. Fa'afeso'ota'i se foma'i mo fautuaga fa'afoma'i. I se fa'alavelave fa'afuase'i, vala'au le 911.",
+    "getStarted": "Amata."
   },
-
+  "webView": {
+    "notSupported": "E le lagolagoina le va'aiga fa'apipi'i i le va'aiga o le upega tafa'ilagi. O lenei so'otaga e tatau ona tatala i se fa'amalama fou:"
+  },
   "health": {
     "title": "Soifua Maloloina",
-    "description": "O fa'amatalaga o lo'o tu'uina atu iinei e mo na'o fa'amatalaga lautele ma e le'o fa'amoemoe e fai ma fautuaga fa'afoma'i. Fa'afeso'ota'i i taimi uma ma se tufuga soifua maloloina agava'a mo fautuaga e uiga i lou tulaga fa'afoma'i patino, fa'ailoga, po'o filifiliga togafitiga. Aua le amana'ia fautuaga fa'apolofesa fa'afoma'i po'o le fa'atuai o le sailia o togafitiga.",
+    "description": "O fa'amatalaga o lo'o tu'uina atu iinei e mo na'o fa'amatalaga lautele ma e le'o fa'amoemoe e fai ma fautuaga fa'afoma'i. Fa'afeso'ota'i i taimi uma ma se tufuga fa'apitoa mo le soifua maloloina mo fautuaga e uiga i lou tulaga fa'afoma'i fa'apitoa, fa'ailoga, po'o filifiliga o togafitiga. Aua le fa'ate'aina fautuaga fa'apolofesa fa'afoma'i pe fa'atuai le sailia o togafitiga.",
     "services": [
       {
         "id": "findhelp",
-        "title": "Saili Fesoasoani",
-        "text": "E feso'ota'i Findhelp oe ma punaoa fa'apitonu'u i lou pitonu'u, e aofia ai faleoloa mea'ai, polokalame taumafa, fesoasoani mo fale, fesoasoani tau tupe, auaunaga tau soifua maloloina, ma isi mea. Su'e i le ZIP code e maua ai polokalame o lo'o avanoa i ou tafatafa.",
+        "title": "Su'e Fesoasoani",
+        "text": "O le Findhelp e fa'afeso'ota'i oe ma punaoa fa'apitonu'u i lou pitonu'u, e aofia ai faleoloa mea'ai, polokalame o mea'ai, fesoasoani i fale, fesoasoani tau tupe, 'au'aunaga tau soifua maloloina, ma isi mea. Su'e i le ZIP code e su'e ai polokalame o lo'o maua i lou lata ane.",
         "links": [
           {
-            "label": "Saili Fesoasoani",
+            "label": "Su'e Fesoasoani",
             "linkId": "homepage"
           }
         ]
@@ -92,7 +123,7 @@
       {
         "id": "mentalHealthAssessment",
         "title": "Iloiloga o le Soifua Maloloina o le Mafaufau",
-        "text": "Fai le su'ega o le soifua maloloina o le mafaufau a Psychology Today. O au tali e le teuina e lenei app; o le tapunia o lenei faamalama po'o le tu'ua o le lau e toe seti ai le su'ega.",
+        "text": "Fai le su'esu'ega a le Psychology Today mo le soifua maloloina o le mafaufau. E teuina au tali i lenei app; o le tapunia o lenei faamalama po o le tuua o le lau e toe setiina ai le suega.",
         "links": [
           {
             "label": "Amata le iloiloga",
@@ -103,7 +134,7 @@
       {
         "id": "diabetes",
         "title": "Su'esu'ega o le Ma'i Sukā",
-        "text": "O lenei su'ega e fa'aaogaina e iloa ai tagata atonu e maua i le ma'i sukā pe o lo'o lamatia fo'i i le atia'e o le ma'i, e masani lava a'o le'i fa'aalia ni fa'ailoga iloga.",
+        "text": "O lenei su'ega e fa'aaoga e iloa ai tagata atonu e maua i le ma'i sukā pe o lo'o i se tulaga lamatia o le atia'e o le ma'i, e masani lava a'o le'i fa'aalia ni fa'ailoga iloga.",
         "links": [
           {
             "label": "Su'ega Tulaga Lamatia",
@@ -114,7 +145,7 @@
       {
         "id": "mental",
         "title": "Punaoa mo le Soifua Maloloina o le Mafaufau",
-        "text": "O punaoa mo le soifua maloloina o le mafaufau ua mamanuina e lagolago ai tagata ta'ito'atasi i le puleaina o latou lagona, mafaufau, ma le soifua manuia lautele. O lo latou fa'amoemoe e tu'uina atu meafaigaluega, ta'iala, ma auaunaga e fesoasoani ai i tagata e malamalama, fa'afetaui, ma fo'ia luitau o le mafaufau.",
+        "text": "O punaoa mo le soifua maloloina o le mafaufau ua mamanuina e lagolago ai tagata ta'ito'atasi i le puleaina o latou lagona, mafaufau, ma le soifua manuia lautele. O lo latou fa'amoemoe o le tu'uina atu o meafaigāluega, ta'iala, ma 'au'aunaga e fesoasoani ai i tagata e malamalama, fa'afetaui, ma fo'ia luitau o le mafaufau.",
         "links": [
           {
             "label": "Soifua Maloloina o le Mafaufau 101",
@@ -129,7 +160,7 @@
       {
         "id": "truecare",
         "title": "True Care",
-        "text": "O TrueCare o se tasi o kamupani sili ona fa'atuatuaina o tausiga fa'alesoifua maloloina i San Diego ma Riverside Counties. O latou aufaigaluega fa'alelei ma foma'i agaalofa e fa'apitoa i le tu'uina atu o auaunaga lelei tau soifua maloloina ma le soifua manuia i nu'u le tagolima ina ia mafai ai e tagata ona maua le tausiga latou te mana'omia. O la latou sini ia maua e tagata uma le tausiga fa'alesoifua maloloina i totonu o nu'u latou te tautuaina, e tusa lava po o le a le tupe maua po'o le tulaga o inisiua.",
+        "text": "O le TrueCare o se tasi lea o 'au'aunaga fa'alesoifua maloloina sili ona fa'atuatuaina i San Diego ma Riverside Counties. O latou aufaigaluega faauo ma foma'i agaalofa e fa'apitoa i le tu'uina atu o 'au'aunaga fa'alesoifua maloloina ma le soifua manuia lelei i komupiuti e le o tagolima ina ia mafai ai e tagata ona maua le tausiga latou te mana'omia. O la latou sini o le fa'aavanoaina lea o le tausiga fa'alesoifua maloloina mo tagata uma i totonu o komupiuti latou te tautuaina, e tusa lava po o le a le tupe maua po o le tulaga o inisiua.",
         "links": [
           {
             "label": "Itulau Autu",
@@ -140,7 +171,7 @@
       {
         "id": "vista",
         "title": "Vista Community Clinic",
-        "text": "Tausiga Taua ma Feso'ota'i: Fa'afetaui mana'oga o le soifua maloloina ma le soifua manuia o lo tatou nu'u. O se nu'u e filifili ai tagata uma le soifua maloloina.",
+        "text": "Tausiga Taua Feso'ota'i: Fa'afetaui mana'oga o le soifua maloloina ma le soifua manuia o lo matou komupiuti. O se komupiuti e filifilia ai e tagata uma le soifua maloloina.",
         "links": [
           {
             "label": "Itulau Autu",
@@ -150,8 +181,8 @@
       },
       {
         "id": "mindfulness",
-        "title": "Punaoa o le Mafaufau Nofo Tasi",
-        "text": "O punaoa o le mafaufau nofo tasi ua mamanuina e fesoasoani ai i tagata ta'ito'atasi e fa'atupuina le nofo malamalama, fa'atasi, ma le taliaina o le taimi nei. O nei punaoa e fa'amoemoe e fa'aola le soifua manuia o le mafaufau ma lagona e ala i le a'oa'oina o faiga e fa'amalosia ai le mafaufau nofo tasi—o lona uiga o le fa'ata'ita'iga o le tu'u atu o le mafaufau i se auala fa'apitoa: ma le fa'amoemoe, i le taimi nei, ma aunoa ma se fa'amasinoga.",
+        "title": "Punaoa o le Mafaufau",
+        "text": "O punaoa o le mafaufau ua mamanuina e fesoasoani ai i tagata ta'ito'atasi e fa'atupuina le malamalama, le auai, ma le taliaina o le taimi nei. O nei punaoa e fa'amoemoe e fa'aola le soifua maloloina o le mafaufau ma lagona e ala i le a'oa'oina o faiga e fa'amalosia ai le mafaufau—o le fa'ata'ita'iga o le fa'asaga i se auala fa'apitoa: ma le fa'amoemoe, i le taimi nei, ma aunoa ma se fa'amasinoga.",
         "links": [
           {
             "label": "Mindful CSUSM",
@@ -161,11 +192,11 @@
       },
       {
         "id": "movement",
-        "title": "Gaio'iga ma Mea'ai",
-        "text": "O punaoa o gaio'iga ma mea'ai e fa'amalosia ai tagata ta'ito'atasi e pulea o latou soifua maloloina e ala i le tu'uina atu o meafaigaluega, malamalama, ma ta'iala latou te mana'omia e fai ai filifiliga fa'apitoa e uiga i gaioiga fa'aletino ma filifiliga tau taumafa. O le a'afiaga tu'ufa'atasia o gaioiga masani ma mea'ai talafeagai e lagolagoina ai le soifua manuia lautele, fa'aitiitia ai lamatiaga o fa'ama'i, fa'aleleia le soifua maloloina o le mafaufau, fa'aleleia le malosi, ma fa'aola le ola umi.",
+        "title": "Gaio'iga & Mea'ai",
+        "text": "O punaoa o gaio'iga ma mea'ai e fa'amalosia ai tagata ta'ito'atasi e pulea o latou soifua maloloina e ala i le tu'uina atu o meafaigāluega, malamalama, ma ta'iala latou te mana'omia e fai ai fa'ai'uga fa'amaonia e uiga i gaioiga fa'aletino ma filifiliga o mea'ai. O le a'afiaga tu'ufa'atasia o gaioiga masani ma mea'ai talafeagai e lagolagoina ai le soifua manuia lautele, fa'aitiitia ai le lamatiaga o fa'ama'i, fa'aleleia le soifua maloloina o le mafaufau, fa'aleleia le malosi, ma fa'aola le ola umi.",
         "links": [
           {
-            "label": "Chronic Disease Indicators",
+            "label": "Fa'ailoga o Ma'i Fa'ama'i",
             "linkId": "chronicDiseaseIndicators"
           }
         ]
@@ -183,15 +214,14 @@
       }
     ]
   },
-
   "culture": {
-    "title": "Aganu'u, Faatufugaga, ma Gagana",
+    "title": "Aganu'u, Faatufugaga, & Gagana",
     "services": [
       {
         "id": "umeke",
         "title": "Umeke",
         "dontTranslateTitle": true,
-        "text": "O lo'o fa'avae i North County San Diego, UMEKE o se fa'alapotopotoga 501(c)(3) e tu'ufa'atasia i le fa'asaoina, fa'atumauina ma le a'oa'oina o aganu'u a Hawaii. O la latou va'aiga o le a'oa'oina o nu'u i le lotoifale e ala i a'oa'oga fa'ale-aganu'u, talia se auala felagolagoma'i e galulue ai mo le tutusa ma le alualu i luma o tagata uma ua tu'ulafoa'iina ma le le tagolima.",
+        "text": "O lo'o fa'avae i North County San Diego, UMEKE o se fa'alapotopotoga 501(c)(3) e tu'ufa'atasia i le fa'asaoina, fa'aauauina ma le a'oa'oina o aganu'u a Hawaii. O la latou va'aiga o le a'oa'oina o komupiuti fa'apitonu'u e ala i a'oa'oga fa'ale-aganu'u, talia se auala feso'ota'i e galulue ai mo le tutusa ma le alualu i luma o tagata uma ua tu'ulafoa'i ma le le tagolima.",
         "links": [
           {
             "label": "Itulau Autu",
@@ -201,8 +231,8 @@
       },
       {
         "id": "language",
-        "title": "Language Course",
-        "text": "O se vaega o le CSUSM U-Act Project o le a e mauaina ai fa'amatalaga i luga o polokalame gagana ma a'oa'oga mo le Nu'u o le Pasefika. O nei polokalame o le Chamoru Language Immersion Experience ma le Gagana Sāmoa Language Performing Arts Program. O le Chamoru Language Immersion Experience o se fuafuaga fa'alea'oa'oga ua mamanuina e fa'atosina ai tagata auai i le gagana ma aganu'u a Chamoru. O le Gagana Sāmoa Language Performing Arts Program e taula'i i le a'oa'oina o le gagana Samoa (Gagana Samoa) ma faatufugaga fa'ale-aganu'u a Samoa.",
+        "title": "Kosi o le Gagana",
+        "text": "O se vaega o le CSUSM U-Act Project o le a e maua ai fa'amatalaga iinei e uiga i polokalame o le gagana ma a'oa'oga mo le Komipiuti a le Pasefika. O nei polokalame o le Chamoru Language Immersion Experience ma le Gagana Sāmoa Language Performing Arts Program. O le Chamoru Language Immersion Experience o se taumafaiga fa'ale-a'oa'oga ua mamanuina e fa'atofu ai tagata auai i le gagana ma aganu'u a Chamoru. O le Gagana Sāmoa Language Performing Arts Program e taula'i i le a'oa'oina o le gagana Samoa (Gagana Samoa) ma faatufugaga fa'ale-aganu'u a Samoa.",
         "links": [
           {
             "label": "CSUSM U-ACT",
@@ -212,11 +242,11 @@
       },
       {
         "id": "movementCourse",
-        "title": "Movement Course",
-        "text": "O Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) o se a'oga fa'ale-aganu'u hālau hula (a'oga hula), o lo'o i le nu'u i talafatai o Oceanside, CA. O lo matou hālau o lo'o naunau ma fa'amaoni e fa'aleleia a'oa'oga fa'ale-aganu'u i totonu o a matou haumāna (tamaiti a'oga) e ala i le faatufugaga o le hula. I le totonugalemu o la matou misiona o le tu'ufa'atasia lea o le a'oa'oina, a'oa'o atu, ma le fa'aauauina o itu uma o le hula, na aumai mai o matou gafa.",
+        "title": "Kosi o Gaioiga",
+        "text": "O Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) o lo'o tu o se a'oga hula masani, o lo'o i le komupiuti i le gataifale o Oceanside, CA. O lo matou hālau o lo'o naunau e fa'atupu a'oa'oga fa'ale-aganu'u i totonu o a matou haumāna e ala i le faatufugaga o le hula. I le totonugalemu o la matou misiona o le tu'ufa'atasia lea i le a'oa'oina, a'oa'oina, ma le fa'aauauina o itu uma o le hula, na aumai mai o matou gafa.",
         "links": [
           {
-            "label": "KHOI Homepage",
+            "label": "KHOI Itulau Autu",
             "linkId": "khoiHomepage"
           }
         ]
@@ -224,24 +254,23 @@
       {
         "id": "mindfullMovement",
         "title": "MindFull Movement",
-        "text": "O le MindFull Movement e fa'atatau i le fausiaina o avanoa mo le auai. O le fa'apotopotoga o siva ma gaioiga i Oceanside o se malutaga o le fa'aalia o le tagata lava ia, soifua manuia, ma le fa'amalologa mo tagata Hawaii Moni ma le Pasefika (NHPI) ma Black, Indigenous ma Tagata Lanu (BIPOC).",
+        "text": "O le MindFull Movement e fa'atatau uma i le fausiaina o avanoa mo le auai. O le fa'apotopotoga siva ma gaioiga e fa'avae i Oceanside o se malutaga o le fa'aaliga lelei o le tagata lava ia, soifua manuia, ma le fa'amalologa mo tagata Hawaii Moni ma le Pasefika (NHPI) ma Black, Indigenous and People of Color (BIPOC) tagata ta'ito'atasi.",
         "links": [
           {
-            "label": "Instagram Account",
+            "label": "Fa'amatalaga Instagram",
             "linkId": "instagramAccount"
           }
         ]
       }
     ]
   },
-
   "education": {
     "title": "A'oa'oga",
     "services": [
       {
         "id": "mana",
         "title": "Mana Academy",
-        "text": "O Mana o se polokalame a le Mira Costa Community College e fausia ai le nu'u i totonu o le lotoa i le va o tamaiti a'oga Native Hawaiian ma Pacific Islander (NHPI) ma ofo atu le tele o auaunaga lagolago mo sini tau a'oa'oga, aganu'u, ma le tagata lava ia. O Mana o se polokalame atoa e tu'uina atu i tamaiti a'oga se ulufale talafeagai fa'ale-aganu'u i a'oa'oga maualuga a'o ofoina atu le lagolago tau a'oa'oga ma faufautua.",
+        "text": "O Mana o se polokalame a le Mira Costa Community College e fausia ai le komupiuti i totonu o le lotoa i le va o tagata a'oga Hawaii Moni ma le Pasefika (NHPI) ma ofoina atu le tele o auaunaga lagolago mo sini fa'ale-a'oa'oga, aganu'u, ma le tagata lava ia. O Mana o se polokalame atoa lea e tu'uina atu ai i tamaiti a'oga se ulufale fa'ale-aganu'u i a'oa'oga maualuluga a'o ofoina atu le lagolago fa'ale-a'oa'oga ma faufautua.",
         "links": [
           {
             "label": "Mana @ MiraCosta College",
@@ -252,7 +281,7 @@
       {
         "id": "apida",
         "title": "CSUSM APIDA",
-        "text": "O le Asian & Pacific Islander & Desi American (APIDA) Success Initiative e taumafai e fa'aosofia ma saunia tamaiti a'oga uma mo le manuia i le CSUSM ma le tausiga ma le lagolago. Mo a matou tamaiti a'oga maualalo tupe maua, uluai augatupulaga, ma tamaiti a'oga toe fo'i mai.",
+        "text": "O le Asian & Pacific Islander & Desi American (APIDA) Success Initiative e taumafai e fa'aosofia ma saunia tamaiti a'oga uma mo le manuia i le CSUSM ma le tausiga ma le lagolago. Mo a matou tamaiti a'oga maualalo tupe maua, uluai augatupulaga, ma toe fo'i mai.",
         "links": [
           {
             "label": "Itulau Autu",
@@ -262,8 +291,8 @@
       },
       {
         "id": "apply",
-        "title": "How to Apply to College?",
-        "text": "O lenei mea o le a ta'ita'ia ai tamaiti a'oga i le faiga masani e lavelave, fa'atauva, ma ma'ale'ale o le taimi o le filifilia ma le talosaga i a'oga maualuluga. O nei punaoa e fesoasoani e fa'amautinoa e faia e tamaiti a'oga fa'ai'uga malamalama, tu'uina atu talosaga malolosi, ma i'u ai ina maua avanoa tau a'oa'oga e sili ona fetaui ma a latou sini ma mana'oga.",
+        "title": "E fa'apefea ona talosaga i le Kolisi?",
+        "text": "O lenei mea o le a ta'ita'ia ai tamaiti a'oga i le faiga masani e lavelave, fa'atauva, ma ma'ale'ale o le filifilia ma le talosaga i fa'alapotopotoga o a'oa'oga maualuluga. O nei punaoa e fesoasoani e fa'amautinoa e faia e tamaiti a'oga fa'ai'uga fa'amaonia, tu'uina atu talosaga malolosi, ma i'u ai ina maua avanoa fa'ale-a'oa'oga e sili ona fetaui ma a latou sini ma mana'oga.",
         "links": [
           {
             "label": "CommonApp",
@@ -273,32 +302,31 @@
       },
       {
         "id": "financialAid",
-        "title": "Financial Aid",
-        "text": "O le FAFSA e tu'uina atu le lagolago taua mo tagata ta'ito'atasi o lo'o sailia fesoasoani tau tupe mo a'oa'oga maualuluga. O le FAFSA o se meafaigaluega autu mo tamaiti a'oga e maua ai fesoasoani tau tupe a le feterale, e aofia ai fesoasoani, nonogatupe, ma avanoa galue-a'oga, fa'apea fo'i ma fesoasoani a le setete ma fa'alapotopotoga.",
+        "title": "Fesoasoani Tau Tupe",
+        "text": "O le FAFSA e tu'uina atu ai le lagolago taua mo tagata ta'ito'atasi o lo'o sailia fesoasoani tau tupe mo a'oa'oga maualuluga. O le FAFSA o se meafaigaluega autu mo tamaiti a'oga e maua ai fesoasoani tau tupe a le feterale, e aofia ai fesoasoani, nonogatupe, ma avanoa faigaluega-su'esu'e, fa'apea fo'i ma fesoasoani a le setete ma fa'alapotopotoga.",
         "links": [
           {
-            "label": "Federal Student Aid",
+            "label": "Fesoasoani a Tamaiti A'oga a le Feterale",
             "linkId": "federalStudentAid"
           }
         ]
       }
     ]
   },
-  
   "aboutUs": {
-    "title": "E Uiga ia i Matou",
-    "description1": "Na fa'atūina i le 2013, Pacific Islander Community Health (PIC Health) o lo'o tautua i le itulagi o Kalefonia i Saute, e ala i le fa'alauteleina o le tutusa o le soifua maloloina ma le amiotonu fa'aagafesootai mo nu'u o le Pasefika e ala i fuafuaga fa'ale-aganu'u fa'alesoifua maloloina ma su'esu'ega e fa'atatau i nu'u. O le PIC Health e tu'ufa'atasia i le fa'alauiloaina o le soifua manuia ma le maufetuuna'i e ala i le fo'ia o mana'oga tulaga ese o le soifua maloloina ma le le tutusa o lo'o feagai ma fa'atautaia e o tatou nu'u Pasifika i aso uma.",
+    "title": "Fa'amatalaga e uiga ia i matou",
+    "description1": "Na fa'atūina i le 2013, Pacific Islander Community Health (PIC Health) e tautua i le itulagi o Kalefonia i Saute, e ala i le fa'alauteleina o le tutusa o le soifua maloloina ma le amiotonu fa'aagafesootai mo komupiuti a le Pasefika e ala i fuafuaga fa'alesoifua maloloina fa'ale-aganu'u ma su'esu'ega e fa'atatau i le komupiuti. O le PIC Health e tu'ufua atu i le fa'alauiloaina o le soifua manuia ma le maufetuuna'i e ala i le fo'ia o mana'oga fa'apitoa o le soifua maloloina ma fa'aletonu o lo'o feagai ma o matou komupiuti Pasifika i aso uma.",
     "description2": "A'oa'o atili:",
     "sections": [
       {
         "id": "mission",
-        "title": "La Matou Misiona",
-        "text": "I le PIC Health, o la matou misiona o le fa'amalosia ma si'itia le nu'u o le Pasefika e ala i le fa'alauiloaina o fuafuaga fa'alesoifua maloloina atoa e maua'a i le fa'aleaganu'u ma le fa'atasi ma nu'u. E ala i su'esu'ega felagolagoma'i, fautua, ma a'oa'oga, matou te taumafai e fo'ia le le tutusa o le soifua maloloina o tagata, fa'aleleia le avanoa tutusa i tausiga fa'alesoifua maloloina, ma fa'atupuina se si'osi'omaga olaola e mafai ai e tagata ta'ito'atasi ona ausia lo latou tulaga maualuga o le soifua manuia."
+        "title": "La matou Misiona",
+        "text": "I le PIC Health, o la matou misiona o le fa'amalosia ma le si'itia o le komupiuti a le Pasefika e ala i le fa'alauiloaina o fuafuaga fa'alesoifua maloloina atoa e maua'a i le fa'aleaganu'u ma le auai o le komupiuti. E ala i su'esu'ega felagolagoma'i, fautua, ma a'oa'oga, matou te taumafai e fo'ia fa'aletonu o le soifua maloloina o tagata, fa'aleleia le avanoa tutusa i le tausiga fa'alesoifua maloloina, ma fa'atupuina se si'osi'omaga olaola e mafai ai e tagata ta'ito'atasi ona ausia lo latou tulaga maualuga o le soifua manuia."
       },
       {
         "id": "land",
-        "title": "Fa'ailoaina o Fanua",
-        "text": "Matou te fa'ailoa o le fanua o lo'o matou potopoto ai o le teritori fa'ale-aganu'u a tagata Luiseño/Payómkawichum. O le PIC Health ma ona nu'u lata ane o lo'o nonofo pea i 'au e ono ua aloa'ia e le feterale o La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum."
+        "title": "Fa'ailoaina o le Fanua",
+        "text": "Matou te fa'ailoa o le fanua o lo'o matou potopoto ai o le teritori fa'ale-aganu'u a tagata Luiseño/Payómkawichum. O le PIC Health ma ona eria o lo'o si'omia ai o lo'o nonofo pea i vaega e ono ua aloa'ia e le feterale o La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum tagata."
       }
     ]
   }

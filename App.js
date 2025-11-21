@@ -92,11 +92,6 @@ const RootApp = () => {
   const { loading } = useAuth();
   const [showWelcome, setShowWelcome] = useState(true);
 
-  // Add debug logging
-  React.useEffect(() => {
-    console.log('[RootApp] Loading state:', loading);
-  }, [loading]);
-
   if (loading) {
     return (
       <View
@@ -132,9 +127,6 @@ const RootApp = () => {
 };
 
 export default function App() {
-  // Add initial debug log
-  console.log('[App] Component rendering');
-  
   try {
     return (
       <ErrorBoundary>

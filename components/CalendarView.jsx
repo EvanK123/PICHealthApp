@@ -135,7 +135,13 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
   }, [selectedDate, t]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 12 }}>
+    <ScrollView 
+      style={styles.container} 
+      contentContainerStyle={{ 
+        paddingBottom: 12,
+        width: '100%',
+      }}
+    >
       {/* Full-width white background behind calendar */}
       <View
         style={styles.whitePanel}
@@ -177,7 +183,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
           {selectedEvents.map((ev) => {
             const isPic = ev.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com';
             const bar = isPic ? styles.topBarTeal : styles.topBarBlue;
-            const timeText = ev.start?.date ? 'All Day'
+            const timeText = ev.start?.date ? t('calendar.allDay')
               : new Date(ev.start?.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             return (
@@ -185,10 +191,10 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
                 <View style={[styles.topBar, bar]} />
                 <View style={styles.sheetBody}>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.sheetTitleText}>{ev.summary || '(No title)'}</Text>
+                    <Text style={styles.sheetTitleText}>{ev.summary || t('calendar.noTitle')}</Text>
                     <Text style={styles.sheetMeta}>{timeText} {ev.location ? `• ${ev.location}` : ''}</Text>
                   </View>
-                  <View style={styles.tag}><Text style={styles.tagText}>{isPic ? 'Free' : 'Family'}</Text></View>
+                  <View style={styles.tag}><Text style={styles.tagText}>{isPic ? t('calendar.free') : t('calendar.family')}</Text></View>
                 </View>
               </View>
             );
@@ -203,7 +209,10 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { 
+    flex: 1,
+    width: '100%',
+  },
 
   // Full-width white background container for the calendar
   whitePanel: {
@@ -211,6 +220,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,      // edge-to-edge look
     paddingVertical: 8,
     paddingHorizontal: 4, // tiny gutter so pills don't touch edges
+    width: '100%',
   },
 
   calendarStyle: { backgroundColor: 'transparent' },

@@ -12,24 +12,36 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
+import { useAuth } from "../context/AuthContext";
 import { getImageSource, getAppImage } from "../utils/imageLoader";
 import { useContext } from "react";
 
 const EducationScreen = () => {
   const { t, getServices } = useContext(TranslationContext);
+  const navigation = useNavigation();
+  const { user } = useAuth();
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
+  
+  // Get avatar URL from user metadata if available
+  const avatarUrl = user?.user_metadata?.avatar_url || null;
+  
+  const handleProfilePress = () => {
+    navigation.navigate('Account');
+  };
 
   // Localized content
   const headerTitle = t("education.title");
   const localizedSections = getServices("education");
 
-  const callWebView = (url, title = "Browser") => {
+  const callWebView = (url, title) => {
+    const defaultTitle = title || t('common.browser');
     Platform.OS === "web"
       ? Linking.openURL(url)
-      : setModalConfig({ isVisible: true, url, title });
+      : setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
   const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
@@ -43,7 +55,11 @@ const EducationScreen = () => {
         blurRadius={0}
       >
         {/* Header on Education WITHOUT Submit button */}
-        <Header title={headerTitle} />
+        <Header 
+          title={headerTitle}
+          avatarUrl={avatarUrl}
+          onPressProfile={handleProfilePress}
+        />
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={{ margin: 5, borderRadius: 10 }}>

@@ -17,13 +17,9 @@
       "saturday": "Sábado"
     },
     "close": "Cerrar",
-    "getStarted": "Comenzar",
-    "submitEvent": "Enviar Evento",
-    "selectCalendars": "Seleccionar Calendarios",
-    "selectCalendar": "Seleccionar Calendario",
-    "selectLanguage": "Seleccionar Idioma",
-    "allDay": "Todo el Día",
-    "noDescriptionAvailable": "No hay descripción disponible"
+    "browser": "Navegador",
+    "or": "o",
+    "somethingWentWrong": "Algo salió mal"
   },
   "app": {
     "tabs": {
@@ -32,7 +28,8 @@
       "education": "Educación",
       "culture": "Cultura",
       "aboutUs": "Sobre Nosotros"
-    }
+    },
+    "name": "PIC Health"
   },
   "calendar": {
     "title": "PIC Health",
@@ -41,6 +38,11 @@
     "selectCalendar": "Seleccionar Calendario",
     "selectCalendars": "Seleccionar Calendarios",
     "search": "Buscar",
+    "allDay": "Todo el día",
+    "noDescriptionAvailable": "No hay descripción disponible",
+    "noTitle": "(Sin título)",
+    "free": "Gratis",
+    "family": "Familia",
     "calendarOptions": {
       "pacificIslander": "Comunidad de las Islas del Pacífico",
       "latino": "Comunidad Latina"
@@ -63,20 +65,54 @@
   "header": {
     "submitEvent": "Enviar Evento"
   },
+  "login": {
+    "title": "PIC Health",
+    "subtitle": "Inicia sesión para mantenerte conectado con tu comunidad.",
+    "logIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "createAccount": "Crear Cuenta",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "passwordPlaceholder": "••••••••",
+    "continueWithGoogle": "Continuar con Google",
+    "enterEmailPassword": "Ingresa correo electrónico y contraseña.",
+    "googleSignInWebOnly": "El inicio de sesión con Google solo está disponible para la web en este momento.",
+    "googleSignInFailed": "El inicio de sesión con Google falló"
+  },
+  "profile": {
+    "title": "Cuenta",
+    "unknownUser": "Usuario desconocido",
+    "signedInTo": "Sesión iniciada en PIC Health",
+    "userId": "ID de Usuario",
+    "changeProfilePhoto": "Cambiar foto de perfil",
+    "signOut": "Cerrar Sesión",
+    "signOutMessage": "Volverás a la aplicación después de cerrar sesión.",
+    "permissionRequired": "Se requiere permiso para acceder a las fotos para establecer una foto de perfil.",
+    "uploadFailed": "Error al cargar la foto de perfil.",
+    "avatarUrlFailed": "No se pudo obtener la URL del avatar.",
+    "saveAvatarFailed": "Error al guardar la URL del avatar.",
+    "profileUpdated": "¡Foto de perfil actualizada! Puede tardar un momento en actualizarse.",
+    "avatarChangeError": "Algo salió mal al cambiar tu avatar."
+  },
   "popup": {
     "welcomeTitle": "¡Bienvenido a PIC Health!",
     "beta": "Beta",
     "disclaimer": "Aviso:",
-    "disclaimerText": "Este sitio es solo para uso educativo. Consulte a un médico para obtener asesoramiento médico. En una emergencia, llame al 911."
+    "disclaimerText": "Este sitio es solo para uso educativo. Consulta a un médico para obtener asesoramiento médico. En una emergencia, llama al 911.",
+    "getStarted": "Comenzar."
+  },
+  "webView": {
+    "notSupported": "La vista integrada no es compatible en la vista previa web. Este enlace debería abrirse en una nueva pestaña:"
   },
   "health": {
     "title": "Salud",
-    "description": "La información proporcionada aquí es solo para fines informativos generales y no pretende ser un consejo médico. Siempre consulte con un proveedor de atención médica calificado para obtener asesoramiento sobre su condición médica específica, síntomas u opciones de tratamiento. No ignore el consejo médico profesional ni retrase la búsqueda de tratamiento.",
+    "description": "La información proporcionada aquí es solo para fines informativos generales y no pretende ser un consejo médico. Siempre consulta con un proveedor de atención médica calificado para obtener asesoramiento sobre tu condición médica específica, síntomas u opciones de tratamiento. No ignores el consejo médico profesional ni retrases la búsqueda de tratamiento.",
     "services": [
       {
         "id": "findhelp",
         "title": "Encontrar Ayuda",
-        "text": "Findhelp lo conecta con recursos locales en su vecindario, incluyendo despensas de alimentos, programas de comidas, asistencia para vivienda, ayuda financiera, servicios de atención médica y más. Busque por código postal para encontrar programas disponibles cerca de usted.",
+        "text": "Findhelp te conecta con recursos locales en tu vecindario, incluyendo despensas de alimentos, programas de comidas, asistencia de vivienda, ayuda financiera, servicios de atención médica y más. Busca por código postal para encontrar programas disponibles cerca de ti.",
         "links": [
           {
             "label": "Encontrar Ayuda",
@@ -87,7 +123,7 @@
       {
         "id": "mentalHealthAssessment",
         "title": "Evaluación de Salud Mental",
-        "text": "Realice el cuestionario de salud mental de Psychology Today. Sus respuestas no se almacenan en esta aplicación; cerrar esta ventana o salir de la pantalla restablece el cuestionario.",
+        "text": "Realiza el cuestionario de salud mental de Psychology Today. Tus respuestas no son almacenadas por esta aplicación; cerrar esta ventana o salir de la pantalla reinicia la prueba.",
         "links": [
           {
             "label": "Comenzar la evaluación",
@@ -98,7 +134,7 @@
       {
         "id": "diabetes",
         "title": "Detección de Diabetes",
-        "text": "Esta prueba se utiliza para identificar a personas que pueden tener diabetes o están en riesgo de desarrollar la condición, a menudo antes de que muestren síntomas notables.",
+        "text": "Esta prueba se utiliza para identificar a personas que pueden tener diabetes o están en riesgo de desarrollar la afección, a menudo antes de que presenten síntomas notorios.",
         "links": [
           {
             "label": "Prueba de Riesgo",
@@ -109,7 +145,7 @@
       {
         "id": "mental",
         "title": "Recursos de Bienestar Mental",
-        "text": "Los recursos de salud mental están diseñados para apoyar a las personas en el manejo de su bienestar emocional, psicológico y social. Su propósito es proporcionar herramientas, orientación y servicios para ayudar a las personas a comprender, enfrentar y abordar los desafíos mentales.",
+        "text": "Los recursos de salud mental están diseñados para apoyar a las personas en el manejo de su bienestar emocional, psicológico y social. Su propósito es proporcionar herramientas, orientación y servicios para ayudar a las personas a comprender, afrontar y abordar los desafíos mentales.",
         "links": [
           {
             "label": "Salud Mental 101",
@@ -124,10 +160,10 @@
       {
         "id": "truecare",
         "title": "True Care",
-        "text": "TrueCare es uno de los proveedores de atención médica más confiables en los condados de San Diego y Riverside. Su personal amable y médicos compasivos se especializan en proporcionar servicios de atención médica y bienestar de calidad a comunidades desatendidas para que las personas puedan obtener la atención que necesitan. Su objetivo es hacer que la atención médica esté disponible para todos en las comunidades a las que sirven, independientemente de sus ingresos o estado de seguro.",
+        "text": "TrueCare es uno de los proveedores de atención médica más confiables en los condados de San Diego y Riverside. Su personal amable y médicos compasivos se especializan en brindar servicios de atención médica y bienestar de calidad a comunidades desatendidas para que las personas puedan obtener la atención que necesitan. Su objetivo es hacer que la atención médica esté disponible para todos en las comunidades a las que sirven, independientemente de sus ingresos o estado de seguro.",
         "links": [
           {
-            "label": "Página Principal",
+            "label": "Página de Inicio",
             "linkId": "homepage"
           }
         ]
@@ -135,18 +171,18 @@
       {
         "id": "vista",
         "title": "Vista Community Clinic",
-        "text": "Cuidado Valioso y Conectado: Satisfaciendo las necesidades de salud y bienestar de nuestra comunidad. Una comunidad donde cada persona elige la salud.",
+        "text": "Cuidado Conectado Valioso: Satisfaciendo las necesidades de salud y bienestar de nuestra comunidad. Una comunidad donde cada persona elige la salud.",
         "links": [
           {
-            "label": "Página Principal",
+            "label": "Página de Inicio",
             "linkId": "homepage"
           }
         ]
       },
       {
         "id": "mindfulness",
-        "title": "Recursos de Mindfulness",
-        "text": "Los recursos de mindfulness están diseñados para ayudar a las personas a cultivar la conciencia, la presencia y la aceptación del momento presente. Estos recursos tienen como objetivo promover el bienestar mental y emocional mediante la enseñanza de prácticas que fomentan la atención plena, esencialmente la práctica de prestar atención de manera particular: a propósito, en el momento presente y sin juicios.",
+        "title": "Recursos de Atención Plena",
+        "text": "Los recursos de atención plena están diseñados para ayudar a las personas a cultivar la conciencia, la presencia y la aceptación del momento presente. Estos recursos tienen como objetivo promover el bienestar mental y emocional al enseñar prácticas que fomentan la atención plena, esencialmente la práctica de prestar atención de manera particular: a propósito, en el momento presente y sin juicio.",
         "links": [
           {
             "label": "Mindful CSUSM",
@@ -157,7 +193,7 @@
       {
         "id": "movement",
         "title": "Movimiento y Nutrición",
-        "text": "Los recursos de movimiento y nutrición empoderan a las personas para tomar el control de su salud proporcionando las herramientas, el conocimiento y la orientación que necesitan para tomar decisiones informadas sobre la actividad física y las opciones dietéticas. El efecto combinado del movimiento regular y la nutrición adecuada apoya el bienestar general, reduce el riesgo de enfermedades, mejora la salud mental, aumenta la energía y promueve la longevidad.",
+        "text": "Los recursos de movimiento y nutrición empoderan a las personas para tomar el control de su salud al proporcionar las herramientas, el conocimiento y la orientación que necesitan para tomar decisiones informadas sobre la actividad física y las opciones dietéticas. El efecto combinado del movimiento regular y la nutrición adecuada apoya el bienestar general, reduce el riesgo de enfermedades, mejora la salud mental, aumenta la energía y promueve la longevidad.",
         "links": [
           {
             "label": "Indicadores de Enfermedades Crónicas",
@@ -168,7 +204,7 @@
       {
         "id": "cancer",
         "title": "Detección de Cáncer",
-        "text": "La detección de cáncer le permite mejorar el pronóstico, reducir la mortalidad, identificar la detección temprana y darle tranquilidad.",
+        "text": "La detección del cáncer te permite mejorar el pronóstico, reducir la mortalidad, identificar la detección temprana y darte tranquilidad.",
         "links": [
           {
             "label": "Detección de Cáncer",
@@ -185,10 +221,10 @@
         "id": "umeke",
         "title": "Umeke",
         "dontTranslateTitle": true,
-        "text": "Con sede en el condado norte de San Diego, UMEKE es una organización 501(c)(3) dedicada a la preservación, perpetuación y educación de la cultura hawaiana. Su visión es educar a las comunidades locales a través del aprendizaje intercultural, adoptando un enfoque interseccional para trabajar hacia la equidad y el avance de todas las poblaciones marginadas y desatendidas.",
+        "text": "Con sede en North County San Diego, UMEKE es una organización 501(c)(3) dedicada a la preservación, perpetuación y educación de la cultura hawaiana. Su visión es educar a las comunidades locales a través del aprendizaje intercultural, adoptando un enfoque interseccional para trabajar hacia la equidad y el avance de todas las poblaciones marginadas y desatendidas.",
         "links": [
           {
-            "label": "Página Principal",
+            "label": "Página de Inicio",
             "linkId": "homepage"
           }
         ]
@@ -196,7 +232,7 @@
       {
         "id": "language",
         "title": "Curso de Idioma",
-        "text": "Como parte del Proyecto U-Act de CSUSM, encontrará aquí información sobre programas de idioma y educación para la Comunidad de las Islas del Pacífico. Estos programas son The Chamoru Language Immersion Experience y The Gagana Sāmoa Language Performing Arts Program. The Chamoru Language Immersion Experience es una iniciativa educativa diseñada para sumergir a los participantes en el idioma y la cultura chamoru. The Gagana Sāmoa Language Performing Arts Program se centra en la enseñanza del idioma samoano (Gagana Samoa) y las artes escénicas tradicionales samoanas.",
+        "text": "Como parte del Proyecto U-Act de CSUSM, encontrarás aquí información sobre programas de idiomas y educación para la Comunidad de las Islas del Pacífico. Estos programas son The Chamoru Language Immersion Experience y The Gagana Sāmoa Language Performing Arts Program. The Chamoru Language Immersion Experience es una iniciativa educativa diseñada para sumergir a los participantes en el idioma y la cultura chamorra. The Gagana Sāmoa Language Performing Arts Program se centra en enseñar el idioma samoano (Gagana Samoa) y las artes escénicas tradicionales samoanas.",
         "links": [
           {
             "label": "CSUSM U-ACT",
@@ -207,10 +243,10 @@
       {
         "id": "movementCourse",
         "title": "Curso de Movimiento",
-        "text": "Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) se erige como una hālau hula tradicional (escuela de hula), ubicada en la comunidad costera de Oceanside, CA. Nuestro hālau está apasionadamente comprometido con fomentar el aprendizaje cultural entre nuestros haumāna (estudiantes) a través del arte del hula. En el centro de nuestra misión está la dedicación a aprender, enseñar y perpetuar cada faceta del hula, extraída de nuestro linaje ancestral.",
+        "text": "Kūhai Hālau O ʻIlima Pā ʻŌlapa Kahiko (KHOI) se erige como una hālau hula (escuela de hula) tradicional, ubicada en la comunidad costera de Oceanside, CA. Nuestro hālau está apasionadamente comprometido a fomentar el aprendizaje cultural entre nuestros haumāna (estudiantes) a través del arte del hula. En el centro de nuestra misión está la dedicación a aprender, enseñar y perpetuar cada faceta del hula, extraído de nuestro linaje ancestral.",
         "links": [
           {
-            "label": "Página Principal de KHOI",
+            "label": "Página de Inicio de KHOI",
             "linkId": "khoiHomepage"
           }
         ]
@@ -218,7 +254,8 @@
       {
         "id": "mindfullMovement",
         "title": "MindFull Movement",
-        "text": "MindFull Movement se trata de crear espacio para la pertenencia. El colectivo de danza y movimiento con sede en Oceanside es un refugio de autoexpresión saludable, bienestar y curación para individuos nativos hawaianos y de las islas del Pacífico (NHPI) y personas negras, indígenas y de color (BIPOC).",
+        "title": "MindFull Movement",
+        "text": "MindFull Movement se trata de crear espacio para la pertenencia. El colectivo de danza y movimiento con sede en Oceanside es un refugio de autoexpresión saludable, bienestar y curación para nativos hawaianos e isleños del Pacífico (NHPI) y personas negras, indígenas y de color (BIPOC).",
         "links": [
           {
             "label": "Cuenta de Instagram",
@@ -234,7 +271,7 @@
       {
         "id": "mana",
         "title": "Mana Academy",
-        "text": "Mana es un programa de Mira Costa Community College que construye comunidad en el campus entre estudiantes nativos hawaianos y de las islas del Pacífico (NHPI) y ofrece muchos servicios de apoyo hacia metas académicas, culturales y personales. Mana es un programa holístico que proporciona a los estudiantes una entrada culturalmente relevante a la educación superior mientras ofrece apoyo académico y de consejería.",
+        "text": "Mana es un programa de Mira Costa Community College que construye comunidad en el campus entre estudiantes nativos hawaianos e isleños del Pacífico (NHPI) y ofrece muchos servicios de apoyo hacia metas académicas, culturales y personales. Mana es un programa holístico que proporciona a los estudiantes una entrada culturalmente relevante a la educación superior mientras ofrece apoyo académico y de consejería.",
         "links": [
           {
             "label": "Mana @ MiraCosta College",
@@ -245,10 +282,10 @@
       {
         "id": "apida",
         "title": "CSUSM APIDA",
-        "text": "La Iniciativa de Éxito Asiático y de las Islas del Pacífico y Desi American (APIDA) se esfuerza por inspirar y preparar a todos los estudiantes para el éxito en CSUSM con cuidado y apoyo. Para nuestros estudiantes de bajos ingresos, primera generación y estudiantes que regresan.",
+        "text": "La Iniciativa de Éxito Asiático e Isleño del Pacífico y Desi Americano (APIDA) se esfuerza por inspirar y preparar a todos los estudiantes para el éxito en CSUSM con cuidado y apoyo. Para nuestros estudiantes de bajos ingresos, de primera generación y que regresan.",
         "links": [
           {
-            "label": "Página Principal",
+            "label": "Página de Inicio",
             "linkId": "homepage"
           }
         ]
@@ -256,7 +293,7 @@
       {
         "id": "apply",
         "title": "¿Cómo Solicitar Ingreso a la Universidad?",
-        "text": "Esto guiará a los estudiantes a través del proceso a menudo complejo, competitivo y sensible al tiempo de seleccionar y solicitar ingreso a instituciones de educación superior. Estos recursos ayudan a garantizar que los estudiantes tomen decisiones informadas, presenten solicitudes sólidas y finalmente obtengan acceso a las oportunidades educativas que mejor se adapten a sus metas y necesidades.",
+        "text": "Esto guiará a los estudiantes a través del proceso a menudo complejo, competitivo y sensible al tiempo de seleccionar y solicitar ingreso a instituciones de educación superior. Estos recursos ayudan a garantizar que los estudiantes tomen decisiones informadas, envíen solicitudes sólidas y finalmente obtengan acceso a las oportunidades educativas que mejor se adapten a sus objetivos y necesidades.",
         "links": [
           {
             "label": "CommonApp",
@@ -267,10 +304,10 @@
       {
         "id": "financialAid",
         "title": "Ayuda Financiera",
-        "text": "FAFSA proporciona apoyo esencial para las personas que buscan asistencia financiera para la educación superior. FAFSA es una herramienta clave para que los estudiantes accedan a ayuda financiera federal, incluyendo becas, préstamos y oportunidades de trabajo-estudio, así como para ayuda estatal e institucional.",
+        "text": "FAFSA proporciona apoyo esencial para personas que buscan asistencia financiera para la educación superior. FAFSA es una herramienta clave para que los estudiantes accedan a ayuda financiera federal, incluyendo becas, préstamos y oportunidades de trabajo y estudio, así como ayuda estatal e institucional.",
         "links": [
           {
-            "label": "Ayuda Estudiantil Federal",
+            "label": "Ayuda Federal para Estudiantes",
             "linkId": "federalStudentAid"
           }
         ]
@@ -279,18 +316,18 @@
   },
   "aboutUs": {
     "title": "Sobre Nosotros",
-    "description1": "Establecida en 2013, Pacific Islander Community Health (PIC Health) sirve a la región del sur de California, promoviendo la equidad en salud y la justicia social para las comunidades de las islas del Pacífico a través de iniciativas de salud culturalmente centradas e investigación centrada en la comunidad. PIC Health se dedica a promover el bienestar y la resiliencia abordando las necesidades de salud únicas y las disparidades que nuestras comunidades Pasifika enfrentan y navegan todos los días.",
+    "description1": "Establecida en 2013, Pacific Islander Community Health (PIC Health) sirve a la región del Sur de California, promoviendo la equidad en salud y la justicia social para las comunidades de las Islas del Pacífico a través de iniciativas de salud culturalmente centradas e investigación centrada en la comunidad. PIC Health se dedica a promover el bienestar y la resiliencia abordando las necesidades de salud únicas y las disparidades que nuestras comunidades Pasifika enfrentan y navegan a diario.",
     "description2": "Aprende más:",
     "sections": [
       {
         "id": "mission",
         "title": "Nuestra Misión",
-        "text": "En PIC Health, nuestra misión es empoderar y elevar a la comunidad de las islas del Pacífico promoviendo iniciativas de salud y bienestar holísticas arraigadas en la sensibilidad cultural y la participación comunitaria. A través de la investigación colaborativa, la defensa y la educación, nos esforzamos por abordar las disparidades de salud indígena, fomentar el acceso equitativo a la atención médica y cultivar un ambiente próspero donde cada individuo pueda alcanzar su nivel más alto de bienestar."
+        "text": "En PIC Health, nuestra misión es empoderar y elevar a la comunidad de las Islas del Pacífico mediante la promoción de iniciativas de salud y bienestar holísticas arraigadas en la sensibilidad cultural y la participación comunitaria. A través de la investigación colaborativa, la defensa y la educación, nos esforzamos por abordar las disparidades de salud indígena, fomentar el acceso equitativo a la atención médica y cultivar un ambiente próspero donde cada individuo pueda alcanzar su nivel más alto de bienestar."
       },
       {
         "id": "land",
         "title": "Reconocimiento de la Tierra",
-        "text": "Reconocemos que la tierra en la que nos reunimos es el territorio tradicional del pueblo Luiseño/Payómkawichum. PIC Health y sus áreas circundantes todavía son el hogar de las seis bandas reconocidas federalmente de La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba del pueblo Luiseño/Payómkawichum."
+        "text": "Reconocemos que la tierra en la que nos reunimos es el territorio tradicional del pueblo Luiseño/Payómkawichum. PIC Health y sus áreas circundantes todavía son el hogar de las seis bandas reconocidas federalmente del pueblo La Jolla, Pala, Pauma, Pechanga, Rincon, Soboba Luiseño/Payómkawichum."
       }
     ]
   }

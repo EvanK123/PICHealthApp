@@ -83,9 +83,10 @@ const CalendarScreen = () => {
     },
   ];
 
-  const callWebView = (url, title = "Browser") => {
+  const callWebView = (url, title) => {
+    const defaultTitle = title || t('common.browser');
     if (Platform.OS === 'web') Linking.openURL(url);
-    else setModalConfig({ isVisible: true, url, title });
+    else setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
   const closeModal = () =>
@@ -117,7 +118,7 @@ const CalendarScreen = () => {
         acc[key].push({
           name: ev.summary,
           time: timeLabel,
-          description: ev.description || 'No description available',
+          description: ev.description || t('calendar.noDescriptionAvailable'),
           organizer: ev.organizer || {},
           ...ev,
         });
@@ -146,13 +147,6 @@ const CalendarScreen = () => {
   };
 
   const backgroundImage = getAppImage('background');
-  
-  // Add debug logging
-  React.useEffect(() => {
-    console.log('[CalendarScreen] Background image:', backgroundImage);
-    console.log('[CalendarScreen] User:', user);
-    console.log('[CalendarScreen] Avatar URL:', avatarUrl);
-  }, [backgroundImage, user, avatarUrl]);
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
@@ -181,50 +175,30 @@ const CalendarScreen = () => {
         />
 
         <View style={styles.darken}>
-          {calendarMode ? (
-            <>
-              <CalendarView
-                events={events}
-                selectedCalendars={selectedCalendars}
-                callWebView={callWebView}
-                closeModal={closeModal}
-                onEventPress={handleEventPress}
-              />
+          <View style={styles.centeredContent}>
+            <View style={styles.contentWrapper}>
+              {calendarMode ? (
+                <>
+                  <CalendarView
+                    events={events}
+                    selectedCalendars={selectedCalendars}
+                    callWebView={callWebView}
+                    closeModal={closeModal}
+                    onEventPress={handleEventPress}
+                  />
 
-              {/* Wellness + SOS UNDER the calendar (Calendar view only) */}
-              <View style={styles.middleBtns}>
-                <TouchableOpacity
-                  onPress={() =>
-                    callWebView(
-                      'https://www.healthcentral.com/quiz/stress-test'
-                    )
-                  }
-                  style={{ flex: 1, alignItems: 'center' }}
-                  activeOpacity={0.85}
-                >
-                  <View style={styles.wellnessSOS}>
-                    <Text style={styles.middleBtnText}>How ya doin' 👋</Text>
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => callWebView('https://www.cavshate.org/')}
-                  style={{ flex: 1, alignItems: 'center' }}
-                  activeOpacity={0.85}
-                >
-                  <View style={styles.wellnessSOS}>
-                    <Text style={styles.middleBtnText}>SOS ⚠️</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : (
-            <ListView
-              onEventPress={handleEventPress}
-              events={events}
-              selectedCalendars={selectedCalendars}
-            />
-          )}
+                  {/* Wellness + SOS UNDER the calendar (Calendar view only) */}
+                  <WellnessButtons callWebView={callWebView} />
+                </>
+              ) : (
+                <ListView
+                  onEventPress={handleEventPress}
+                  events={events}
+                  selectedCalendars={selectedCalendars}
+                />
+              )}
+            </View>
+          </View>
         </View>
       </ImageBackground>
 
@@ -244,8 +218,21 @@ export default CalendarScreen;
 const styles = StyleSheet.create({
   container: { flex: 1 },
   image: { flex: 1, width: '100%', height: '100%' },
-  darken: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
-
+  darken: { 
+    flex: 1, 
+    backgroundColor: 'rgba(0,0,0,0.40)',
+  },
+  centeredContent: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  contentWrapper: {
+    width: '100%',
+    maxWidth: 900,
+    flex: 1,
+  },
   middleBtns: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -253,6 +240,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginTop: 12,
     marginBottom: 8,
+    width: '100%',
   },
   wellnessSOS: {
     height: 50,

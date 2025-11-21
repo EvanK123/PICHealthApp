@@ -17,13 +17,9 @@
       "saturday": "Saturday"
     },
     "close": "Close",
-    "getStarted": "Get Started",
-    "submitEvent": "Submit Event",
-    "selectCalendars": "Select Calendars",
-    "selectCalendar": "Select Calendar",
-    "selectLanguage": "Select Language",
-    "allDay": "All Day",
-    "noDescriptionAvailable": "No description available"
+    "browser": "Browser",
+    "or": "or",
+    "somethingWentWrong": "Something went wrong"
   },
 
   "app": {
@@ -33,7 +29,8 @@
       "education": "Education",
       "culture": "Culture",
       "aboutUs": "About Us"
-    }
+    },
+    "name": "PIC Health"
   },
 
   "calendar": {
@@ -43,6 +40,11 @@
     "selectCalendar": "Select Calendar",
     "selectCalendars": "Select Calendars",
     "search": "Search",
+    "allDay": "All Day",
+    "noDescriptionAvailable": "No description available",
+    "noTitle": "(No title)",
+    "free": "Free",
+    "family": "Family",
     "calendarOptions": {
       "pacificIslander": "Pacific Islander Community",
       "latino": "Latino Community"
@@ -67,11 +69,48 @@
     "submitEvent": "Submit Event"
   },
 
+  "login": {
+    "title": "PIC Health",
+    "subtitle": "Sign in to stay connected with your community.",
+    "logIn": "Log In",
+    "signUp": "Sign Up",
+    "createAccount": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "continueWithGoogle": "Continue with Google",
+    "enterEmailPassword": "Enter email and password.",
+    "googleSignInWebOnly": "Google sign-in is only wired for web right now.",
+    "googleSignInFailed": "Google sign-in failed"
+  },
+
+  "profile": {
+    "title": "Account",
+    "unknownUser": "Unknown user",
+    "signedInTo": "Signed in to PIC Health",
+    "userId": "User ID",
+    "changeProfilePhoto": "Change profile photo",
+    "signOut": "Sign Out",
+    "signOutMessage": "You'll be returned to the app after signing out.",
+    "permissionRequired": "Permission to access photos is required to set a profile picture.",
+    "uploadFailed": "Failed to upload profile picture.",
+    "avatarUrlFailed": "Could not retrieve avatar URL.",
+    "saveAvatarFailed": "Failed to save avatar URL.",
+    "profileUpdated": "Profile picture updated! It may take a moment to refresh.",
+    "avatarChangeError": "Something went wrong while changing your avatar."
+  },
+
   "popup": {
     "welcomeTitle": "Welcome to PIC Health!",
     "beta": "Beta",
     "disclaimer": "Disclaimer:",
-    "disclaimerText": "This site is for educational use only. Consult a doctor for medical advice. In an emergency, call 911."
+    "disclaimerText": "This site is for educational use only. Consult a doctor for medical advice. In an emergency, call 911.",
+    "getStarted": "Get Started."
+  },
+
+  "webView": {
+    "notSupported": "The embedded view isn't supported in web preview. This link should open in a new tab:"
   },
 
   "health": {

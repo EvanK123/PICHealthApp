@@ -26,10 +26,11 @@ const Popup = ({ visible, onClose, mode = "event", events, event }) => {
     callWebView(href);
   };
 
-  const callWebView = (url, title = "Browser") => {
+  const callWebView = (url, title) => {
+    const defaultTitle = title || t('common.browser');
     Platform.OS === 'web' ? 
       Linking.openURL(url) :
-      setModalConfig({ isVisible: true, url, title });
+      setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
   const closeModal = () => {
@@ -83,7 +84,7 @@ const Popup = ({ visible, onClose, mode = "event", events, event }) => {
                 <Text style={styles.disclaimerBold}>{t('popup.disclaimer')}</Text> {t('popup.disclaimerText')}
               </Text>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>{t('common.getStarted')}</Text>
+                <Text style={styles.closeButtonText}>{t('popup.getStarted')}</Text>
               </TouchableOpacity>
             </View>
           )}

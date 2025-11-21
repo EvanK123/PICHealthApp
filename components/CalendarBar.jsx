@@ -4,9 +4,6 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
 
-// Debug logging
-console.log('[CalendarBar] Component loaded');
-
 const COLORS = {
   headerBg: '#2d4887',
   pillGroupBg: 'rgba(255,255,255,0.12)',
@@ -60,7 +57,7 @@ export default function CalendarBar({
             style={[styles.pill, !calendarMode && styles.pillActive]}
           >
             <Text style={[styles.pillText, !calendarMode && styles.pillTextActive]}>
-              Upcoming Events
+              {t('calendar.upcomingEvents')}
             </Text>
           </TouchableOpacity>
 
@@ -71,7 +68,7 @@ export default function CalendarBar({
             style={[styles.pill, styles.pillRight, calendarMode && styles.pillActive]}
           >
             <Text style={[styles.pillText, calendarMode && styles.pillTextActive]}>
-              Calendar
+              {t('calendar.calendar')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -83,8 +80,8 @@ export default function CalendarBar({
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save="key"
-          label="Select Calendars"
-          placeholder="Select Calendar"
+          label={t('common.selectCalendars')}
+          placeholder={t('common.selectCalendar')}
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />

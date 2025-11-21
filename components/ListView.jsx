@@ -110,6 +110,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 16,
+    width: '100%',
+  },
+  sectionList: {
+    width: '100%',
   },
   listItem: {
     marginHorizontal: 10,

@@ -16,6 +16,7 @@ import * as FileSystem from 'expo-file-system';
 import { decode as decodeBase64 } from 'base64-arraybuffer';
 
 import { useAuth } from '../context/AuthContext';
+import { TranslationContext } from '../context/TranslationContext';
 import { supabase } from '../services/supabaseClient';
 
 const COLORS = {
@@ -26,8 +27,9 @@ const COLORS = {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user, signOut } = useAuth();
+  const { t } = React.useContext(TranslationContext);
 
-  const email = user?.email ?? 'Unknown user';
+  const email = user?.email ?? t('profile.unknownUser');
   const userId = user?.id ?? '—';
   const avatarUrl = user?.user_metadata?.avatar_url ?? null;
 
@@ -47,9 +49,7 @@ export default function ProfileScreen() {
       // Ask for permission
       const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!perm.granted) {
-        alert(
-          'Permission to access photos is required to set a profile picture.'
-        );
+        alert(t('profile.permissionRequired'));
         return;
       }
 
@@ -96,7 +96,7 @@ export default function ProfileScreen() {
 
       if (uploadError) {
         console.error('[ProfileScreen] upload error:', uploadError);
-        alert('Failed to upload profile picture.');
+        alert(t('profile.uploadFailed'));
         return;
       }
 
@@ -107,7 +107,7 @@ export default function ProfileScreen() {
 
       const publicUrl = publicData?.publicUrl;
       if (!publicUrl) {
-        alert('Could not retrieve avatar URL.');
+        alert(t('profile.avatarUrlFailed'));
         return;
       }
 
@@ -118,17 +118,17 @@ export default function ProfileScreen() {
 
       if (updateError) {
         console.error('[ProfileScreen] updateUser error:', updateError);
-        alert('Failed to save avatar URL.');
+        alert(t('profile.saveAvatarFailed'));
         return;
       }
 
-      alert('Profile picture updated! It may take a moment to refresh.');
+      alert(t('profile.profileUpdated'));
     } catch (err) {
       console.error(
         '[ProfileScreen] handleChangeAvatar unexpected error:',
         err
       );
-      alert('Something went wrong while changing your avatar.');
+      alert(t('profile.avatarChangeError'));
     }
   };
 
@@ -143,7 +143,7 @@ export default function ProfileScreen() {
         >
           <Icon name="chevron-back" size={22} color="#ffffff" />
         </TouchableOpacity>
-        <Text style={styles.topBarTitle}>Account</Text>
+        <Text style={styles.topBarTitle}>{t('profile.title')}</Text>
         <View style={{ width: 22 }} />
       </View>
 
@@ -165,14 +165,14 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.userInfo}>
               <Text style={styles.userEmail}>{email}</Text>
-              <Text style={styles.userLabel}>Signed in to PIC Health</Text>
+              <Text style={styles.userLabel}>{t('profile.signedInTo')}</Text>
             </View>
           </View>
 
           <View style={styles.divider} />
 
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>User ID</Text>
+            <Text style={styles.infoLabel}>{t('profile.userId')}</Text>
             <Text
               style={styles.infoValue}
               numberOfLines={1}
@@ -196,7 +196,7 @@ export default function ProfileScreen() {
               color="#ffffff"
               style={{ marginRight: 6 }}
             />
-            <Text style={styles.avatarButtonText}>Change profile photo</Text>
+            <Text style={styles.avatarButtonText}>{t('profile.changeProfilePhoto')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -210,11 +210,11 @@ export default function ProfileScreen() {
               color="#ffffff"
               style={{ marginRight: 6 }}
             />
-            <Text style={styles.signOutText}>Sign Out</Text>
+            <Text style={styles.signOutText}>{t('profile.signOut')}</Text>
           </TouchableOpacity>
 
           <Text style={styles.subText}>
-            You’ll be returned to the app after signing out.
+            {t('profile.signOutMessage')}
           </Text>
         </View>
       </View>

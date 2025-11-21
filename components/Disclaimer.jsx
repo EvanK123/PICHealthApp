@@ -1,10 +1,12 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import DisclaimerModal from './DisclaimerModal';
+import { TranslationContext } from '../context/TranslationContext';
 
 const Disclaimer = ({description}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const { t } = useContext(TranslationContext);
 
   return (
     <View style={styles.iconContainer}>
@@ -23,7 +25,7 @@ const Disclaimer = ({description}) => {
         <DisclaimerModal
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
-          title="Disclaimer"
+          title={t('popup.disclaimer')}
           message={description}
         />
     </View>

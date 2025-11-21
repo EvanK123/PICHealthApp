@@ -2,6 +2,8 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import { TranslationContext } from '../context/TranslationContext';
 import languagesConfig from '../locales/languages.config.json';
 import { getAppImage } from '../utils/imageLoader';
@@ -19,8 +21,11 @@ export default function Header({
   title = 'PIC Health',
   showSubmit = false,            // <- only show button on Home
   onPressSubmit = () => {},
+  avatarUrl = null,              // Profile picture URL
+  onPressProfile = null,         // Profile button handler
 }) {
   const { lang, setLang, t } = useContext(TranslationContext);
+  const navigation = useNavigation();
 
   const languages = getAllLanguages().map(l => {
     const translated = t(l.translationKey);
@@ -29,6 +34,14 @@ export default function Header({
   });
 
   const currentLabel = languages.find(l => l.code === lang)?.label || lang.toUpperCase();
+
+  const handleProfilePress = () => {
+    if (onPressProfile) {
+      onPressProfile();
+    } else {
+      navigation.navigate('Account');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -41,8 +54,25 @@ export default function Header({
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      {/* Right: language chip + optional Submit */}
+      {/* Right: profile button + language chip + optional Submit */}
       <View style={styles.right}>
+        {/* Profile button */}
+        {(avatarUrl || onPressProfile !== null) && (
+          <TouchableOpacity
+            onPress={handleProfilePress}
+            activeOpacity={0.8}
+            style={styles.profileButton}
+          >
+            {avatarUrl ? (
+              <View style={styles.profileAvatarWrapper}>
+                <Image source={{ uri: avatarUrl }} style={styles.profileAvatar} />
+              </View>
+            ) : (
+              <Icon name="person-circle-outline" size={26} color="#ffffff" />
+            )}
+          </TouchableOpacity>
+        )}
+
         <View style={styles.langChip}>
           <Text numberOfLines={1} style={styles.langText}>{currentLabel}</Text>
 
@@ -108,6 +138,27 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '800', color: COLORS.onPrimary },
 
   right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  
+  // Profile button
+  profileButton: {
+    marginRight: 4,
+    padding: 4,
+    borderRadius: 999,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileAvatarWrapper: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#ffffff',
+  },
+  profileAvatar: {
+    width: '100%',
+    height: '100%',
+  },
 
   // Compact language chip (fixed height)
   langChip: {

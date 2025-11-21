@@ -12,16 +12,27 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import Seperator from "../components/Seperator";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
+import { useAuth } from "../context/AuthContext";
 import { useContext } from "react";
 import { getImageSource, getAppImage } from "../utils/imageLoader";
 
 const AboutUs = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
   const { t, getAboutUsSections } = useContext(TranslationContext);
+  const navigation = useNavigation();
+  const { user } = useAuth();
+  
+  // Get avatar URL from user metadata if available
+  const avatarUrl = user?.user_metadata?.avatar_url || null;
+  
+  const handleProfilePress = () => {
+    navigation.navigate('Account');
+  };
 
   // Localized strings
   const headerTitle = t("aboutUs.title");
@@ -29,10 +40,11 @@ const AboutUs = () => {
   const desc2 = t("aboutUs.description2");
   const sections = getAboutUsSections();
 
-  const callWebView = (url, title = "Browser") => {
+  const callWebView = (url, title) => {
+    const defaultTitle = title || t('common.browser');
     Platform.OS === "web"
       ? Linking.openURL(url)
-      : setModalConfig({ isVisible: true, url, title });
+      : setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
   const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
@@ -47,7 +59,12 @@ const AboutUs = () => {
           resizeMode="cover"
         >
           {/* Hide Submit button on About Us */}
-          <Header title={headerTitle} showSubmit={false} />
+          <Header 
+            title={headerTitle} 
+            showSubmit={false}
+            avatarUrl={avatarUrl}
+            onPressProfile={handleProfilePress}
+          />
 
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.logoRow}>
@@ -65,7 +82,7 @@ const AboutUs = () => {
               <TouchableOpacity
                 onPress={() => {
                   const links = require('../locales/links.json');
-                  callWebView(links.aboutUs.aboutUsPage, "About Us");
+                  callWebView(links.aboutUs.aboutUsPage, t('app.tabs.aboutUs'));
                 }}
                 activeOpacity={0.8}
                 style={styles.photoContainer}

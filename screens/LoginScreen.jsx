@@ -14,6 +14,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '../context/AuthContext';
+import { TranslationContext } from '../context/TranslationContext';
+import { useContext } from 'react';
 
 const COLORS = {
   headerBg: '#2d4887',
@@ -27,6 +29,7 @@ const COLORS = {
 export default function LoginScreen() {
   const navigation = useNavigation();
   const { signIn, signUp, signInWithGoogleWeb } = useAuth();
+  const { t } = useContext(TranslationContext);
 
   const [mode, setMode] = useState('signin'); // 'signin' | 'signup'
   const [email, setEmail] = useState('');
@@ -42,7 +45,7 @@ export default function LoginScreen() {
       setErrorMsg('');
 
       if (!email || !password) {
-        throw new Error('Enter email and password.');
+        throw new Error(t('login.enterEmailPassword'));
       }
 
       if (isSignIn) {
@@ -53,7 +56,7 @@ export default function LoginScreen() {
 
       // On success, AccountScreenGate will switch to ProfileScreen automatically
     } catch (err) {
-      setErrorMsg(err.message ?? 'Something went wrong');
+      setErrorMsg(err.message ?? t('common.somethingWentWrong'));
     } finally {
       setSubmitting(false);
     }
@@ -67,10 +70,10 @@ export default function LoginScreen() {
       if (Platform.OS === 'web') {
         await signInWithGoogleWeb();
       } else {
-        setErrorMsg('Google sign-in is only wired for web right now.');
+        setErrorMsg(t('login.googleSignInWebOnly'));
       }
     } catch (err) {
-      setErrorMsg(err.message ?? 'Google sign-in failed');
+      setErrorMsg(err.message ?? t('login.googleSignInFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -89,9 +92,9 @@ export default function LoginScreen() {
       </View>
 
       <View style={styles.container}>
-        <Text style={styles.appTitle}>PIC Health</Text>
+        <Text style={styles.appTitle}>{t('login.title')}</Text>
         <Text style={styles.subtitle}>
-          Sign in to stay connected with your community.
+          {t('login.subtitle')}
         </Text>
 
         {/* Toggle pills matching CalendarBar */}
@@ -105,7 +108,7 @@ export default function LoginScreen() {
               <Text
                 style={[styles.pillText, isSignIn && styles.pillTextActive]}
               >
-                Log In
+                {t('login.logIn')}
               </Text>
             </TouchableOpacity>
 
@@ -121,7 +124,7 @@ export default function LoginScreen() {
               <Text
                 style={[styles.pillText, !isSignIn && styles.pillTextActive]}
               >
-                Sign Up
+                {t('login.signUp')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -131,21 +134,21 @@ export default function LoginScreen() {
 
         {/* Form card */}
         <View style={styles.card}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>{t('login.email')}</Text>
           <TextInput
             style={styles.input}
             autoCapitalize="none"
-            placeholder="you@example.com"
+            placeholder={t('login.emailPlaceholder')}
             placeholderTextColor="rgba(255,255,255,0.5)"
             value={email}
             onChangeText={setEmail}
           />
 
-          <Text style={[styles.label, { marginTop: 10 }]}>Password</Text>
+          <Text style={[styles.label, { marginTop: 10 }]}>{t('login.password')}</Text>
           <TextInput
             style={styles.input}
             secureTextEntry
-            placeholder="••••••••"
+            placeholder={t('login.passwordPlaceholder')}
             placeholderTextColor="rgba(255,255,255,0.5)"
             value={password}
             onChangeText={setPassword}
@@ -161,7 +164,7 @@ export default function LoginScreen() {
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.primaryButtonText}>
-                {isSignIn ? 'Log In' : 'Create Account'}
+                {isSignIn ? t('login.logIn') : t('login.createAccount')}
               </Text>
             )}
           </TouchableOpacity>
@@ -169,7 +172,7 @@ export default function LoginScreen() {
           {/* Divider */}
           <View style={styles.dividerRow}>
             <View style={styles.divider} />
-            <Text style={styles.dividerText}>or</Text>
+            <Text style={styles.dividerText}>{t('common.or')}</Text>
             <View style={styles.divider} />
           </View>
 
@@ -185,7 +188,7 @@ export default function LoginScreen() {
               color="#1f2937"
               style={{ marginRight: 8 }}
             />
-            <Text style={styles.googleButtonText}>Continue with Google</Text>
+            <Text style={styles.googleButtonText}>{t('login.continueWithGoogle')}</Text>
           </TouchableOpacity>
         </View>
       </View>
