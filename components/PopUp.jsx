@@ -6,11 +6,20 @@ import { TranslationContext } from '../context/TranslationContext';
 import { getAppImage } from '../utils/imageLoader';
 
 // Popup component to display event details or welcome message in a modal
-const Popup = ({ visible, onClose, mode = "event", events }) => {
-  if (mode === "event" && (!events || events.length === 0)) return null;
-  
+const Popup = ({ visible, onClose, mode = "event", events, event }) => {
   const { t } = useContext(TranslationContext);
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
+
+  // Normalize events - support both single event and array of events
+  let eventList = [];
+  if (mode === "event") {
+    if (event) {
+      eventList = [event];
+    } else if (events) {
+      eventList = Array.isArray(events) ? events : [events];
+    }
+    if (eventList.length === 0) return null;
+  }
 
   // Function to handle link presses within the HTML content
   const handleLinkPress = (event, href) => {
@@ -39,11 +48,11 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
           </TouchableOpacity>
           {mode === "event" ? (
             <FlatList
-              data={events}
-              keyExtractor={(item, index) => item.id + index}
+              data={eventList}
+              keyExtractor={(item, index) => (item.id || item.name || index).toString()}
               renderItem={({ item }) => (
                 <View style={styles.eventContainer}>
-                  <Text style={styles.title}>{item.summary}</Text>
+                  <Text style={styles.title}>{item.summary || item.name}</Text>
                   {item.description ? (
                     <RenderHtml
                       contentWidth={300}
@@ -55,9 +64,9 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
                     <Text style={styles.noDescription}>{t('common.noDescriptionAvailable')}</Text>
                   )}
                   <Text style={styles.eventTime}>
-                    {new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' })}
+                    {item.start ? new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' }) : item.time}
                   </Text>
-                  <Text style={styles.eventTime}>{item.location}</Text>
+                  {item.location && <Text style={styles.eventTime}>{item.location}</Text>}
                 </View>
               )}
             />

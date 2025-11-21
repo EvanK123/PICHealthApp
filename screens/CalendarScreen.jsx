@@ -59,6 +59,8 @@ const WellnessButtons = ({ callWebView }) => {
 
 const CalendarScreen = () => {
   const { t } = useContext(TranslationContext);
+  const navigation = useNavigation();
+  const { user } = useAuth();
   // false = Upcoming (default), true = Calendar
   const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
@@ -66,6 +68,9 @@ const CalendarScreen = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
   const [events, setEvents] = useState({});
   const [selectedCalendars, setSelectedCalendars] = useState([]);
+  
+  // Get avatar URL from user metadata if available
+  const avatarUrl = user?.user_metadata?.avatar_url || null;
 
   const calendarOptions = [
     {
@@ -140,9 +145,23 @@ const CalendarScreen = () => {
     navigation.navigate('Account');
   };
 
+  const backgroundImage = getAppImage('background');
+  
+  // Add debug logging
+  React.useEffect(() => {
+    console.log('[CalendarScreen] Background image:', backgroundImage);
+    console.log('[CalendarScreen] User:', user);
+    console.log('[CalendarScreen] Avatar URL:', avatarUrl);
+  }, [backgroundImage, user, avatarUrl]);
+
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
-      <ImageBackground source={getAppImage('background')} resizeMode="cover" style={styles.image} blurRadius={0}>
+      <ImageBackground 
+        source={backgroundImage || require('../assets/background.png')} 
+        resizeMode="cover" 
+        style={styles.image} 
+        blurRadius={0}
+      >
         <Header
           title={t('calendar.title')}
           showSubmit

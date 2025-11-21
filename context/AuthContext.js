@@ -12,16 +12,32 @@ export function AuthProvider({ children }) {
   // Load initial session and subscribe to changes
   useEffect(() => {
     let isMounted = true;
+    let subscription = null;
 
     async function initAuth() {
       try {
-        const { data, error } = await supabase.auth.getSession();
+        // Add timeout to prevent hanging
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Session fetch timeout')), 10000)
+        );
+        
+        const sessionPromise = supabase.auth.getSession();
+        const { data, error } = await Promise.race([sessionPromise, timeoutPromise]);
+        
         if (!isMounted) return;
 
         if (error) {
           console.error('[AuthContext] getSession error:', error);
+          // Set session to null on error, don't block the app
+          setSession(null);
         } else {
-          setSession(data.session ?? null);
+          setSession(data?.session ?? null);
+        }
+      } catch (err) {
+        console.error('[AuthContext] initAuth error:', err);
+        // On any error (including timeout), set loading to false and continue
+        if (isMounted) {
+          setSession(null);
         }
       } finally {
         if (isMounted) setLoading(false);
@@ -30,15 +46,27 @@ export function AuthProvider({ children }) {
 
     initAuth();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
+    // Set up auth state change listener
+    try {
+      const {
+        data: { subscription: authSubscription },
+      } = supabase.auth.onAuthStateChange((_event, newSession) => {
+        if (isMounted) {
+          setSession(newSession);
+        }
+      });
+      subscription = authSubscription;
+    } catch (err) {
+      console.error('[AuthContext] onAuthStateChange error:', err);
+      // If subscription fails, still set loading to false
+      if (isMounted) setLoading(false);
+    }
 
     return () => {
       isMounted = false;
-      subscription.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, []);
 

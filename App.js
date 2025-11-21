@@ -3,11 +3,11 @@ import 'react-native-url-polyfill/auto';
 import 'react-native-get-random-values';
 
 import React, { useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, Text } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -18,6 +18,7 @@ import EducationScreen from './screens/EducationScreen';
 import CultureScreen from './screens/CultureScreen';
 
 import Popup from './components/PopUp';
+import ErrorBoundary from './components/ErrorBoundary';
 import { TranslationProvider, TranslationContext } from './context/TranslationContext';
 import { useContext } from 'react';
 
@@ -27,7 +28,7 @@ import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const TabNavigator = () => {
   const { t } = useContext(TranslationContext);
@@ -91,6 +92,11 @@ const RootApp = () => {
   const { loading } = useAuth();
   const [showWelcome, setShowWelcome] = useState(true);
 
+  // Add debug logging
+  React.useEffect(() => {
+    console.log('[RootApp] Loading state:', loading);
+  }, [loading]);
+
   if (loading) {
     return (
       <View
@@ -126,11 +132,25 @@ const RootApp = () => {
 };
 
 export default function App() {
-  return (
-    <AuthProvider>
-      <TranslationProvider>
-        <RootApp />
-      </TranslationProvider>
-    </AuthProvider>
-  );
+  // Add initial debug log
+  console.log('[App] Component rendering');
+  
+  try {
+    return (
+      <ErrorBoundary>
+        <AuthProvider>
+          <TranslationProvider>
+            <RootApp />
+          </TranslationProvider>
+        </AuthProvider>
+      </ErrorBoundary>
+    );
+  } catch (error) {
+    console.error('[App] Error in render:', error);
+    return (
+      <View style={{ flex: 1, backgroundColor: '#111827', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+        <Text style={{ color: '#ef4444', fontSize: 18 }}>Error: {error.message}</Text>
+      </View>
+    );
+  }
 }

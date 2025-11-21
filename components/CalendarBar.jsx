@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
+
+// Debug logging
+console.log('[CalendarBar] Component loaded');
 
 const COLORS = {
   headerBg: '#2d4887',
