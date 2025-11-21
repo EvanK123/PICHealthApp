@@ -4,7 +4,8 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { Calendar } from 'react-native-calendars';
 import Popup from './PopUp';
 import WebViewModal from './WebViewModal';
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
+import { useContext } from 'react';
 
 // ===== Navy palette =====
 const COLORS = {
@@ -50,7 +51,7 @@ const toLocalDate = (isoDate) => {
 };
 
 export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
-  const { t } = useTranslation();
+  const { t } = useContext(TranslationContext);
   const [markedDates, setMarkedDates] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);

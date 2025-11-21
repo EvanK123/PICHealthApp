@@ -1,0 +1,12 @@
+{
+  "app": {
+    "background": "beach-bg.jpg",
+    "logo": "pic-logo.png",
+    "logoText": "pic-health-logo-TEXT.png",
+    "teamPhoto": "picteam.jpeg"
+  },
+  "health": {},
+  "culture": {},
+  "education": {},
+  "aboutUs": {}
+}

@@ -25,6 +25,7 @@
     "allDay": "Aso Atoa",
     "noDescriptionAvailable": "Leai se fa'amatalaga o maua"
   },
+
   "app": {
     "tabs": {
       "home": "Aiga",
@@ -34,6 +35,7 @@
       "aboutUs": "E Uiga ia i Matou"
     }
   },
+
   "calendar": {
     "title": "PIC Health",
     "calendar": "Kalena",
@@ -60,19 +62,44 @@
       "noEventsAvailable": "Leai se mea e fai"
     }
   },
+
   "header": {
     "submitEvent": "Tu'u atu Mea e Fai"
   },
+
   "popup": {
     "welcomeTitle": "Susū mai i le PIC Health!",
     "beta": "Beta",
     "disclaimer": "Fa'ailoa:",
     "disclaimerText": "O lenei 'upega tafa'ilagi e na'o a'oa'oga. Fa'afeso'ota'i se foma'i mo fautuaga fa'afoma'i. I se fa'alavelave fa'afuase'i, vili le 911."
   },
+
   "health": {
     "title": "Soifua Maloloina",
     "description": "O fa'amatalaga o lo'o tu'uina atu iinei e mo na'o fa'amatalaga lautele ma e le'o fa'amoemoe e fai ma fautuaga fa'afoma'i. Fa'afeso'ota'i i taimi uma ma se tufuga soifua maloloina agava'a mo fautuaga e uiga i lou tulaga fa'afoma'i patino, fa'ailoga, po'o filifiliga togafitiga. Aua le amana'ia fautuaga fa'apolofesa fa'afoma'i po'o le fa'atuai o le sailia o togafitiga.",
     "services": [
+      {
+        "id": "findhelp",
+        "title": "Saili Fesoasoani",
+        "text": "E feso'ota'i Findhelp oe ma punaoa fa'apitonu'u i lou pitonu'u, e aofia ai faleoloa mea'ai, polokalame taumafa, fesoasoani mo fale, fesoasoani tau tupe, auaunaga tau soifua maloloina, ma isi mea. Su'e i le ZIP code e maua ai polokalame o lo'o avanoa i ou tafatafa.",
+        "links": [
+          {
+            "label": "Saili Fesoasoani",
+            "linkId": "homepage"
+          }
+        ]
+      },
+      {
+        "id": "mentalHealthAssessment",
+        "title": "Iloiloga o le Soifua Maloloina o le Mafaufau",
+        "text": "Fai le su'ega o le soifua maloloina o le mafaufau a Psychology Today. O au tali e le teuina e lenei app; o le tapunia o lenei faamalama po'o le tu'ua o le lau e toe seti ai le su'ega.",
+        "links": [
+          {
+            "label": "Amata le iloiloga",
+            "linkId": "mentalHealthAssessment"
+          }
+        ]
+      },
       {
         "id": "diabetes",
         "title": "Su'esu'ega o le Ma'i Sukā",
@@ -156,6 +183,7 @@
       }
     ]
   },
+
   "culture": {
     "title": "Aganu'u, Faatufugaga, ma Gagana",
     "services": [
@@ -206,6 +234,7 @@
       }
     ]
   },
+
   "education": {
     "title": "A'oa'oga",
     "services": [
@@ -255,6 +284,7 @@
       }
     ]
   },
+  
   "aboutUs": {
     "title": "E Uiga ia i Matou",
     "description1": "Na fa'atūina i le 2013, Pacific Islander Community Health (PIC Health) o lo'o tautua i le itulagi o Kalefonia i Saute, e ala i le fa'alauteleina o le tutusa o le soifua maloloina ma le amiotonu fa'aagafesootai mo nu'u o le Pasefika e ala i fuafuaga fa'ale-aganu'u fa'alesoifua maloloina ma su'esu'ega e fa'atatau i nu'u. O le PIC Health e tu'ufa'atasia i le fa'alauiloaina o le soifua manuia ma le maufetuuna'i e ala i le fo'ia o mana'oga tulaga ese o le soifua maloloina ma le le tutusa o lo'o feagai ma fa'atautaia e o tatou nu'u Pasifika i aso uma.",

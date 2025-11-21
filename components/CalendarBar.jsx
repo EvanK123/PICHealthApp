@@ -1,15 +1,7 @@
-// components/CalendarBar.js
-import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-} from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { TranslationContext } from '../context/TranslationContext';
 
 const COLORS = {
   headerBg: '#2d4887',
@@ -28,6 +20,7 @@ export default function CalendarBar({
   onPressProfile,
   avatarUrl,                 // NEW: profile avatar URL
 }) {
+  const { t } = useContext(TranslationContext);
   const goUpcoming = () => setCalendarMode(false);
   const goCalendar = () => setCalendarMode(true);
 

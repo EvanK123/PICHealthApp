@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { TranslationContext } from '../context/TranslationContext';
-import { useTranslation } from '../hooks/useTranslation';
 import languagesConfig from '../locales/languages.config.json';
+import { getAppImage } from '../utils/imageLoader';
 
 const COLORS = {
   primary: '#2d4887',
@@ -20,8 +20,7 @@ export default function Header({
   showSubmit = false,            // <- only show button on Home
   onPressSubmit = () => {},
 }) {
-  const { lang, setLang } = useContext(TranslationContext);
-  const { t } = useTranslation();
+  const { lang, setLang, t } = useContext(TranslationContext);
 
   const languages = getAllLanguages().map(l => {
     const translated = t(l.translationKey);
@@ -36,7 +35,7 @@ export default function Header({
       {/* Left: logo (with BETA under it) + title */}
       <View style={styles.left}>
         <View style={styles.brandWrap}>
-          <Image source={require('../assets/pic-logo.png')} style={styles.logo} resizeMode="contain" />
+          <Image source={getAppImage('logo')} style={styles.logo} resizeMode="contain" />
           <Text style={styles.beta}>BETA</Text>
         </View>
         <Text style={styles.title}>{title}</Text>

@@ -18,23 +18,52 @@ import CalendarView from '../components/CalendarView';
 import ListView from '../components/ListView';
 import Popup from '../components/PopUp';
 import WebViewModal from '../components/WebViewModal';
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
+import { useContext } from 'react';
+import { getAppImage } from '../utils/imageLoader';
 
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 import { useAuth } from '../context/AuthContext';
 
+// Reusable Wellness Buttons Component
+const WellnessButtons = ({ callWebView }) => {
+  const { t } = useContext(TranslationContext);
+  const links = require('../locales/links.json');
+  const howYaDoin = t('calendar.wellnessButtons.howYaDoin');
+  const sos = t('calendar.wellnessButtons.sos');
+
+  return (
+    <View style={styles.middleBtns}>
+      <TouchableOpacity
+        onPress={() => callWebView(links.calendar.wellnessButtons[howYaDoin.linkId], howYaDoin.label)}
+        style={{ flex: 1, alignItems: 'center' }}
+        activeOpacity={0.85}
+      >
+        <View style={styles.wellnessSOS}>
+          <Text style={styles.middleBtnText}>{howYaDoin.label}</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)}
+        style={{ flex: 1, alignItems: 'center' }}
+        activeOpacity={0.85}
+      >
+        <View style={styles.wellnessSOS}>
+          <Text style={styles.middleBtnText}>{sos.label}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const CalendarScreen = () => {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
-  const { user } = useAuth();
-
-  const avatarUrl = user?.user_metadata?.avatar_url ?? null;
-
+  const { t } = useContext(TranslationContext);
   // false = Upcoming (default), true = Calendar
   const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '' });
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
   const [events, setEvents] = useState({});
   const [selectedCalendars, setSelectedCalendars] = useState([]);
 
@@ -49,9 +78,9 @@ const CalendarScreen = () => {
     },
   ];
 
-  const callWebView = (url) => {
+  const callWebView = (url, title = "Browser") => {
     if (Platform.OS === 'web') Linking.openURL(url);
-    else setModalConfig({ isVisible: true, url });
+    else setModalConfig({ isVisible: true, url, title });
   };
 
   const closeModal = () =>
@@ -113,17 +142,14 @@ const CalendarScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
-      <ImageBackground
-        source={require('../assets/beach-bg.jpg')}
-        resizeMode="cover"
-        style={styles.image}
-      >
+      <ImageBackground source={getAppImage('background')} resizeMode="cover" style={styles.image} blurRadius={0}>
         <Header
           title={t('calendar.title')}
           showSubmit
-          onPressSubmit={() =>
-            callWebView('https://forms.gle/JwAusA65SNBHkdED9')
-          }
+          onPressSubmit={() => {
+            const links = require('../locales/links.json');
+            callWebView(links.calendar.submitEvent, t('header.submitEvent'));
+          }}
         />
 
         <CalendarBar
@@ -189,11 +215,7 @@ const CalendarScreen = () => {
         event={selectedEvent}
       />
 
-      <WebViewModal
-        url={modalConfig.url}
-        isVisible={modalConfig.isVisible}
-        onClose={closeModal}
-      />
+      <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} title={modalConfig.title} />
     </SafeAreaView>
   );
 };

@@ -9,24 +9,27 @@ import {
   Linking,
   TouchableOpacity,
   Platform,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
-import { useTranslation } from "../hooks/useTranslation";
+import { TranslationContext } from "../context/TranslationContext";
+import { useContext } from "react";
+import { getImageSource, getAppImage } from "../utils/imageLoader";
 
 const CultureScreen = () => {
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  const { t, getServices } = useTranslation();
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
+  const { t, getServices } = useContext(TranslationContext);
 
   // Localized content
   const headerTitle = t("culture.title");
   const localizedSections = getServices("culture");
 
-  const callWebView = (url) => {
+  const callWebView = (url, title = "Browser") => {
     Platform.OS === "web"
       ? Linking.openURL(url)
-      : setModalConfig({ isVisible: true, url });
+      : setModalConfig({ isVisible: true, url, title });
   };
 
   const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
@@ -34,7 +37,7 @@ const CultureScreen = () => {
   return (
     <SafeAreaView edges={["top"]} style={styles.container}>
       <ImageBackground
-        source={require("../assets/beach-bg.jpg")}
+        source={getAppImage('background')}
         resizeMode="cover"
         style={styles.image}
         blurRadius={0}
@@ -46,13 +49,20 @@ const CultureScreen = () => {
           <View style={{ margin: 5, borderRadius: 10 }}>
             {localizedSections.map((sec) => (
               <View key={sec.id} style={textBox.container}>
+                {sec.image && (
+                  <Image
+                    source={getImageSource(sec.image)}
+                    style={textBox.image}
+                    resizeMode="contain"
+                  />
+                )}
                 <Text style={textBox.title}>{sec.title}</Text>
                 <Text style={textBox.text}>{sec.text}</Text>
 
                 {sec.links.map((ln, idx) => (
                   <TouchableOpacity
                     key={`${sec.id}-link-${idx}`}
-                    onPress={() => callWebView(ln.url)}
+                    onPress={() => callWebView(ln.url, ln.label)}
                     activeOpacity={0.8}
                   >
                     <Text style={textBox.link}>{ln.label}</Text>
@@ -68,6 +78,7 @@ const CultureScreen = () => {
         url={modalConfig.url}
         isVisible={modalConfig.isVisible}
         onClose={closeModal}
+        title={modalConfig.title}
       />
     </SafeAreaView>
   );
@@ -88,6 +99,12 @@ const textBox = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10,
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    marginBottom: 10,
+    borderRadius: 8,
   },
   title: {
     fontSize: 20,

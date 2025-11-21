@@ -74,6 +74,28 @@
     "description": "La información proporcionada aquí es solo para fines informativos generales y no pretende ser un consejo médico. Siempre consulte con un proveedor de atención médica calificado para obtener asesoramiento sobre su condición médica específica, síntomas u opciones de tratamiento. No ignore el consejo médico profesional ni retrase la búsqueda de tratamiento.",
     "services": [
       {
+        "id": "findhelp",
+        "title": "Encontrar Ayuda",
+        "text": "Findhelp lo conecta con recursos locales en su vecindario, incluyendo despensas de alimentos, programas de comidas, asistencia para vivienda, ayuda financiera, servicios de atención médica y más. Busque por código postal para encontrar programas disponibles cerca de usted.",
+        "links": [
+          {
+            "label": "Encontrar Ayuda",
+            "linkId": "homepage"
+          }
+        ]
+      },
+      {
+        "id": "mentalHealthAssessment",
+        "title": "Evaluación de Salud Mental",
+        "text": "Realice el cuestionario de salud mental de Psychology Today. Sus respuestas no se almacenan en esta aplicación; cerrar esta ventana o salir de la pantalla restablece el cuestionario.",
+        "links": [
+          {
+            "label": "Comenzar la evaluación",
+            "linkId": "mentalHealthAssessment"
+          }
+        ]
+      },
+      {
         "id": "diabetes",
         "title": "Detección de Diabetes",
         "text": "Esta prueba se utiliza para identificar a personas que pueden tener diabetes o están en riesgo de desarrollar la condición, a menudo antes de que muestren síntomas notables.",

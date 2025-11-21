@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
+import { getAppImage } from '../utils/imageLoader';
 
 const DisclaimerModal = ({ visible, onClose, title, message }) => {
-  const { t } = useTranslation();
+  const { t } = useContext(TranslationContext);
   
   return (
     <Modal
@@ -22,7 +23,7 @@ const DisclaimerModal = ({ visible, onClose, title, message }) => {
           </TouchableOpacity>
           
           <Image
-            source={require('../assets/pic-logo.png')}
+            source={getAppImage('logo')}
             style={styles.logo}
             resizeMode='contain'
           />

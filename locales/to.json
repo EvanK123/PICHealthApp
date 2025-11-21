@@ -25,6 +25,7 @@
     "allDay": "ʻAho kotoa",
     "noDescriptionAvailable": "ʻOku ʻikai ke ʻi ai ha fakamatala"
   },
+
   "app": {
     "tabs": {
       "home": "ʻApi",
@@ -34,6 +35,7 @@
       "aboutUs": "Kau ki Mautolu"
     }
   },
+
   "calendar": {
     "title": "PIC Health",
     "calendar": "Kalānitā",
@@ -60,19 +62,44 @@
       "noEventsAvailable": "ʻOku ʻikai ha ngaue ʻoku maʻu"
     }
   },
+
   "header": {
     "submitEvent": "Tuku atu e Ngaue"
   },
+
   "popup": {
     "welcomeTitle": "Mālō e lava mai ki he PIC Health!",
     "beta": "Beta",
     "disclaimer": "Fakamatala:",
     "disclaimerText": "Ko e peesi ko ʻeni ki he ako pe. Kataki ʻo ʻalu ki ha toketaʻ mo e fakatonutonu fakafaitoʻo. ʻI ha taimi fakaʻuliua, telefoni 911."
   },
+
   "health": {
     "title": "Moʻui Lelei",
     "description": "Ko e fakamatala ʻoku ʻomai ʻi heni ko e fakamatala lahi ange ia ʻoku ʻikai ke fakafofongaʻi ha fakatonutonu fakafaitoʻo. Kataki ʻo ʻalu ki ha toketaʻ mo e fakatonutonu ki hoʻo tuʻunga fakafaitoʻo, hā ʻa e toʻo, pe ngaahi fili mo e faitoʻo. ʻOua ʻe teʻeki ke tokoniʻi ha fakatonutonu fakafaitoʻo pe fakaʻuliʻuli e ʻalu ki he faitoʻo.",
     "services": [
+      {
+        "id": "findhelp",
+        "title": "Kumi Tokoni",
+        "text": "ʻOku fakatatauʻi ʻe Findhelp koe mo e ngaahi ngaue fakaʻofoʻofa fakalotofonua ʻi hoʻo feituʻu, kau ai ʻa e ngaahi fale fakatau meʻakai, ngaahi polokalama meʻakai, tokoni fale, tokoni paʻanga, ngaahi sevisesi moʻui lelei, mo ha meʻa kehe. Kumi ʻaki ʻa e ZIP code ke ke kumi ai ʻa e ngaahi polokalama ʻoku maʻu ʻi hoʻo tafaʻaki.",
+        "links": [
+          {
+            "label": "Kumi Tokoni",
+            "linkId": "homepage"
+          }
+        ]
+      },
+      {
+        "id": "mentalHealthAssessment",
+        "title": "Sivi ʻo e Moʻui Lelei ʻo e ʻAtamai",
+        "text": "Fai ʻa e sivi ʻo e moʻui lelei ʻo e ʻatamai ʻa Psychology Today. ʻOku ʻikai ke teuʻi hoʻo ngaahi tali ʻi he app ko ʻeni; ko e tāpuni ʻo e matapā ko ʻeni pe ʻalu ʻi he lau ʻoku toe seti ai ʻa e sivi.",
+        "links": [
+          {
+            "label": "Kamataʻi ʻa e sivi",
+            "linkId": "mentalHealthAssessment"
+          }
+        ]
+      },
       {
         "id": "diabetes",
         "title": "Sivi ʻo e Sukā",
@@ -156,6 +183,7 @@
       }
     ]
   },
+
   "culture": {
     "title": "Anga faka-Tonga, Fakaʻatiʻati, mo e Lea",
     "services": [
@@ -206,6 +234,7 @@
       }
     ]
   },
+
   "education": {
     "title": "Ako",
     "services": [
@@ -255,6 +284,7 @@
       }
     ]
   },
+  
   "aboutUs": {
     "title": "Kau ki Mautolu",
     "description1": "Naʻe faʻu ʻi he 2013, Pacific Islander Community Health (PIC Health) ʻoku ne tuku atu ki he feituʻu ʻo Kalifōnia-tonga, ʻaki e fakalakalaka ʻo e tatau ʻo e moʻui lelei mo e totonu fakasosiale ki he ngaahi komunitī ʻo e Pasifiki ʻaki e ngaahi kamataʻanga moʻui lelei ʻoku fakakakato ki he anga mo e fakatotolo ʻoku fakakakato ki he komunitī. ʻOku fakapapauʻi ʻa e PIC Health ki he fakalakalaka ʻo e moʻui lelei mo e loto toutai ʻaki hono fokoutua ʻa e ngaahi fiemaʻu moʻui lelei ʻoku makehe mo e ngaahi meʻa kehe ʻoku feʻauʻaki mo hokohoko atu ʻe ʻema komunitī Pasifika ʻi he ʻaho kotoa pē.",

@@ -10,6 +10,7 @@ const smTranslations = require('../locales/sm.json');
 const chTranslations = require('../locales/ch.json');
 const toTranslations = require('../locales/to.json');
 const links = require('../locales/links.json');
+const images = require('../locales/images.json');
 
 const translations = {
   en: enTranslations,
@@ -18,6 +19,37 @@ const translations = {
   ch: chTranslations,
   to: toTranslations,
 };
+
+/**
+ * Merge image ID with image path from centralized images.json
+ * @param {object} service - Service object
+ * @param {string} section - Section name (health, culture, education)
+ * @returns {object} - Service with merged image path
+ */
+function mergeImage(service, section) {
+  const sectionImages = images[section];
+  if (!sectionImages || !sectionImages[service.id]) {
+    return service;
+  }
+  
+  const serviceImage = sectionImages[service.id];
+  if (service.imageId && serviceImage[service.imageId]) {
+    return {
+      ...service,
+      image: serviceImage[service.imageId]
+    };
+  }
+  
+  // If no imageId specified but image exists, use default "image" key
+  if (serviceImage.image) {
+    return {
+      ...service,
+      image: serviceImage.image
+    };
+  }
+  
+  return service;
+}
 
 /**
  * Merge link IDs with URLs from centralized links.json
@@ -98,22 +130,27 @@ export function getSection(lang, section) {
  * Get services for a specific section
  * @param {string} lang - Language code
  * @param {string} section - Section name (e.g., "health", "culture", "education")
- * @returns {array} - Array of services with merged URLs from links.json
+ * @returns {array} - Array of services with merged URLs from links.json and images from images.json
  */
 export function getServices(lang, section) {
   const sectionData = getSection(lang, section);
   const services = sectionData.services || [];
-  return services.map(service => mergeLinks(service, section));
+  return services.map(service => {
+    let mergedService = mergeLinks(service, section);
+    mergedService = mergeImage(mergedService, section);
+    return mergedService;
+  });
 }
 
 /**
  * Get sections for About Us page
  * @param {string} lang - Language code
- * @returns {array} - Array of aboutUs sections
+ * @returns {array} - Array of aboutUs sections with merged images from images.json
  */
 export function getAboutUsSections(lang) {
   const aboutUsData = getSection(lang, 'aboutUs');
-  return aboutUsData.sections || [];
+  const sections = aboutUsData.sections || [];
+  return sections.map(section => mergeImage(section, 'aboutUs'));
 }
 
 export default { t, getSection, getServices, getAboutUsSections };
