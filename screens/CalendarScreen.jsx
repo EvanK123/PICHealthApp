@@ -11,6 +11,7 @@ import Popup from '../components/PopUp';
 import WebViewModal from '../components/WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
 import { useContext } from 'react';
+import { getAppImage } from '../utils/imageLoader';
 
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 
@@ -101,7 +102,7 @@ const CalendarScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
-      <ImageBackground source={require('../assets/beach-bg.jpg')} resizeMode="cover" style={styles.image} blurRadius={0}>
+      <ImageBackground source={getAppImage('background')} resizeMode="cover" style={styles.image} blurRadius={0}>
         <Header
           title={t('calendar.title')}
           showSubmit

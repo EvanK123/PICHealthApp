@@ -3,6 +3,7 @@ import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, Fla
 import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
+import { getAppImage } from '../utils/imageLoader';
 
 // Popup component to display event details or welcome message in a modal
 const Popup = ({ visible, onClose, mode = "event", events }) => {
@@ -63,7 +64,7 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
           ) : (
             <View>
               <Image
-                source={require('../assets/pic-logo.png')}
+                source={getAppImage('logo')}
                 style={styles.welcomeLogo}
                 resizeMode='contain'
               />

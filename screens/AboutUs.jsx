@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
 import { useContext } from "react";
+import { getImageSource, getAppImage } from "../utils/imageLoader";
 
 const AboutUs = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
@@ -40,7 +41,7 @@ const AboutUs = () => {
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground
-          source={require("../assets/beach-bg.jpg")}
+          source={getAppImage('background')}
           style={styles.image}
           blurRadius={0}
           resizeMode="cover"
@@ -51,40 +52,46 @@ const AboutUs = () => {
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.logoRow}>
               <Image
-                source={require("../assets/pic-health-logo-TEXT.png")}
+                source={getAppImage('logoText')}
                 style={styles.logoImg}
                 resizeMode="contain"
               />
             </View>
 
+            {/* Main description */}
             <View style={styles.textBoxContainer}>
-              <Text style={textBox.text}>{desc1}</Text>
-              <Text style={textBox.text}>{desc2}</Text>
-
+              <Text style={textBox.introText}>{desc1}</Text>
+              
               <TouchableOpacity
                 onPress={() => {
                   const links = require('../locales/links.json');
                   callWebView(links.aboutUs.aboutUsPage, "About Us");
                 }}
                 activeOpacity={0.8}
+                style={styles.photoContainer}
               >
                 <Image
-                  source={require("../assets/picteam.jpeg")}
+                  source={getAppImage('teamPhoto')}
                   style={styles.groupPhoto}
                   resizeMode="cover"
                 />
+                <Text style={textBox.learnMore}>{desc2}</Text>
               </TouchableOpacity>
             </View>
 
             {/* Dynamically render sections */}
             {sections.map((section, index) => (
-              <React.Fragment key={section.id}>
-                <Seperator />
-                <View style={styles.textBoxContainer}>
-                  <Text style={textBox.title}>{section.title}</Text>
-                  <Text style={textBox.text}>{section.text}</Text>
-                </View>
-              </React.Fragment>
+              <View key={section.id} style={styles.textBoxContainer}>
+                {section.image && (
+                  <Image
+                    source={getImageSource(section.image)}
+                    style={textBox.image}
+                    resizeMode="contain"
+                  />
+                )}
+                <Text style={textBox.title}>{section.title}</Text>
+                <Text style={textBox.text}>{section.text}</Text>
+              </View>
             ))}
           </ScrollView>
         </ImageBackground>
@@ -104,47 +111,77 @@ export default AboutUs;
 
 const styles = StyleSheet.create({
   image: { flex: 1, width: "100%", height: "100%" },
-  scrollContent: { paddingVertical: 10 },
+  scrollContent: { 
+    paddingVertical: 10,
+    paddingBottom: 20,
+  },
   logoRow: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
   logoImg: {
     width: "85%",
-    height: 120,
-    maxWidth: 420,
+    height: 100,
+    maxWidth: 400,
   },
   textBoxContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    marginHorizontal: 20,
-    marginBottom: 20,
-    padding: 20,
-    borderRadius: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    marginHorizontal: 15,
+    marginBottom: 15,
+    padding: 18,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  photoContainer: {
+    marginTop: 15,
+    alignItems: "center",
   },
   groupPhoto: {
-    alignSelf: "center",
     width: "100%",
-    height: 220,
-    maxWidth: 520,
-    borderRadius: 10,
-    marginTop: 10,
+    height: 200,
+    maxWidth: 500,
+    borderRadius: 12,
+    marginBottom: 8,
   },
 });
 
 const textBox = StyleSheet.create({
+  image: {
+    width: "100%",
+    height: 150,
+    marginBottom: 12,
+    borderRadius: 8,
+  },
+  introText: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: "#333",
+    textAlign: "left",
+  },
+  learnMore: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "rgba(45, 72, 135, 1)",
+    textAlign: "center",
+    marginTop: 4,
+  },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
-    fontFamily: "sans-serif",
-    color: "black",
-    marginBottom: 10,
+    color: "rgba(45, 72, 135, 1)",
+    marginBottom: 12,
+    marginTop: 4,
   },
   text: {
-    fontSize: 18,
-    fontWeight: "300",
-    fontFamily: "sans-serif",
-    color: "hsl(200, 50%, 50%)",
-    marginBottom: 10,
+    fontSize: 16,
+    lineHeight: 24,
+    color: "#444",
+    textAlign: "left",
   },
 });

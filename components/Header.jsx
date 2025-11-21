@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Platform } from 'react
 import { Picker } from '@react-native-picker/picker';
 import { TranslationContext } from '../context/TranslationContext';
 import languagesConfig from '../locales/languages.config.json';
+import { getAppImage } from '../utils/imageLoader';
 
 const COLORS = {
   primary: '#2d4887',
@@ -34,7 +35,7 @@ export default function Header({
       {/* Left: logo (with BETA under it) + title */}
       <View style={styles.left}>
         <View style={styles.brandWrap}>
-          <Image source={require('../assets/pic-logo.png')} style={styles.logo} resizeMode="contain" />
+          <Image source={getAppImage('logo')} style={styles.logo} resizeMode="contain" />
           <Text style={styles.beta}>BETA</Text>
         </View>
         <Text style={styles.title}>{title}</Text>
