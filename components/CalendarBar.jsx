@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import { TranslationContext } from '../context/TranslationContext';
 
@@ -17,15 +17,37 @@ export default function CalendarBar({
   setCalendarMode,
   setSelectedCalendars,
   calendarOptions,
+  onPressProfile,
+  avatarUrl,                 // NEW: profile avatar URL
 }) {
   const { t } = useContext(TranslationContext);
   const goUpcoming = () => setCalendarMode(false);
   const goCalendar = () => setCalendarMode(true);
 
+  const handleProfilePress = () => {
+    if (typeof onPressProfile === 'function') {
+      onPressProfile();
+    }
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.headerBg }}>
-      {/* Unified pill group (matches your design) */}
+      {/* Top row: profile icon + pill group */}
       <View style={styles.pillRow}>
+        <TouchableOpacity
+          onPress={handleProfilePress}
+          activeOpacity={0.8}
+          style={styles.profileButton}
+        >
+          {avatarUrl ? (
+            <View style={styles.profileAvatarWrapper}>
+              <Image source={{ uri: avatarUrl }} style={styles.profileAvatar} />
+            </View>
+          ) : (
+            <Icon name="person-circle-outline" size={26} color="#ffffff" />
+          )}
+        </TouchableOpacity>
+
         <View style={styles.pillGroup}>
           {/* LEFT: Upcoming Events */}
           <TouchableOpacity
@@ -34,7 +56,7 @@ export default function CalendarBar({
             style={[styles.pill, !calendarMode && styles.pillActive]}
           >
             <Text style={[styles.pillText, !calendarMode && styles.pillTextActive]}>
-              {t('calendar.upcomingEvents')}
+              Upcoming Events
             </Text>
           </TouchableOpacity>
 
@@ -45,7 +67,7 @@ export default function CalendarBar({
             style={[styles.pill, styles.pillRight, calendarMode && styles.pillActive]}
           >
             <Text style={[styles.pillText, calendarMode && styles.pillTextActive]}>
-              {t('calendar.calendar')}
+              Calendar
             </Text>
           </TouchableOpacity>
         </View>
@@ -57,8 +79,8 @@ export default function CalendarBar({
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save="key"
-          label={t('calendar.selectCalendars')}
-          placeholder={t('calendar.selectCalendar')}
+          label="Select Calendars"
+          placeholder="Select Calendar"
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />
@@ -73,7 +95,27 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 10,
     paddingHorizontal: 16,
+    flexDirection: 'row',
     alignItems: 'center',
+  },
+  profileButton: {
+    marginRight: 10,
+    padding: 4,
+    borderRadius: 999,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileAvatarWrapper: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#ffffff',
+  },
+  profileAvatar: {
+    width: '100%',
+    height: '100%',
   },
   pillGroup: {
     flexDirection: 'row',
@@ -81,6 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.pillGroupBg,
     padding: 6,
     borderRadius: 20,
+    flexShrink: 1,
   },
   pill: {
     paddingHorizontal: 14,
