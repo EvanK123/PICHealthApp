@@ -19,13 +19,17 @@
     "movement": {
       "chronicDiseaseIndicators": "https://www.cdc.gov/cdi/indicator-definitions/npao.html"
     },
-    "other": {
+    "cancer": {
       "cancerScreening": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
     },
     "mentalHealthAssessment": {
       "mentalHealthAssessment": "https://www.psychologytoday.com/us/tests/health/mental-health-assessment"
+    },
+    "findhelp": {
+      "homepage": "https://www.findhelp.org/"
     }
   },
+
   "culture": {
     "umeke": {
       "homepage": "https://www.umeke.org/"
@@ -40,6 +44,7 @@
       "instagramAccount": "https://www.instagram.com/mindfull.movement/?igsh=NTc4MTIwNjQ2YQ%3D%3D"
     }
   },
+
   "education": {
     "mana": {
       "manaMiraCosta": "https://www.miracosta.edu/student-services/student-equity/mana/index.html"
@@ -54,15 +59,16 @@
       "federalStudentAid": "https://studentaid.gov/"
     }
   },
+
+  "aboutUs": {
+    "aboutUsPage": "https://pacificislandercommunityhealth.weebly.com/about-us.html"
+  },
+
   "calendar": {
     "submitEvent": "https://forms.gle/JwAusA65SNBHkdED9",
     "wellnessButtons": {
       "howYaDoin": "https://www.healthcentral.com/quiz/stress-test",
       "sos": "https://www.cavshate.org/"
     }
-  },
-  "aboutUs": {
-    "aboutUsPage": "https://pacificislandercommunityhealth.weebly.com/about-us.html"
-  }
+  } 
 }
-

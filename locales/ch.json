@@ -25,6 +25,7 @@
     "allDay": "Todo i Dia",
     "noDescriptionAvailable": "Tåya' deskripsion"
   },
+
   "app": {
     "tabs": {
       "home": "Gima'",
@@ -34,6 +35,7 @@
       "aboutUs": "Put Hita"
     }
   },
+
   "calendar": {
     "title": "PIC Health",
     "calendar": "Kalendåriu",
@@ -60,19 +62,33 @@
       "noEventsAvailable": "Tåya' eventu"
     }
   },
+  
   "header": {
     "submitEvent": "Na'i Eventu"
   },
+  
   "popup": {
     "welcomeTitle": "Bienbenidu gi PIC Health!",
     "beta": "Beta",
     "disclaimer": "Atencion:",
     "disclaimerText": "Este na sitiu para edukasion ha'. Kunsulta un doktor para asunsion mediku. Gi emergensia, agang 911."
   },
+
   "health": {
     "title": "Salud",
     "description": "I informasion ni mana'i guini para infomasion ha'. Mungnga u usa este para medikun ådibidu. Kada bez kunsulta yan mediku para asunsion put i salud-mu. Chamo chule' este komu medikun ådibidu.",
     "services": [
+      {
+        "id": "findhelp",
+        "title": "Find Help",
+        "text": "I na'ayuda Findhelp hao gi recursos lokal gi i kumunidat-mu, ma inkluye food pantries, meal programs, housing assistance, financial aid, health care services, yan mas. Aligao gi ZIP code para u aligao programs ni ma guaha gi i tano'-mu.",
+        "links": [
+          {
+            "label": "Find Help",
+            "linkId": "homepage"
+          }
+        ]
+      },
       {
         "id": "mentalHealthAssessment",
         "title": "Mental Health Assessment",
@@ -167,6 +183,7 @@
       }
     ]
   },
+
   "culture": {
     "title": "Kuttura, Arte, yan Lengguåhi",
     "services": [
@@ -218,6 +235,7 @@
       }
     ]
   },
+
   "education": {
     "title": "Edukasion",
     "services": [
@@ -267,6 +285,7 @@
       }
     ]
   },
+  
   "aboutUs": {
     "title": "Put Hita",
     "description1": "Ma establese gi 2013, Pacific Islander Community Health (PIC Health) u setbi i sur California na region, gi adelanta equitat salud yan sosiat hustisia para kumunidat Pasifiku gi inisiatiba salud kutturåt sentråo yan inestigasion kumunidat sentråo. PIC Health dedika gi promuebi bienestar yan resilensia gi atende i uniku nisisidat salud yan disparidat i kumunidat Pasifika-ta u afotta yan u nabi gi kada dia.",
