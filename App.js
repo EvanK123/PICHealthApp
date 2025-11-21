@@ -8,13 +8,13 @@ import CalendarScreen from './screens/CalendarScreen';
 import EducationScreen from './screens/EducationScreen';
 import CultureScreen from './screens/CultureScreen';
 import Popup from './components/PopUp';
-import { TranslationProvider } from './context/TranslationContext';
-import { useTranslation } from './hooks/useTranslation';
+import { TranslationProvider, TranslationContext } from './context/TranslationContext';
+import { useContext } from 'react';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const { t } = useTranslation();
+  const { t } = useContext(TranslationContext);
 
   return (
     <Tab.Navigator

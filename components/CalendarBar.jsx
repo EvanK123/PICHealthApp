@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
 
 const COLORS = {
   headerBg: '#2d4887',
@@ -18,7 +18,7 @@ export default function CalendarBar({
   setSelectedCalendars,
   calendarOptions,
 }) {
-  const { t } = useTranslation();
+  const { t } = useContext(TranslationContext);
   const goUpcoming = () => setCalendarMode(false);
   const goCalendar = () => setCalendarMode(true);
 

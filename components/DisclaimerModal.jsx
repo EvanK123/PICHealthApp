@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
 
 const DisclaimerModal = ({ visible, onClose, title, message }) => {
-  const { t } = useTranslation();
+  const { t } = useContext(TranslationContext);
   
   return (
     <Modal

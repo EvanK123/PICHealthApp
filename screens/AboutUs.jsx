@@ -15,11 +15,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Seperator from "../components/Seperator";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
-import { useTranslation } from "../hooks/useTranslation";
+import { TranslationContext } from "../context/TranslationContext";
+import { useContext } from "react";
 
 const AboutUs = () => {
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  const { t, getAboutUsSections } = useTranslation();
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
+  const { t, getAboutUsSections } = useContext(TranslationContext);
 
   // Localized strings
   const headerTitle = t("aboutUs.title");
@@ -27,10 +28,10 @@ const AboutUs = () => {
   const desc2 = t("aboutUs.description2");
   const sections = getAboutUsSections();
 
-  const callWebView = (url) => {
+  const callWebView = (url, title = "Browser") => {
     Platform.OS === "web"
       ? Linking.openURL(url)
-      : setModalConfig({ isVisible: true, url });
+      : setModalConfig({ isVisible: true, url, title });
   };
 
   const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
@@ -63,7 +64,7 @@ const AboutUs = () => {
               <TouchableOpacity
                 onPress={() => {
                   const links = require('../locales/links.json');
-                  callWebView(links.aboutUs.aboutUsPage);
+                  callWebView(links.aboutUs.aboutUsPage, "About Us");
                 }}
                 activeOpacity={0.8}
               >
@@ -92,6 +93,7 @@ const AboutUs = () => {
           url={modalConfig.url}
           isVisible={modalConfig.isVisible}
           onClose={closeModal}
+          title={modalConfig.title}
         />
       </SafeAreaView>
     </View>

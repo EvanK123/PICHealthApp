@@ -13,20 +13,21 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
-import { useTranslation } from "../hooks/useTranslation";
+import { TranslationContext } from "../context/TranslationContext";
+import { useContext } from "react";
 
 const CultureScreen = () => {
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "" });
-  const { t, getServices } = useTranslation();
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
+  const { t, getServices } = useContext(TranslationContext);
 
   // Localized content
   const headerTitle = t("culture.title");
   const localizedSections = getServices("culture");
 
-  const callWebView = (url) => {
+  const callWebView = (url, title = "Browser") => {
     Platform.OS === "web"
       ? Linking.openURL(url)
-      : setModalConfig({ isVisible: true, url });
+      : setModalConfig({ isVisible: true, url, title });
   };
 
   const closeModal = () => setModalConfig((p) => ({ ...p, isVisible: false }));
@@ -52,7 +53,7 @@ const CultureScreen = () => {
                 {sec.links.map((ln, idx) => (
                   <TouchableOpacity
                     key={`${sec.id}-link-${idx}`}
-                    onPress={() => callWebView(ln.url)}
+                    onPress={() => callWebView(ln.url, ln.label)}
                     activeOpacity={0.8}
                   >
                     <Text style={textBox.link}>{ln.label}</Text>
@@ -68,6 +69,7 @@ const CultureScreen = () => {
         url={modalConfig.url}
         isVisible={modalConfig.isVisible}
         onClose={closeModal}
+        title={modalConfig.title}
       />
     </SafeAreaView>
   );

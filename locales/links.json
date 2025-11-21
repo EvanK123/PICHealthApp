@@ -22,7 +22,9 @@
     "other": {
       "cancerScreening": "https://www.cancer.org/cancer/screening/american-cancer-society-guidelines-for-the-early-detection-of-cancer.html"
     },
-    "mentalHealthAssessment": "https://www.psychologytoday.com/us/tests/health/mental-health-assessment"
+    "mentalHealthAssessment": {
+      "mentalHealthAssessment": "https://www.psychologytoday.com/us/tests/health/mental-health-assessment"
+    }
   },
   "culture": {
     "umeke": {

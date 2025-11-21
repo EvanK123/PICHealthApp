@@ -74,6 +74,17 @@
     "description": "Ko e fakamatala ʻoku ʻomai ʻi heni ko e fakamatala lahi ange ia ʻoku ʻikai ke fakafofongaʻi ha fakatonutonu fakafaitoʻo. Kataki ʻo ʻalu ki ha toketaʻ mo e fakatonutonu ki hoʻo tuʻunga fakafaitoʻo, hā ʻa e toʻo, pe ngaahi fili mo e faitoʻo. ʻOua ʻe teʻeki ke tokoniʻi ha fakatonutonu fakafaitoʻo pe fakaʻuliʻuli e ʻalu ki he faitoʻo.",
     "services": [
       {
+        "id": "mentalHealthAssessment",
+        "title": "Sivi ʻo e Moʻui Lelei ʻo e ʻAtamai",
+        "text": "Fai ʻa e sivi ʻo e moʻui lelei ʻo e ʻatamai ʻa Psychology Today. ʻOku ʻikai ke teuʻi hoʻo ngaahi tali ʻi he app ko ʻeni; ko e tāpuni ʻo e matapā ko ʻeni pe ʻalu ʻi he lau ʻoku toe seti ai ʻa e sivi.",
+        "links": [
+          {
+            "label": "Kamataʻi ʻa e sivi",
+            "linkId": "mentalHealthAssessment"
+          }
+        ]
+      },
+      {
         "id": "diabetes",
         "title": "Sivi ʻo e Sukā",
         "text": "Ko e sivi ko ʻeni ʻoku ngāueʻaki ke ʻiloʻi ʻa e kakai ʻoku nau ʻi ai ʻa e sukā pe ʻoku nau ʻi he tūpangá ni ʻo maʻu ai ʻa e pātesi, ʻo ʻikai haʻane ʻasi mai ha toʻo ʻoku ʻiloʻi.",

@@ -74,6 +74,17 @@
     "description": "O fa'amatalaga o lo'o tu'uina atu iinei e mo na'o fa'amatalaga lautele ma e le'o fa'amoemoe e fai ma fautuaga fa'afoma'i. Fa'afeso'ota'i i taimi uma ma se tufuga soifua maloloina agava'a mo fautuaga e uiga i lou tulaga fa'afoma'i patino, fa'ailoga, po'o filifiliga togafitiga. Aua le amana'ia fautuaga fa'apolofesa fa'afoma'i po'o le fa'atuai o le sailia o togafitiga.",
     "services": [
       {
+        "id": "mentalHealthAssessment",
+        "title": "Iloiloga o le Soifua Maloloina o le Mafaufau",
+        "text": "Fai le su'ega o le soifua maloloina o le mafaufau a Psychology Today. O au tali e le teuina e lenei app; o le tapunia o lenei faamalama po'o le tu'ua o le lau e toe seti ai le su'ega.",
+        "links": [
+          {
+            "label": "Amata le iloiloga",
+            "linkId": "mentalHealthAssessment"
+          }
+        ]
+      },
+      {
         "id": "diabetes",
         "title": "Su'esu'ega o le Ma'i Sukā",
         "text": "O lenei su'ega e fa'aaogaina e iloa ai tagata atonu e maua i le ma'i sukā pe o lo'o lamatia fo'i i le atia'e o le ma'i, e masani lava a'o le'i fa'aalia ni fa'ailoga iloga.",

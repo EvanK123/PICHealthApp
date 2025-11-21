@@ -74,6 +74,17 @@
     "description": "The information provided here is for general informational purposes only and is not intended as medical advice. Always consult with a qualified healthcare provider for advice regarding your specific medical condition, symptoms, or treatment options. Do not disregard professional medical advice or delay seeking treatment.",
     "services": [
       {
+        "id": "mentalHealthAssessment",
+        "title": "Mental Health Assessment",
+        "text": "Take Psychology Today's mental health questionnaire. Your answers are not stored by this app; closing this window or leaving the screen resets the quiz.",
+        "links": [
+          {
+            "label": "Start the assessment",
+            "linkId": "mentalHealthAssessment"
+          }
+        ]
+      },
+      {
         "id": "diabetes",
         "title": "Diabetes Screening",
         "text": "This test is used to identify individuals who may have diabetes or are at risk of developing the condition, often before they show any noticeable symptoms.",

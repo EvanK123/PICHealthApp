@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { TranslationContext } from '../context/TranslationContext';
-import { useTranslation } from '../hooks/useTranslation';
 import languagesConfig from '../locales/languages.config.json';
 
 const COLORS = {
@@ -20,8 +19,7 @@ export default function Header({
   showSubmit = false,            // <- only show button on Home
   onPressSubmit = () => {},
 }) {
-  const { lang, setLang } = useContext(TranslationContext);
-  const { t } = useTranslation();
+  const { lang, setLang, t } = useContext(TranslationContext);
 
   const languages = getAllLanguages().map(l => {
     const translated = t(l.translationKey);

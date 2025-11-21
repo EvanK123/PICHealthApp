@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
 import Popup from './PopUp'; // Make sure to import the Popup component
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
 
 const ListView = ({ events, selectedCalendars }) => {
-  const { t } = useTranslation();
+  const { t } = useContext(TranslationContext);
   const [error, setError] = useState(null);
   // State for when popup should be displayed, when a event is pressed
   const [popupVisible, setPopupVisible] = useState(false);

@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
-import { useTranslation } from '../hooks/useTranslation';
+import { TranslationContext } from '../context/TranslationContext';
 
 // Popup component to display event details or welcome message in a modal
 const Popup = ({ visible, onClose, mode = "event", events }) => {
   if (mode === "event" && (!events || events.length === 0)) return null;
   
-  const { t } = useTranslation();
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '' });
+  const { t } = useContext(TranslationContext);
+  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
 
   // Function to handle link presses within the HTML content
   const handleLinkPress = (event, href) => {
     callWebView(href);
   };
 
-  const callWebView = (url) => {
+  const callWebView = (url, title = "Browser") => {
     Platform.OS === 'web' ? 
       Linking.openURL(url) :
-      setModalConfig({ isVisible: true, url });
+      setModalConfig({ isVisible: true, url, title });
   };
 
   const closeModal = () => {
@@ -79,7 +79,7 @@ const Popup = ({ visible, onClose, mode = "event", events }) => {
           )}
         </View>
       </View>
-      <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} />
+      <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} title={modalConfig.title} />
     </Modal>
   );
 };

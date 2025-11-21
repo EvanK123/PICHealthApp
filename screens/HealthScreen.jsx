@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ImageBackground,
   Text,
@@ -14,14 +14,9 @@ import Header from "../components/Header";
 import Disclaimer from "../components/Disclaimer";
 import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
-import { useTranslation } from "../hooks/useTranslation";
-
-const QUIZ_URL =
-  "https://www.psychologytoday.com/us/tests/health/mental-health-assessment";
 
 const HealthScreen = () => {
-  const { lang, setLang } = useContext(TranslationContext);
-  const { t, getServices } = useTranslation();
+  const { t, getServices } = useContext(TranslationContext);
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
 
   // Get localized content
@@ -52,21 +47,6 @@ const HealthScreen = () => {
         </Header>
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          {/* >>> NEW: Mental Health Assessment card */}
-          <View style={textBox.container}>
-            <Text style={textBox.title}>Mental Health Assessment</Text>
-            <Text style={textBox.text}>
-              Take Psychology Today’s mental health questionnaire. Your answers are not
-              stored by this app; closing this window or leaving the screen resets the quiz.
-            </Text>
-            <TouchableOpacity
-              onPress={() => callWebView(QUIZ_URL, "Mental Health Assessment")}
-            >
-              <Text style={textBox.link}>Start the assessment</Text>
-            </TouchableOpacity>
-          </View>
-          {/* <<< END NEW */}
-
           <View style={{ margin: 5, borderRadius: 10 }}>
             {localizedSections.map((sec) => (
               <View key={sec.id} style={textBox.container}>
