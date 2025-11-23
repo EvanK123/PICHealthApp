@@ -19,21 +19,19 @@ export default function CalendarBar({
   setSelectedCalendars,
   calendarOptions,
   onPressProfile,
-  avatarUrl,                 // NEW: profile avatar URL
+  avatarUrl,
 }) {
   const { t } = useContext(TranslationContext);
   const goUpcoming = () => setCalendarMode(false);
   const goCalendar = () => setCalendarMode(true);
 
   const handleProfilePress = () => {
-    if (typeof onPressProfile === 'function') {
-      onPressProfile();
-    }
+    if (typeof onPressProfile === 'function') onPressProfile();
   };
 
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.headerBg }}>
-      {/* Top row: profile icon + pill group */}
+      {/* CENTERED row: profile + pill group */}
       <View style={styles.pillRow}>
         <TouchableOpacity
           onPress={handleProfilePress}
@@ -45,12 +43,11 @@ export default function CalendarBar({
               <Image source={{ uri: avatarUrl }} style={styles.profileAvatar} />
             </View>
           ) : (
-            <Icon name="person-circle-outline" size={26} color="#ffffff" />
+            <Icon name="person-circle-outline" size={28} color="#ffffff" />
           )}
         </TouchableOpacity>
 
         <View style={styles.pillGroup}>
-          {/* LEFT: Upcoming Events */}
           <TouchableOpacity
             onPress={goUpcoming}
             activeOpacity={0.9}
@@ -61,7 +58,6 @@ export default function CalendarBar({
             </Text>
           </TouchableOpacity>
 
-          {/* RIGHT: Calendar */}
           <TouchableOpacity
             onPress={goCalendar}
             activeOpacity={0.9}
@@ -80,8 +76,8 @@ export default function CalendarBar({
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save="key"
-          label={t('common.selectCalendars')}
-          placeholder={t('common.selectCalendar')}
+          label={t('Select Calendar')}
+          placeholder={t('Select Calendar')}
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />
@@ -98,26 +94,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',     // << center the whole row horizontally
+    gap: 10,
   },
   profileButton: {
-    marginRight: 10,
-    padding: 4,
+    padding: 2,
     borderRadius: 999,
     justifyContent: 'center',
     alignItems: 'center',
   },
   profileAvatarWrapper: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#ffffff',
   },
-  profileAvatar: {
-    width: '100%',
-    height: '100%',
-  },
+  profileAvatar: { width: '100%', height: '100%' },
+
   pillGroup: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -125,6 +120,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 20,
     flexShrink: 1,
+    maxWidth: '80%',
   },
   pill: {
     paddingHorizontal: 14,
@@ -135,26 +131,11 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.25)',
   },
   pillRight: { marginLeft: 10 },
-  pillActive: {
-    backgroundColor: COLORS.pillActiveBg,
-    borderColor: 'transparent',
-  },
-  pillText: {
-    color: COLORS.pillText,
-    fontWeight: '700',
-  },
+  pillActive: { backgroundColor: COLORS.pillActiveBg, borderColor: 'transparent' },
+  pillText: { color: COLORS.pillText, fontWeight: '700' },
   pillTextActive: { color: COLORS.pillTextActive },
 
   dropdownWrap: { backgroundColor: COLORS.headerBg },
-  dropdown: {
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    marginTop: 0,
-    marginBottom: 10,
-  },
-  dropdownBox: {
-    backgroundColor: '#fff',
-    borderColor: '#fff',
-    borderRadius: 0,
-  },
+  dropdown: { backgroundColor: '#fff', borderRadius: 0, marginTop: 0, marginBottom: 10 },
+  dropdownBox: { backgroundColor: '#fff', borderColor: '#fff', borderRadius: 0 },
 });

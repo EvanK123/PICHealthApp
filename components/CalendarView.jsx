@@ -1,22 +1,18 @@
 // components/CalendarView.jsx
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import Popup from './PopUp';
 import WebViewModal from './WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
-import { useContext } from 'react';
 
-// ===== Navy palette =====
 const COLORS = {
   primary: '#2d4887',
   navyText: '#091826',
   navyBorder: 'rgba(45,72,135,0.18)',
-
   accentPIC: '#0B75B9',
   accentLatino: '#71AD45',
   brand: '#0EA5B5',
-
   ink: '#0f172a',
   inkMute: '#475569',
   panelBorder: '#E5EAF0',
@@ -25,7 +21,6 @@ const COLORS = {
   sheetBar2: '#0E7CA8',
 };
 
-// Calendar header theme (month title + arrows)
 const CAL_THEME = {
   backgroundColor: 'transparent',
   calendarBackground: 'transparent',
@@ -40,14 +35,12 @@ const CAL_THEME = {
   textDayHeaderFontWeight: '700',
 };
 
-// English day abbreviations (calendar always in English)
-const WEEKDAYS_ABBREV = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const WEEKDAYS_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const WEEKDAYS_ABBREV = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WEEKDAYS_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-// Parse "YYYY-MM-DD" as LOCAL to avoid UTC shifting a day back
-const toLocalDate = (isoDate) => {
-  const [y, m, d] = (isoDate || '').split('-').map(Number);
-  return new Date(y, (m || 1) - 1, d || 1);
+const toLocalDate = (iso) => {
+  const [y,m,d] = (iso||'').split('-').map(Number);
+  return new Date(y,(m||1)-1,d||1);
 };
 
 export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
@@ -57,13 +50,12 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  // Compute day-cell size from actual width
   const [calWidth, setCalWidth] = useState(0);
-  const CELL_MARGIN = 3;
+  const CELL_MARGIN = 2;               // tighter margins to gain width
   const COLUMNS = 7;
   const cellSize = calWidth
     ? Math.floor((calWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS)
-    : 44;
+    : 46;
 
   const colorFor = (email) => {
     if (email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com') return COLORS.accentPIC;
@@ -71,7 +63,6 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     return '#BDBDBD';
   };
 
-  // Mark dates + selected day
   useEffect(() => {
     const fm = {};
     Object.keys(events || {}).forEach((date) => {
@@ -97,7 +88,6 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     setPopupVisible(true);
   };
 
-  // Custom day cell
   const DayCell = ({ date, state }) => {
     const key = date.dateString;
     const list = events[key] || [];
@@ -124,30 +114,19 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     );
   };
 
-  // Label with English day name
   const selectedLabel = useMemo(() => {
     if (!selectedDate) return '';
     const d = toLocalDate(selectedDate);
-    const dayIndex = d.getDay();
-    const wd = WEEKDAYS_FULL[dayIndex];
+    const wd = WEEKDAYS_FULL[d.getDay()];
     const dd = d.getDate();
     return `${t('calendar.upcomingEvents')} ${wd} ${dd}`;
   }, [selectedDate, t]);
 
   return (
-    <ScrollView 
-      style={styles.container} 
-      contentContainerStyle={{ 
-        paddingBottom: 12,
-        width: '100%',
-      }}
-    >
-      {/* Full-width white background behind calendar */}
-      <View
-        style={styles.whitePanel}
-        onLayout={(e) => setCalWidth(e.nativeEvent.layout.width)}
-      >
-        {/* Weekday strip */}
+    <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
+      {/* Edge-to-edge white panel */}
+      <View style={styles.whitePanel} onLayout={(e) => setCalWidth(e.nativeEvent.layout.width)}>
+        {/* Weekday strip (full width, no outer margins) */}
         <View style={styles.weekStrip}>
           {WEEKDAYS_ABBREV.map((d) => (
             <View key={d} style={styles.weekCell}>
@@ -156,7 +135,6 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
           ))}
         </View>
 
-        {/* Calendar grid */}
         <Calendar
           style={styles.calendarStyle}
           markingType="multi-dot"
@@ -176,14 +154,15 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
         />
       </View>
 
-      {/* Bottom sheet (unchanged) */}
+      {/* Bottom sheet stays the same */}
       {selectedDate && (
         <View style={styles.sheet}>
           <Text style={styles.sheetTitle}>{selectedLabel}</Text>
           {selectedEvents.map((ev) => {
             const isPic = ev.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com';
             const bar = isPic ? styles.topBarTeal : styles.topBarBlue;
-            const timeText = ev.start?.date ? t('calendar.allDay')
+            const timeText = ev.start?.date
+              ? t('calendar.allDay')
               : new Date(ev.start?.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             return (
@@ -209,21 +188,19 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1,
-    width: '100%',
-  },
+  container: { flex: 1, width: '100%' },
+  containerContent: { paddingBottom: 12, width: '100%', paddingHorizontal: 0 },
 
-  // Full-width white background container for the calendar
   whitePanel: {
     backgroundColor: '#fff',
-    borderRadius: 0,      // edge-to-edge look
+    borderRadius: 0,
     paddingVertical: 8,
-    paddingHorizontal: 4, // tiny gutter so pills don't touch edges
+    paddingHorizontal: 0,          // ← no side padding = edge-to-edge
     width: '100%',
+    alignSelf: 'stretch',
   },
 
-  calendarStyle: { backgroundColor: 'transparent' },
+  calendarStyle: { backgroundColor: 'transparent', margin: 0, paddingHorizontal: 0 },
 
   header: { paddingVertical: 6, alignItems: 'center' },
   headerTitle: { color: COLORS.navyText, fontSize: 18, fontWeight: '800' },
@@ -231,19 +208,15 @@ const styles = StyleSheet.create({
   weekStrip: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 2,
-    marginBottom: 6,
-    backgroundColor: '#fff',        // white to match panel
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: COLORS.navyBorder,
     paddingVertical: 6,
     paddingHorizontal: 6,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderColor: COLORS.navyBorder,
   },
   weekCell: { flex: 1, alignItems: 'center' },
   weekText: { fontSize: 12, fontWeight: '800', color: COLORS.navyText },
 
-  // Day cells
   dayCell: {
     borderRadius: 12,
     borderWidth: 1,
@@ -257,7 +230,6 @@ const styles = StyleSheet.create({
   eventPill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 10, alignSelf: 'flex-start', maxWidth: '100%' },
   eventPillText: { color: '#fff', fontSize: 11, fontWeight: '700' },
 
-  // Bottom sheet
   sheet: {
     backgroundColor: '#fff',
     marginTop: 12,

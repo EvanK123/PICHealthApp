@@ -1,5 +1,5 @@
 // screens/CalendarScreen.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   ImageBackground,
   View,
@@ -19,7 +19,6 @@ import ListView from '../components/ListView';
 import Popup from '../components/PopUp';
 import WebViewModal from '../components/WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
-import { useContext } from 'react';
 import { getAppImage } from '../utils/imageLoader';
 
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
@@ -61,6 +60,7 @@ const CalendarScreen = () => {
   const { t } = useContext(TranslationContext);
   const navigation = useNavigation();
   const { user } = useAuth();
+
   // false = Upcoming (default), true = Calendar
   const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
@@ -68,8 +68,7 @@ const CalendarScreen = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
   const [events, setEvents] = useState({});
   const [selectedCalendars, setSelectedCalendars] = useState([]);
-  
-  // Get avatar URL from user metadata if available
+
   const avatarUrl = user?.user_metadata?.avatar_url || null;
 
   const calendarOptions = [
@@ -89,8 +88,7 @@ const CalendarScreen = () => {
     else setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
-  const closeModal = () =>
-    setModalConfig((prev) => ({ ...prev, isVisible: false }));
+  const closeModal = () => setModalConfig((prev) => ({ ...prev, isVisible: false }));
 
   useEffect(() => {
     async function loadEvents() {
@@ -108,13 +106,9 @@ const CalendarScreen = () => {
         const isAllDay = !!ev.start?.date && !ev.start?.dateTime;
         const timeLabel = isAllDay
           ? t('common.allDay')
-          : new Date(ev.start.dateTime).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            });
+          : new Date(ev.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         if (!acc[key]) acc[key] = [];
-
         acc[key].push({
           name: ev.summary,
           time: timeLabel,
@@ -122,13 +116,10 @@ const CalendarScreen = () => {
           organizer: ev.organizer || {},
           ...ev,
         });
-
         return acc;
       }, {});
-
       setEvents(grouped);
     }
-
     loadEvents();
   }, [selectedCalendars]);
 
@@ -142,18 +133,16 @@ const CalendarScreen = () => {
     setSelectedEvent(null);
   };
 
-  const handleProfilePress = () => {
-    navigation.navigate('Account');
-  };
+  const handleProfilePress = () => navigation.navigate('Account');
 
   const backgroundImage = getAppImage('background');
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
-      <ImageBackground 
-        source={backgroundImage || require('../assets/background.png')} 
-        resizeMode="cover" 
-        style={styles.image} 
+      <ImageBackground
+        source={backgroundImage || require('../assets/background.png')}
+        resizeMode="cover"
+        style={styles.image}
         blurRadius={0}
       >
         <Header
@@ -175,40 +164,37 @@ const CalendarScreen = () => {
         />
 
         <View style={styles.darken}>
-          <View style={styles.centeredContent}>
-            <View style={styles.contentWrapper}>
-              {calendarMode ? (
-                <>
-                  <CalendarView
-                    events={events}
-                    selectedCalendars={selectedCalendars}
-                    callWebView={callWebView}
-                    closeModal={closeModal}
-                    onEventPress={handleEventPress}
-                  />
-
-                  {/* Wellness + SOS UNDER the calendar (Calendar view only) */}
-                  <WellnessButtons callWebView={callWebView} />
-                </>
-              ) : (
-                <ListView
-                  onEventPress={handleEventPress}
+          {/* Edge-to-edge content: no side padding, no maxWidth */}
+          <View style={styles.contentWrapper}>
+            {calendarMode ? (
+              <>
+                <CalendarView
                   events={events}
                   selectedCalendars={selectedCalendars}
+                  callWebView={callWebView}
+                  closeModal={closeModal}
+                  onEventPress={handleEventPress}
                 />
-              )}
-            </View>
+                <WellnessButtons callWebView={callWebView} />
+              </>
+            ) : (
+              <ListView
+                onEventPress={handleEventPress}
+                events={events}
+                selectedCalendars={selectedCalendars}
+              />
+            )}
           </View>
         </View>
       </ImageBackground>
 
-      <Popup
-        visible={popupVisible}
-        onClose={closePopup}
-        event={selectedEvent}
+      <Popup visible={popupVisible} onClose={closePopup} event={selectedEvent} />
+      <WebViewModal
+        url={modalConfig.url}
+        isVisible={modalConfig.isVisible}
+        onClose={closeModal}
+        title={modalConfig.title}
       />
-
-      <WebViewModal url={modalConfig.url} isVisible={modalConfig.isVisible} onClose={closeModal} title={modalConfig.title} />
     </SafeAreaView>
   );
 };
@@ -218,21 +204,16 @@ export default CalendarScreen;
 const styles = StyleSheet.create({
   container: { flex: 1 },
   image: { flex: 1, width: '100%', height: '100%' },
-  darken: { 
-    flex: 1, 
-    backgroundColor: 'rgba(0,0,0,0.40)',
-  },
-  centeredContent: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
+  darken: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
+
+  // FULL-WIDTH wrapper (no horizontal padding, no maxWidth)
   contentWrapper: {
-    width: '100%',
-    maxWidth: 900,
     flex: 1,
+    width: '100%',
+    alignSelf: 'stretch',
   },
+
+  // Wellness buttons
   middleBtns: {
     flexDirection: 'row',
     justifyContent: 'space-around',
