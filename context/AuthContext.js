@@ -7,6 +7,7 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Load initial session and subscribe to changes
@@ -17,27 +18,32 @@ export function AuthProvider({ children }) {
     async function initAuth() {
       try {
         // Add timeout to prevent hanging
-        const timeoutPromise = new Promise((_, reject) => 
+        const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Session fetch timeout')), 10000)
         );
-        
+
         const sessionPromise = supabase.auth.getSession();
-        const { data, error } = await Promise.race([sessionPromise, timeoutPromise]);
-        
+        const { data, error } = await Promise.race([
+          sessionPromise,
+          timeoutPromise,
+        ]);
+
         if (!isMounted) return;
 
         if (error) {
           console.error('[AuthContext] getSession error:', error);
-          // Set session to null on error, don't block the app
           setSession(null);
+          setUser(null);
         } else {
-          setSession(data?.session ?? null);
+          const currentSession = data?.session ?? null;
+          setSession(currentSession);
+          setUser(currentSession?.user ?? null);
         }
       } catch (err) {
         console.error('[AuthContext] initAuth error:', err);
-        // On any error (including timeout), set loading to false and continue
         if (isMounted) {
           setSession(null);
+          setUser(null);
         }
       } finally {
         if (isMounted) setLoading(false);
@@ -51,14 +57,13 @@ export function AuthProvider({ children }) {
       const {
         data: { subscription: authSubscription },
       } = supabase.auth.onAuthStateChange((_event, newSession) => {
-        if (isMounted) {
-          setSession(newSession);
-        }
+        if (!isMounted) return;
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
       });
       subscription = authSubscription;
     } catch (err) {
       console.error('[AuthContext] onAuthStateChange error:', err);
-      // If subscription fails, still set loading to false
       if (isMounted) setLoading(false);
     }
 
@@ -93,6 +98,20 @@ export function AuthProvider({ children }) {
     if (error) throw error;
   };
 
+  // Force-refresh the user object (e.g., after updating metadata/avatar)
+  const refreshUser = async () => {
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error('[AuthContext] refreshUser error:', error);
+        return;
+      }
+      setUser(data.user ?? null);
+    } catch (err) {
+      console.error('[AuthContext] refreshUser unexpected error:', err);
+    }
+  };
+
   // Google login – web/PWA flow
   const signInWithGoogleWeb = async () => {
     if (Platform.OS !== 'web') {
@@ -117,12 +136,13 @@ export function AuthProvider({ children }) {
 
   const value = {
     session,
-    user: session?.user ?? null,
+    user,              // real state, not derived
     loading,
     signUp,
     signIn,
     signOut,
     signInWithGoogleWeb,
+    refreshUser,       // <– now actually available to consumers
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
