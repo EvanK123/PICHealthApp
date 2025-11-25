@@ -37,7 +37,7 @@ npx expo install react-native-screens react-native-safe-area-context react-nativ
 npm install @react-navigation/native@6.1.18 @react-navigation/native-stack@6.9.20
 npm install react-native-calendars
 npm install react-native-dropdown-select-list
-npm install react-native-icons
+npm install react-native-icons 
 npm install base64-arraybuffer
 npm install @supabase/supabase-js@2.39.7
 ```

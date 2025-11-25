@@ -50,8 +50,9 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
+  // compute cell size from available width
   const [calWidth, setCalWidth] = useState(0);
-  const CELL_MARGIN = 2;               // tighter margins to gain width
+  const CELL_MARGIN = 2;
   const COLUMNS = 7;
   const cellSize = calWidth
     ? Math.floor((calWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS)
@@ -63,6 +64,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     return '#BDBDBD';
   };
 
+  // mark dates + selection
   useEffect(() => {
     const fm = {};
     Object.keys(events || {}).forEach((date) => {
@@ -88,6 +90,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     setPopupVisible(true);
   };
 
+  // custom day cell
   const DayCell = ({ date, state }) => {
     const key = date.dateString;
     const list = events[key] || [];
@@ -126,10 +129,13 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
       {/* Edge-to-edge white panel */}
       <View style={styles.whitePanel} onLayout={(e) => setCalWidth(e.nativeEvent.layout.width)}>
-        {/* Weekday strip (full width, no outer margins) */}
-        <View style={styles.weekStrip}>
-          {WEEKDAYS_ABBREV.map((d) => (
-            <View key={d} style={styles.weekCell}>
+        {/* Weekday strip with border & vertical dividers */}
+        <View style={styles.weekStripBox}>
+          {WEEKDAYS_ABBREV.map((d, i) => (
+            <View
+              key={d}
+              style={[styles.weekCellBox, i === WEEKDAYS_ABBREV.length - 1 && styles.weekCellLast]}
+            >
               <Text style={styles.weekText}>{d}</Text>
             </View>
           ))}
@@ -148,13 +154,17 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
           renderHeader={(date) => {
             const d = new Date(date);
             const label = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-            return <View style={styles.header}><Text style={styles.headerTitle}>{label}</Text></View>;
+            return (
+              <View style={styles.header}>
+                <Text style={styles.headerTitle}>{label}</Text>
+              </View>
+            );
           }}
           dayComponent={({ date, state }) => <DayCell date={date} state={state} />}
         />
       </View>
 
-      {/* Bottom sheet stays the same */}
+      {/* Bottom sheet of events for the selected day */}
       {selectedDate && (
         <View style={styles.sheet}>
           <Text style={styles.sheetTitle}>{selectedLabel}</Text>
@@ -171,9 +181,13 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
                 <View style={styles.sheetBody}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.sheetTitleText}>{ev.summary || t('calendar.noTitle')}</Text>
-                    <Text style={styles.sheetMeta}>{timeText} {ev.location ? `• ${ev.location}` : ''}</Text>
+                    <Text style={styles.sheetMeta}>
+                      {timeText} {ev.location ? `• ${ev.location}` : ''}
+                    </Text>
                   </View>
-                  <View style={styles.tag}><Text style={styles.tagText}>{isPic ? t('calendar.free') : t('calendar.family')}</Text></View>
+                  <View style={styles.tag}>
+                    <Text style={styles.tagText}>{isPic ? t('calendar.free') : t('calendar.family')}</Text>
+                  </View>
                 </View>
               </View>
             );
@@ -195,7 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 0,
     paddingVertical: 8,
-    paddingHorizontal: 0,          // ← no side padding = edge-to-edge
+    paddingHorizontal: 0, // edge-to-edge
     width: '100%',
     alignSelf: 'stretch',
   },
@@ -205,18 +219,29 @@ const styles = StyleSheet.create({
   header: { paddingVertical: 6, alignItems: 'center' },
   headerTitle: { color: COLORS.navyText, fontSize: 18, fontWeight: '800' },
 
-  weekStrip: {
+  // Weekday strip — single bordered container with vertical dividers
+  weekStripBox: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 6,
-    paddingHorizontal: 6,
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
+    borderWidth: 1,
     borderColor: COLORS.navyBorder,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginHorizontal: 6,
+    marginBottom: 6,
   },
-  weekCell: { flex: 1, alignItems: 'center' },
+  weekCellBox: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    borderRightWidth: 1,
+    borderRightColor: COLORS.navyBorder,
+  },
+  weekCellLast: { borderRightWidth: 0 },
   weekText: { fontSize: 12, fontWeight: '800', color: COLORS.navyText },
 
+  // Day cells
   dayCell: {
     borderRadius: 12,
     borderWidth: 1,
@@ -227,9 +252,16 @@ const styles = StyleSheet.create({
   },
   dayCellSelected: { borderColor: COLORS.primary, borderWidth: 2 },
   dayNum: { color: COLORS.ink, fontWeight: '700', marginBottom: 2, fontSize: 12 },
-  eventPill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 10, alignSelf: 'flex-start', maxWidth: '100%' },
+  eventPill: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 10,
+    alignSelf: 'flex-start',
+    maxWidth: '100%',
+  },
   eventPillText: { color: '#fff', fontSize: 11, fontWeight: '700' },
 
+  // Bottom sheet
   sheet: {
     backgroundColor: '#fff',
     marginTop: 12,
@@ -244,7 +276,15 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   sheetTitle: { textAlign: 'center', fontSize: 20, fontWeight: '900', color: COLORS.ink, marginBottom: 8 },
-  sheetCard: { marginHorizontal: 14, marginBottom: 12, backgroundColor: COLORS.sheetCard, borderRadius: 14, borderWidth: 1, borderColor: COLORS.panelBorder, overflow: 'hidden' },
+  sheetCard: {
+    marginHorizontal: 14,
+    marginBottom: 12,
+    backgroundColor: COLORS.sheetCard,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: COLORS.panelBorder,
+    overflow: 'hidden',
+  },
   topBar: { height: 6, width: '100%' },
   topBarTeal: { backgroundColor: COLORS.sheetBar1 },
   topBarBlue: { backgroundColor: COLORS.sheetBar2 },

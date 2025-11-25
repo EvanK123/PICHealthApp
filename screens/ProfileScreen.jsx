@@ -26,7 +26,7 @@ const COLORS = {
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, refreshUser } = useAuth();
   const { t } = React.useContext(TranslationContext);
 
   const email = user?.email ?? t('profile.unknownUser');
@@ -105,15 +105,18 @@ export default function ProfileScreen() {
         .from('avatars')
         .getPublicUrl(filePath);
 
-      const publicUrl = publicData?.publicUrl;
-      if (!publicUrl) {
+      const baseUrl = publicData?.publicUrl;
+      if (!baseUrl) {
         alert(t('profile.avatarUrlFailed'));
         return;
       }
 
+      // Add cache-busting query param so the URL string changes each time
+      const versionedUrl = `${baseUrl}?t=${Date.now()}`;
+
       // Save URL in user metadata
       const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrl },
+        data: { avatar_url: versionedUrl },
       });
 
       if (updateError) {
@@ -121,6 +124,9 @@ export default function ProfileScreen() {
         alert(t('profile.saveAvatarFailed'));
         return;
       }
+
+      // Refresh user in context so UI sees the updated avatar_url
+      await refreshUser();
 
       alert(t('profile.profileUpdated'));
     } catch (err) {
@@ -196,7 +202,9 @@ export default function ProfileScreen() {
               color="#ffffff"
               style={{ marginRight: 6 }}
             />
-            <Text style={styles.avatarButtonText}>{t('profile.changeProfilePhoto')}</Text>
+            <Text style={styles.avatarButtonText}>
+              {t('profile.changeProfilePhoto')}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
