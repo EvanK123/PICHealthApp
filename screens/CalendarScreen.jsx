@@ -179,9 +179,10 @@ const CalendarScreen = () => {
               </>
             ) : (
               <ListView
-                onEventPress={handleEventPress}
-                events={events}
-                selectedCalendars={selectedCalendars}
+               events={events}
+               selectedCalendars={selectedCalendars}
+               setSelectedCalendars={setSelectedCalendars}
+               calendarOptions={calendarOptions}
               />
             )}
           </View>
