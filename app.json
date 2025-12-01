@@ -12,20 +12,41 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.PICHealthMobApp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.PICHealthMobApp"
+      "package": "com.anonymous.PICHealthMobApp",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "com.anonymous.PICHealthMobApp"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/pic-logo.png"
     },
     "experiments": {
       "baseUrl": "/PIC-Health-MobApp"
-    }
+    },
+    "scheme": "com.anonymous.PICHealthMobApp",
+    "plugins": [
+      [
+        "expo-auth-session",
+        {
+          "redirectUri": "com.anonymous.PICHealthMobApp://auth/callback"
+        }
+      ]
+    ]
   }
 }

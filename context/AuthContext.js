@@ -2,8 +2,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { supabase } from '../services/supabaseClient';
+import * as WebBrowser from 'expo-web-browser';
 
-const AuthContext = createContext(null);
+WebBrowser.maybeCompleteAuthSession();
+
+
+const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
+
+
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
@@ -112,25 +119,72 @@ export function AuthProvider({ children }) {
     }
   };
 
+  //Redirect URI
+  const redirectUri = AuthSession.makeRedirectUri({
+    scheme: "com.anonymous.PICHealthMobApp",
+    path: "auth/callback",
+  });
+
   // Google login – web/PWA flow
-  const signInWithGoogleWeb = async () => {
-    if (Platform.OS !== 'web') {
-      console.warn('signInWithGoogleWeb called on non-web platform');
+  const signInWithGoogle= async () => {
+    const authUrl =
+      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/auth/v1/authorize` +
+      `?provider=google&redirect_to=${encodeURIComponent(redirectUri)}`;
+
+    const result = await AuthSession.startAsync({
+      authUrl,
+      returnUrl: redirectUri,
+    });
+
+    if (result.type !== "success") {
+      throw new Error("Google sign-in was cancelled");
     }
 
-    const redirectTo =
-      typeof window !== 'undefined'
+    const { access_token, refresh_token } = result.params;
+
+    const { data, error } = await supabase.auth.setSession({
+      access_token,
+      refresh_token,
+    });
+
+    if (error) throw error;
+    return data;
+  };
+
+  //Google web sign in
+  const signInWithGoogleWeb = async () => {
+    let redirectUrl;
+
+    if (Platform.OS === 'web') {
+      redirectUrl = typeof window !== 'undefined'
         ? `${window.location.origin}/auth/callback`
         : undefined;
+    } else {
+      redirectUrl = redirectUri;
+    }
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo,
+        redirectTo: redirectUrl,
+        skipBrowserRedirect: false,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
       },
     });
 
     if (error) throw error;
+
+
+    if (Platform.OS !== 'web' && data?.url) {
+      await WebBrowser.openAuthSessionAsync(
+        data.url,
+        redirectUrl
+      );
+    }
+
     return data;
   };
 
@@ -142,6 +196,7 @@ export function AuthProvider({ children }) {
     signIn,
     signOut,
     signInWithGoogleWeb,
+    signInWithGoogle,
     refreshUser,       // <– now actually available to consumers
   };
 

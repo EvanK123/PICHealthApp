@@ -65,19 +65,20 @@ export default function LoginScreen() {
   const handleGoogle = async () => {
     try {
       setSubmitting(true);
-      setErrorMsg('');
+      setErrorMsg("");
 
-      if (Platform.OS === 'web') {
-        await signInWithGoogleWeb();
-      } else {
-        setErrorMsg(t('login.googleSignInWebOnly'));
-      }
-    } catch (err) {
-      setErrorMsg(err.message ?? t('login.googleSignInFailed'));
-    } finally {
-      setSubmitting(false);
+    if (Platform.OS === "web") {
+      await signInWithGoogleWeb();
+    } else {
+      await signInWithGoogleNative();
     }
-  };
+
+  } catch (err) {
+    setErrorMsg(err.message ?? t("login.googleSignInFailed"));
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   return (
     <SafeAreaView style={styles.safeArea}>
