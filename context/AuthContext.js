@@ -3,12 +3,12 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { supabase } from '../services/supabaseClient';
 import * as WebBrowser from 'expo-web-browser';
+import * as AuthSession from 'expo-auth-session';
 
 WebBrowser.maybeCompleteAuthSession();
 
 
 const AuthContext = createContext();
-export const useAuth = () => useContext(AuthContext);
 
 
 

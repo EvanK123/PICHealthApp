@@ -40,13 +40,6 @@
       "baseUrl": "/PIC-Health-MobApp"
     },
     "scheme": "com.anonymous.PICHealthMobApp",
-    "plugins": [
-      [
-        "expo-auth-session",
-        {
-          "redirectUri": "com.anonymous.PICHealthMobApp://auth/callback"
-        }
-      ]
-    ]
+    "plugins": []
   }
 }
