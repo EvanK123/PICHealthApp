@@ -111,7 +111,11 @@ Web view will be waiting at: http://localhost:8081
 MIT License
 
 ## Contact
+Current Contacts
+- Evan Knaggs: [https://www.linkedin.com/in/evanknaggs]
 
+
+Previous Contacts
 - Nathan Potraz: [https://www.linkedin.com/in/nathan-potraz-a538482b2/] [ntpotraz@pm.me]
 - Adam Salter: [www.linkedin.com/in/adam-salter-10-11-7-rmn] [apsalter11@gmail.com]
 - Billy Vo: [billyvo97@gmail.com]
