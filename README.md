@@ -40,6 +40,7 @@ npm install react-native-dropdown-select-list
 npm install react-native-icons 
 npm install base64-arraybuffer
 npm install @supabase/supabase-js@2.39.7
+npx expo install expo-web-browser
 ```
 
 ## Installation
