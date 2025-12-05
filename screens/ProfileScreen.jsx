@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,6 +30,7 @@ export default function ProfileScreen() {
   const { user, signOut, refreshUser } = useAuth();
   const { t } = React.useContext(TranslationContext);
 
+  const fullName = user?.user_metadata?.full_name || null;
   const email = user?.email ?? t('profile.unknownUser');
   const userId = user?.id ?? '—';
   const avatarUrl = user?.user_metadata?.avatar_url ?? null;
@@ -46,14 +48,13 @@ export default function ProfileScreen() {
     try {
       if (!user) return;
 
-      // Ask for permission
+      // Ask for permission (on web this just returns granted)
       const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!perm.granted) {
         alert(t('profile.permissionRequired'));
         return;
       }
 
-      // Pick image – support both old (MediaTypeOptions) and new (MediaType) APIs
       const mediaTypes =
         (ImagePicker.MediaType && ImagePicker.MediaType.Images) ||
         (ImagePicker.MediaTypeOptions &&
@@ -69,30 +70,60 @@ export default function ProfileScreen() {
       if (result.canceled) return;
 
       const asset = result.assets[0];
-      const fileUri = asset.uri;
 
-      // Read file as base64
-      const base64 = await FileSystem.readAsStringAsync(fileUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      // Convert base64 -> ArrayBuffer (binary)
-      const arrayBuffer = decodeBase64(base64);
-
-      // Build path & mime type
+      // Build path & mimetype
       const fileExt =
         (asset.fileName?.split('.').pop() || 'jpg').toLowerCase();
       const fileName = `${user.id}.${fileExt}`;
       const filePath = `avatars/${fileName}`;
       const mimeType = asset.mimeType || 'image/jpeg';
 
-      // Upload raw binary to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, arrayBuffer, {
-          contentType: mimeType,
-          upsert: true,
+      let uploadError = null;
+
+      if (Platform.OS === 'web') {
+        // 🔹 WEB: upload File / Blob directly
+        let fileToUpload = asset.file || null;
+
+        // Fallback: fetch the asset URI and convert to Blob
+        if (!fileToUpload && asset.uri) {
+          const res = await fetch(asset.uri);
+          const blob = await res.blob();
+          fileToUpload = blob;
+        }
+
+        if (!fileToUpload) {
+          console.error('[ProfileScreen] No file to upload on web');
+          alert(t('profile.uploadFailed'));
+          return;
+        }
+
+        const { error } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, fileToUpload, {
+            contentType: mimeType,
+            upsert: true,
+          });
+
+        uploadError = error;
+      } else {
+        // 🔹 NATIVE: keep your existing base64 -> ArrayBuffer upload
+        const fileUri = asset.uri;
+
+        const base64 = await FileSystem.readAsStringAsync(fileUri, {
+          encoding: FileSystem.EncodingType.Base64,
         });
+
+        const arrayBuffer = decodeBase64(base64);
+
+        const { error } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, arrayBuffer, {
+            contentType: mimeType,
+            upsert: true,
+          });
+
+        uploadError = error;
+      }
 
       if (uploadError) {
         console.error('[ProfileScreen] upload error:', uploadError);
@@ -111,7 +142,7 @@ export default function ProfileScreen() {
         return;
       }
 
-      // Add cache-busting query param so the URL string changes each time
+      // Cache-busting so browser doesn't reuse old image
       const versionedUrl = `${baseUrl}?t=${Date.now()}`;
 
       // Save URL in user metadata
@@ -125,7 +156,7 @@ export default function ProfileScreen() {
         return;
       }
 
-      // Refresh user in context so UI sees the updated avatar_url
+      // Refresh user so UI gets new avatar_url
       await refreshUser();
 
       alert(t('profile.profileUpdated'));
@@ -161,6 +192,7 @@ export default function ProfileScreen() {
               {avatarUrl ? (
                 <View style={styles.avatarWrapper}>
                   <Image
+                    key={avatarUrl || 'default-avatar'}
                     source={{ uri: avatarUrl }}
                     style={styles.avatarImage}
                   />
@@ -170,7 +202,12 @@ export default function ProfileScreen() {
               )}
             </View>
             <View style={styles.userInfo}>
-              <Text style={styles.userEmail}>{email}</Text>
+              <Text style={styles.userEmail}>
+                {fullName || email}
+              </Text>
+              {fullName && (
+                <Text style={styles.userEmailSecondary}>{email}</Text>
+              )}
               <Text style={styles.userLabel}>{t('profile.signedInTo')}</Text>
             </View>
           </View>
@@ -293,6 +330,11 @@ const styles = StyleSheet.create({
     color: '#F9FAFB',
     fontSize: 16,
     fontWeight: '700',
+  },
+  userEmailSecondary: {
+    color: 'rgba(209,213,219,0.85)',
+    fontSize: 12,
+    marginTop: 2,
   },
   userLabel: {
     marginTop: 4,
