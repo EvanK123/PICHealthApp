@@ -3,7 +3,7 @@ import React, { useMemo, useState, useContext } from 'react';
 import { View, Text, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
 import Popup from './PopUp';
 import { TranslationContext } from '../context/TranslationContext';
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import CalendarSelector from './CalendarSelector';
 
 const COLORS = {
   bannerBg: 'hsla(200, 0%, 20%, 0.6)',
@@ -27,7 +27,8 @@ const ListView = ({
   events,
   selectedCalendars,
   setSelectedCalendars,
-  calendarOptions, // pass from CalendarScreen
+  calendarOptions,
+  navigation,
 }) => {
   const { t } = useContext(TranslationContext);
   const calendarsConfig = require('../locales/calendars.json');
@@ -97,17 +98,11 @@ const ListView = ({
   return (
     <View style={styles.container}>
       {/* Calendar selector also in Upcoming tab */}
-      <View style={styles.selectorWrap}>
-        <MultipleSelectList
-          setSelected={setSelectedCalendars}
-          data={calendarOptions || []}
-          save="key"
-          label={t('calendar.selectCalendar')}
-          placeholder={t('calendar.selectCalendar')}
-          dropdownStyles={styles.dropdown}
-          boxStyles={styles.dropdownBox}
-        />
-      </View>
+      <CalendarSelector
+        selectedCalendars={selectedCalendars}
+        setSelectedCalendars={setSelectedCalendars}
+        calendarOptions={calendarOptions || []}
+      />
 
       <Banner title={bannerTitle} onPrev={goPrevMonth} onNext={goNextMonth} />
 
@@ -125,6 +120,9 @@ const ListView = ({
               ? (t('calendar.allDay') || 'All day')
               : new Date(item.start?.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+            const calendarConfig = calendarsConfig.calendars.find(c => c.id === item.organizer?.email);
+            const calendarName = calendarConfig ? t(calendarConfig.translationKey) : 'Unknown';
+
             return (
               <TouchableOpacity style={styles.card} onPress={() => handleEventPress(item)} activeOpacity={0.9}>
                 <View style={[styles.topBar, { backgroundColor: barColor }]} />
@@ -135,6 +133,9 @@ const ListView = ({
                       {timeText}
                       {item.location ? ` • ${item.location}` : ''}
                     </Text>
+                  </View>
+                  <View style={[styles.tag, { backgroundColor: barColor }]}>
+                    <Text style={styles.tagText}>{calendarName}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -151,7 +152,7 @@ const ListView = ({
         </Text>
       )}
 
-      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} />
+      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} navigation={navigation} />
     </View>
   );
 };
@@ -159,25 +160,24 @@ const ListView = ({
 export default ListView;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingVertical: 16, width: '100%' },
+  container: { flex: 1, paddingTop: 0, paddingBottom: 16, width: '100%' },
 
-  // selector
-  selectorWrap: { backgroundColor: '#2d4887' },
-  dropdown: { backgroundColor: '#fff', borderRadius: 0, marginTop: 0, marginBottom: 10 },
-  dropdownBox: { backgroundColor: '#fff', borderColor: '#fff', borderRadius: 0 },
+
 
   // month banner
   bannerWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.bannerBg,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    backgroundColor: '#2d4887',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     marginBottom: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.2)',
   },
-  bannerTitle: { flex: 1, textAlign: 'center', color: 'white', fontSize: 18, fontWeight: 'bold' },
-  navBtn: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.15)' },
-  navBtnText: { color: 'white', fontSize: 16, fontWeight: '700' },
+  bannerTitle: { flex: 1, textAlign: 'center', color: '#ffffff', fontSize: 18, fontWeight: '800' },
+  navBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.12)' },
+  navBtnText: { color: '#ffffff', fontSize: 16, fontWeight: '700' },
 
   // list + cards (match CalendarView sheet cards)
   sectionList: { width: '100%' },

@@ -26,6 +26,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import CommentsScreen from './screens/CommentsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,6 +45,7 @@ const TabNavigator = () => {
           else if (route.name === 'Health') iconName = 'heart';
           else if (route.name === 'Education') iconName = 'book';
           else if (route.name === 'Culture') iconName = 'globe';
+          else if (route.name === 'Comments') iconName = 'chatbubbles';
 
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -77,6 +79,11 @@ const TabNavigator = () => {
         name="About Us"
         component={AboutUs}
         options={{ tabBarLabel: t('app.tabs.aboutUs') }}
+      />
+      <Tab.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={{ tabBarButton: () => null }}
       />
     </Tab.Navigator>
   );

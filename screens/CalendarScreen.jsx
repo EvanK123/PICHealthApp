@@ -141,20 +141,20 @@ const CalendarScreen = () => {
       >
         <Header
           title={t('calendar.title')}
-          showSubmit
-          onPressSubmit={() => {
-            const links = require('../locales/links.json');
-            callWebView(links.calendar.submitEvent, t('header.submitEvent'));
-          }}
+          avatarUrl={avatarUrl}
+          onPressProfile={handleProfilePress}
         />
 
         <CalendarBar
           calendarMode={calendarMode}
           setCalendarMode={setCalendarMode}
+          selectedCalendars={selectedCalendars}
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
-          onPressProfile={handleProfilePress}
-          avatarUrl={avatarUrl}
+          onPressSubmit={() => {
+            const links = require('../locales/links.json');
+            callWebView(links.calendar.submitEvent, t('header.submitEvent'));
+          }}
         />
 
         <View style={styles.darken}>
@@ -168,6 +168,7 @@ const CalendarScreen = () => {
                   callWebView={callWebView}
                   closeModal={closeModal}
                   onEventPress={handleEventPress}
+                  navigation={navigation}
                 />
                 <WellnessButtons callWebView={callWebView} />
               </>
@@ -177,13 +178,14 @@ const CalendarScreen = () => {
                selectedCalendars={selectedCalendars}
                setSelectedCalendars={setSelectedCalendars}
                calendarOptions={calendarOptions}
+               navigation={navigation}
               />
             )}
           </View>
         </View>
       </ImageBackground>
 
-      <Popup visible={popupVisible} onClose={closePopup} event={selectedEvent} />
+      <Popup visible={popupVisible} onClose={closePopup} event={selectedEvent} navigation={navigation} />
       <WebViewModal
         url={modalConfig.url}
         isVisible={modalConfig.isVisible}

@@ -41,9 +41,6 @@
     "search": "Search",
     "allDay": "All Day",
     "noDescriptionAvailable": "No description available",
-    "noTitle": "(No title)",
-    "free": "Free",
-    "family": "Family",
     "calendarOptions": {
       "pacificIslander": "Pacific Islander Community",
       "latino": "Latino Community"
@@ -111,6 +108,13 @@
 
   "webView": {
     "notSupported": "The embedded view isn't supported in web preview. This link should open in a new tab:"
+  },
+
+  "comments": {
+    "viewComments": "View Comments",
+    "noComments": "No comments yet",
+    "addComment": "Add a comment...",
+    "submit": "Submit"
   },
 
   "health": {
