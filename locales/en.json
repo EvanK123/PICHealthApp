@@ -38,7 +38,6 @@
     "calendar": "Calendar",
     "upcomingEvents": "Upcoming Events",
     "selectCalendar": "Select Calendar",
-    "selectCalendars": "Select Calendars",
     "search": "Search",
     "allDay": "All Day",
     "noDescriptionAvailable": "No description available",
@@ -66,7 +65,8 @@
   },
 
   "header": {
-    "submitEvent": "Submit Event"
+    "submitEvent": "Submit Event",
+    "beta": "BETA"
   },
 
   "login": {

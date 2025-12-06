@@ -1,55 +1,8 @@
-// Load all translation files
-// To add a new language: 
-// 1. Create [code].json in the locales directory
-// 2. Add [code] entry to locales/languages.config.json
-// 3. Add one line below: const [code]Translations = require('../locales/[code].json');
-// 4. Add one line to translations object: [code]: [code]Translations,
-const enTranslations = require('../locales/en.json');
-const esTranslations = require('../locales/es.json');
-const smTranslations = require('../locales/sm.json');
-const chTranslations = require('../locales/ch.json');
-const toTranslations = require('../locales/to.json');
+// Load all translation files from map
+const { TRANSLATIONS } = require('../locales/translations.map');
 const links = require('../locales/links.json');
-const images = require('../locales/images.json');
 
-const translations = {
-  en: enTranslations,
-  es: esTranslations,
-  sm: smTranslations,
-  ch: chTranslations,
-  to: toTranslations,
-};
-
-/**
- * Merge image ID with image path from centralized images.json
- * @param {object} service - Service object
- * @param {string} section - Section name (health, culture, education)
- * @returns {object} - Service with merged image path
- */
-function mergeImage(service, section) {
-  const sectionImages = images[section];
-  if (!sectionImages || !sectionImages[service.id]) {
-    return service;
-  }
-  
-  const serviceImage = sectionImages[service.id];
-  if (service.imageId && serviceImage[service.imageId]) {
-    return {
-      ...service,
-      image: serviceImage[service.imageId]
-    };
-  }
-  
-  // If no imageId specified but image exists, use default "image" key
-  if (serviceImage.image) {
-    return {
-      ...service,
-      image: serviceImage.image
-    };
-  }
-  
-  return service;
-}
+const translations = TRANSLATIONS;
 
 /**
  * Merge link IDs with URLs from centralized links.json
@@ -135,11 +88,7 @@ export function getSection(lang, section) {
 export function getServices(lang, section) {
   const sectionData = getSection(lang, section);
   const services = sectionData.services || [];
-  return services.map(service => {
-    let mergedService = mergeLinks(service, section);
-    mergedService = mergeImage(mergedService, section);
-    return mergedService;
-  });
+  return services.map(service => mergeLinks(service, section));
 }
 
 /**
@@ -149,8 +98,7 @@ export function getServices(lang, section) {
  */
 export function getAboutUsSections(lang) {
   const aboutUsData = getSection(lang, 'aboutUs');
-  const sections = aboutUsData.sections || [];
-  return sections.map(section => mergeImage(section, 'aboutUs'));
+  return aboutUsData.sections || [];
 }
 
 export default { t, getSection, getServices, getAboutUsSections };

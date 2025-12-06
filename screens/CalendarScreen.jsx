@@ -19,8 +19,6 @@ import ListView from '../components/ListView';
 import Popup from '../components/PopUp';
 import WebViewModal from '../components/WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
-import { getAppImage } from '../utils/imageLoader';
-
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 import { useAuth } from '../context/AuthContext';
 
@@ -71,16 +69,12 @@ const CalendarScreen = () => {
 
   const avatarUrl = user?.user_metadata?.avatar_url || null;
 
-  const calendarOptions = [
-    {
-      key: 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com',
-      value: t('calendar.calendarOptions.pacificIslander'),
-    },
-    {
-      key: '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com',
-      value: t('calendar.calendarOptions.latino'),
-    },
-  ];
+  // Load calendar IDs from JSON config
+  const calendarsConfig = require('../locales/calendars.json');
+  const calendarOptions = calendarsConfig.calendars.map(cal => ({
+    key: cal.id,
+    value: t(cal.translationKey),
+  }));
 
   const callWebView = (url, title) => {
     const defaultTitle = title || t('common.browser');
@@ -135,12 +129,12 @@ const CalendarScreen = () => {
 
   const handleProfilePress = () => navigation.navigate('Account');
 
-  const backgroundImage = getAppImage('background');
+
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
       <ImageBackground
-        source={backgroundImage || require('../assets/background.png')}
+        source={require('../assets/beach-bg.jpg')}
         resizeMode="cover"
         style={styles.image}
         blurRadius={0}

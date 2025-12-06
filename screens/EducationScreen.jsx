@@ -17,7 +17,7 @@ import Header from "../components/Header";
 import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
 import { useAuth } from "../context/AuthContext";
-import { getImageSource, getAppImage } from "../utils/imageLoader";
+
 import { useContext } from "react";
 
 const EducationScreen = () => {
@@ -49,7 +49,7 @@ const EducationScreen = () => {
   return (
     <SafeAreaView edges={["top"]} style={styles.container}>
       <ImageBackground
-        source={getAppImage('background')}
+        source={require('../assets/beach-bg.jpg')}
         resizeMode="cover"
         style={styles.image}
         blurRadius={0}
@@ -65,13 +65,7 @@ const EducationScreen = () => {
           <View style={{ margin: 5, borderRadius: 10 }}>
             {localizedSections.map((sec) => (
               <View key={sec.id} style={textBox.container}>
-                {sec.image && (
-                  <Image
-                    source={getImageSource(sec.image)}
-                    style={textBox.image}
-                    resizeMode="contain"
-                  />
-                )}
+                {/* Images removed - sec.image not supported */}
                 <Text style={textBox.title}>{sec.title}</Text>
                 <Text style={textBox.text}>{sec.text}</Text>
 

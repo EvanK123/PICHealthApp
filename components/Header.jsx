@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { TranslationContext } from '../context/TranslationContext';
 import languagesConfig from '../locales/languages.config.json';
-import { getAppImage } from '../utils/imageLoader';
+
 
 const COLORS = {
   primary: '#2d4887',
@@ -48,8 +48,8 @@ export default function Header({
       {/* Left: logo (with BETA under it) + title */}
       <View style={styles.left}>
         <View style={styles.brandWrap}>
-          <Image source={getAppImage('logo')} style={styles.logo} resizeMode="contain" />
-          <Text style={styles.beta}>BETA</Text>
+          <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+          <Text style={styles.beta}>{t('header.beta')}</Text>
         </View>
         <Text style={styles.title}>{title}</Text>
       </View>

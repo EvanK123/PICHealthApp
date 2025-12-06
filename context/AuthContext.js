@@ -121,15 +121,16 @@ export function AuthProvider({ children }) {
 
   //Redirect URI
   const redirectUri = AuthSession.makeRedirectUri({
-    scheme: "com.anonymous.PICHealthMobApp",
+    scheme: process.env.EXPO_PUBLIC_APP_SCHEME || "pic-health-app",
     path: "auth/callback",
   });
 
   // Google login – web/PWA flow
   const signInWithGoogle= async () => {
-    const authUrl =
-      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/auth/v1/authorize` +
-      `?provider=google&redirect_to=${encodeURIComponent(redirectUri)}`;
+    const baseUrl = new URL('/auth/v1/authorize', process.env.EXPO_PUBLIC_SUPABASE_URL);
+    baseUrl.searchParams.set('provider', 'google');
+    baseUrl.searchParams.set('redirect_to', redirectUri);
+    const authUrl = baseUrl.toString();
 
     const result = await AuthSession.startAsync({
       authUrl,

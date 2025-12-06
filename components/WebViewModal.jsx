@@ -15,9 +15,16 @@ export default function WebViewModal({ url, isVisible, onClose, title }) {
     if (isVisible) setWebKey(k => k + 1); // new key = fresh WebView each open
   }, [isVisible]);
 
-  const handleClose = () => onClose?.();
+  const handleClose = React.useCallback(() => {
+    onClose?.();
+  }, [onClose]);
 
   const isWeb = Platform.OS === "web";
+
+  const handleShouldStartLoad = React.useCallback(() => true, []);
+  const handleContentProcessTerminate = React.useCallback(() => {
+    webRef.current?.reload();
+  }, []);
 
   return (
     <Modal visible={isVisible} animationType="slide" onRequestClose={handleClose}>
@@ -47,15 +54,15 @@ export default function WebViewModal({ url, isVisible, onClose, title }) {
             thirdPartyCookiesEnabled={false}
             javaScriptEnabled
             domStorageEnabled
-            originWhitelist={["*"]}
+            originWhitelist={["https://*"]}
             setSupportMultipleWindows={false}
             startInLoadingState
-            onShouldStartLoadWithRequest={(req) => true}
+            onShouldStartLoadWithRequest={handleShouldStartLoad}
             injectedJavaScriptBeforeContentLoaded={`
               try { sessionStorage.clear(); localStorage.clear(); } catch (e) {}
               true;
             `}
-            onContentProcessDidTerminate={() => webRef.current?.reload()}
+            onContentProcessDidTerminate={handleContentProcessTerminate}
           />
         </View>
       )}

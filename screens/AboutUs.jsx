@@ -19,7 +19,7 @@ import WebViewModal from "../components/WebViewModal";
 import { TranslationContext } from "../context/TranslationContext";
 import { useAuth } from "../context/AuthContext";
 import { useContext } from "react";
-import { getImageSource, getAppImage } from "../utils/imageLoader";
+
 
 const AboutUs = () => {
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: "", title: "" });
@@ -53,7 +53,7 @@ const AboutUs = () => {
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground
-          source={getAppImage('background')}
+          source={require('../assets/beach-bg.jpg')}
           style={styles.image}
           blurRadius={0}
           resizeMode="cover"
@@ -69,7 +69,7 @@ const AboutUs = () => {
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.logoRow}>
               <Image
-                source={getAppImage('logoText')}
+                source={require('../assets/logo-text.png')}
                 style={styles.logoImg}
                 resizeMode="contain"
               />
@@ -88,7 +88,7 @@ const AboutUs = () => {
                 style={styles.photoContainer}
               >
                 <Image
-                  source={getAppImage('teamPhoto')}
+                  source={require('../assets/team.jpeg')}
                   style={styles.groupPhoto}
                   resizeMode="cover"
                 />
@@ -99,13 +99,7 @@ const AboutUs = () => {
             {/* Dynamically render sections */}
             {sections.map((section, index) => (
               <View key={section.id} style={styles.textBoxContainer}>
-                {section.image && (
-                  <Image
-                    source={getImageSource(section.image)}
-                    style={textBox.image}
-                    resizeMode="contain"
-                  />
-                )}
+                {/* Images removed - section.image not supported */}
                 <Text style={textBox.title}>{section.title}</Text>
                 <Text style={textBox.text}>{section.text}</Text>
               </View>

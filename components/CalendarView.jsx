@@ -45,10 +45,16 @@ const toLocalDate = (iso) => {
 
 export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
   const { t } = useContext(TranslationContext);
+  const calendarsConfig = require('../locales/calendars.json');
   const [markedDates, setMarkedDates] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const getColorForCalendar = (email) => {
+    const cal = calendarsConfig.calendars.find(c => c.id === email);
+    return cal?.color || COLORS.accentPIC;
+  };
 
   // compute cell size from available width
   const [calWidth, setCalWidth] = useState(0);
@@ -58,18 +64,14 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     ? Math.floor((calWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS)
     : 46;
 
-  const colorFor = (email) => {
-    if (email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com') return COLORS.accentPIC;
-    if (email === '8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com') return COLORS.accentLatino;
-    return '#BDBDBD';
-  };
+
 
   // mark dates + selection
   useEffect(() => {
     const fm = {};
     Object.keys(events || {}).forEach((date) => {
       const list = events[date] || [];
-      const dots = list.slice(0, 3).map((e) => ({ color: colorFor(e.organizer?.email) }));
+      const dots = list.slice(0, 3).map((e) => ({ color: getColorForCalendar(e.organizer?.email) }));
       fm[date] = { dots };
     });
     if (selectedDate) {
@@ -95,7 +97,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
     const key = date.dateString;
     const list = events[key] || [];
     const first = list[0];
-    const pillColor = first?.organizer?.email ? colorFor(first.organizer.email) : COLORS.accentPIC;
+    const pillColor = first?.organizer?.email ? getColorForCalendar(first.organizer.email) : COLORS.accentPIC;
 
     return (
       <TouchableOpacity
@@ -169,24 +171,20 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
         <View style={styles.sheet}>
           <Text style={styles.sheetTitle}>{selectedLabel}</Text>
           {selectedEvents.map((ev) => {
-            const isPic = ev.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com';
-            const bar = isPic ? styles.topBarTeal : styles.topBarBlue;
+            const barColor = getColorForCalendar(ev.organizer?.email);
             const timeText = ev.start?.date
               ? t('calendar.allDay')
               : new Date(ev.start?.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             return (
               <View key={ev.id || ev.summary + ev.start?.dateTime} style={styles.sheetCard}>
-                <View style={[styles.topBar, bar]} />
+                <View style={[styles.topBar, { backgroundColor: barColor }]} />
                 <View style={styles.sheetBody}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.sheetTitleText}>{ev.summary || t('calendar.noTitle')}</Text>
                     <Text style={styles.sheetMeta}>
                       {timeText} {ev.location ? `• ${ev.location}` : ''}
                     </Text>
-                  </View>
-                  <View style={styles.tag}>
-                    <Text style={styles.tagText}>{isPic ? t('calendar.free') : t('calendar.family')}</Text>
                   </View>
                 </View>
               </View>

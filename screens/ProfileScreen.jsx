@@ -35,16 +35,20 @@ export default function ProfileScreen() {
   const userId = user?.id ?? '—';
   const avatarUrl = user?.user_metadata?.avatar_url ?? null;
 
-  const handleSignOut = async () => {
+  const handleGoBack = React.useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  const handleSignOut = React.useCallback(async () => {
     try {
       await signOut();
       navigation.goBack();
     } catch (err) {
       console.error('[ProfileScreen] signOut error:', err);
     }
-  };
+  }, [signOut, navigation]);
 
-  const handleChangeAvatar = async () => {
+  const handleChangeAvatar = React.useCallback(async () => {
     try {
       if (!user) return;
 
@@ -167,14 +171,14 @@ export default function ProfileScreen() {
       );
       alert(t('profile.avatarChangeError'));
     }
-  };
+  }, [user, t, refreshUser]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* top bar */}
       <View style={styles.topBar}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={handleGoBack}
           style={styles.backButton}
           activeOpacity={0.8}
         >

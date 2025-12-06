@@ -76,8 +76,8 @@ export default function CalendarBar({
           setSelected={setSelectedCalendars}
           data={calendarOptions}
           save="key"
-          label={t('Select Calendar')}
-          placeholder={t('Select Calendar')}
+          label={t('calendar.selectCalendar')}
+          placeholder={t('calendar.selectCalendar')}
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />

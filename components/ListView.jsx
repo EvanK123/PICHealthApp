@@ -30,6 +30,12 @@ const ListView = ({
   calendarOptions, // pass from CalendarScreen
 }) => {
   const { t } = useContext(TranslationContext);
+  const calendarsConfig = require('../locales/calendars.json');
+
+  const getColorForCalendar = (email) => {
+    const cal = calendarsConfig.calendars.find(c => c.id === email);
+    return cal?.color || '#0B75B9';
+  };
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);
 
@@ -96,8 +102,8 @@ const ListView = ({
           setSelected={setSelectedCalendars}
           data={calendarOptions || []}
           save="key"
-          label={t('Select Calendar')}
-          placeholder={t('Select Calendar')}
+          label={t('calendar.selectCalendar')}
+          placeholder={t('calendar.selectCalendar')}
           dropdownStyles={styles.dropdown}
           boxStyles={styles.dropdownBox}
         />
@@ -114,15 +120,14 @@ const ListView = ({
           keyExtractor={(item) => item.id}
           style={styles.sectionList}
           renderItem={({ item }) => {
-            const isPic = item.organizer?.email === 'f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com';
-            const barStyle = isPic ? styles.topBarTeal : styles.topBarBlue;
+            const barColor = getColorForCalendar(item.organizer?.email);
             const timeText = item.start?.date
               ? (t('calendar.allDay') || 'All day')
               : new Date(item.start?.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             return (
               <TouchableOpacity style={styles.card} onPress={() => handleEventPress(item)} activeOpacity={0.9}>
-                <View style={[styles.topBar, barStyle]} />
+                <View style={[styles.topBar, { backgroundColor: barColor }]} />
                 <View style={styles.cardBody}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.cardTitle}>{item.summary || t('calendar.noTitle')}</Text>
@@ -131,7 +136,6 @@ const ListView = ({
                       {item.location ? ` • ${item.location}` : ''}
                     </Text>
                   </View>
-                  <View style={styles.tag}><Text style={styles.tagText}>{isPic ? (t('calendar.free') || 'Free') : (t('calendar.family') || 'Family')}</Text></View>
                 </View>
               </TouchableOpacity>
             );

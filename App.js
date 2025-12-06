@@ -141,7 +141,7 @@ export default function App() {
     console.error('[App] Error in render:', error);
     return (
       <View style={{ flex: 1, backgroundColor: '#111827', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-        <Text style={{ color: '#ef4444', fontSize: 18 }}>Error: {error.message}</Text>
+        <Text style={{ color: '#ef4444', fontSize: 18 }}>Something went wrong. Please try again.</Text>
       </View>
     );
   }

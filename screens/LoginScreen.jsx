@@ -39,7 +39,19 @@ export default function LoginScreen() {
 
   const isSignIn = mode === 'signin';
 
-  const handleSubmit = async () => {
+  const handleGoBack = React.useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  const handleModeSignIn = React.useCallback(() => {
+    setMode('signin');
+  }, []);
+
+  const handleModeSignUp = React.useCallback(() => {
+    setMode('signup');
+  }, []);
+
+  const handleSubmit = React.useCallback(async () => {
     try {
       setSubmitting(true);
       setErrorMsg('');
@@ -60,32 +72,28 @@ export default function LoginScreen() {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [email, password, isSignIn, signIn, signUp, t]);
 
-  const handleGoogle = async () => {
+  const handleGoogle = React.useCallback(async () => {
     try {
       setSubmitting(true);
       setErrorMsg("");
 
-    if (Platform.OS === "web") {
       await signInWithGoogleWeb();
-    } else {
-      await signInWithGoogleNative();
-    }
 
   } catch (err) {
     setErrorMsg(err.message ?? t("login.googleSignInFailed"));
   } finally {
     setSubmitting(false);
   }
-};
+}, [signInWithGoogleWeb, t]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* Back button row */}
       <View style={styles.backRow}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={handleGoBack}
           activeOpacity={0.8}
         >
           <Icon name="chevron-back" size={26} color="#ffffff" />
@@ -102,7 +110,7 @@ export default function LoginScreen() {
         <View style={styles.pillRow}>
           <View style={styles.pillGroup}>
             <TouchableOpacity
-              onPress={() => setMode('signin')}
+              onPress={handleModeSignIn}
               activeOpacity={0.9}
               style={[styles.pill, isSignIn && styles.pillActive]}
             >
@@ -114,7 +122,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => setMode('signup')}
+              onPress={handleModeSignUp}
               activeOpacity={0.9}
               style={[
                 styles.pill,

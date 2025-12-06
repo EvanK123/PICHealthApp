@@ -4,10 +4,10 @@
     "slug": "PIC-Health-MobApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/pic-logo.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-pic-logo.png",
+      "image": "./assets/splash-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -34,7 +34,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/pic-logo.png"
+      "favicon": "./assets/logo.png"
     },
     "experiments": {
       "baseUrl": "/PIC-Health-MobApp"
