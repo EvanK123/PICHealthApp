@@ -43,7 +43,7 @@ const toLocalDate = (iso) => {
   return new Date(y,(m||1)-1,d||1);
 };
 
-export default function CalendarView({ events, selectedCalendars, callWebView, closeModal, navigation }) {
+export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
   const { t } = useContext(TranslationContext);
   const calendarsConfig = require('../locales/calendars.json');
   const [markedDates, setMarkedDates] = useState({});
@@ -177,15 +177,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
               : new Date(ev.start?.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             return (
-              <TouchableOpacity 
-                key={ev.id || ev.summary + ev.start?.dateTime} 
-                style={styles.sheetCard}
-                onPress={() => {
-                  setSelectedEvents([ev]);
-                  setPopupVisible(true);
-                }}
-                activeOpacity={0.7}
-              >
+              <View key={ev.id || ev.summary + ev.start?.dateTime} style={styles.sheetCard}>
                 <View style={[styles.topBar, { backgroundColor: barColor }]} />
                 <View style={styles.sheetBody}>
                   <View style={{ flex: 1 }}>
@@ -195,13 +187,13 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </View>
             );
           })}
         </View>
       )}
 
-      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} navigation={navigation} />
+      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} />
       <WebViewModal url={''} isVisible={false} onClose={closeModal} />
     </ScrollView>
   );

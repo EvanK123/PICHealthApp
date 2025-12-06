@@ -7,13 +7,10 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-
-import Header from '../components/Header';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -177,27 +174,21 @@ export default function ProfileScreen() {
   }, [user, t, refreshUser]);
 
   return (
-    <SafeAreaView edges={['top']} style={styles.safeArea}>
-      <ImageBackground
-        source={require('../assets/beach-bg.jpg')}
-        resizeMode="cover"
-        style={styles.image}
-        blurRadius={0}
-      >
-        <Header 
-          title={t('profile.title')} 
-          avatarUrl={avatarUrl}
-        />
-        
-        <View style={styles.backButtonContainer}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color="#ffffff" />
-            <Text style={styles.backText}>Back</Text>
-          </TouchableOpacity>
-        </View>
+    <SafeAreaView style={styles.safeArea}>
+      {/* top bar */}
+      <View style={styles.topBar}>
+        <TouchableOpacity
+          onPress={handleGoBack}
+          style={styles.backButton}
+          activeOpacity={0.8}
+        >
+          <Icon name="chevron-back" size={22} color="#ffffff" />
+        </TouchableOpacity>
+        <Text style={styles.topBarTitle}>{t('profile.title')}</Text>
+        <View style={{ width: 22 }} />
+      </View>
 
-        <View style={styles.darken}>
-          <View style={styles.container}>
+      <View style={styles.container}>
         {/* profile card */}
         <View style={styles.card}>
           <View style={styles.profileRow}>
@@ -275,9 +266,7 @@ export default function ProfileScreen() {
             {t('profile.signOutMessage')}
           </Text>
         </View>
-          </View>
-        </View>
-      </ImageBackground>
+      </View>
     </SafeAreaView>
   );
 }
@@ -285,25 +274,24 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: COLORS.headerBg,
   },
-  image: { flex: 1, width: '100%', height: '100%' },
-  darken: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
-  backButtonContainer: {
-    backgroundColor: '#2d4887',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.2)',
-  },
-  backButton: {
+  topBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+    paddingTop: 4,
   },
-  backText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
+  backButton: {
+    padding: 4,
+  },
+  topBarTitle: {
+    flex: 1,
+    textAlign: 'center',
+    color: '#F9FAFB',
+    fontSize: 18,
+    fontWeight: '700',
   },
 
   container: {

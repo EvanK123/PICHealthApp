@@ -6,7 +6,7 @@ import { TranslationContext } from '../context/TranslationContext';
 
 
 // Popup component to display event details or welcome message in a modal
-const Popup = ({ visible, onClose, mode = "event", events, event, navigation }) => {
+const Popup = ({ visible, onClose, mode = "event", events, event }) => {
   const { t } = useContext(TranslationContext);
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
 
@@ -68,23 +68,6 @@ const Popup = ({ visible, onClose, mode = "event", events, event, navigation }) 
                     {item.start ? new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' }) : item.time}
                   </Text>
                   {item.location && <Text style={styles.eventTime}>{item.location}</Text>}
-                  {navigation && (
-                    <TouchableOpacity
-                      style={styles.commentButton}
-                      onPress={() => {
-                        onClose();
-                        navigation.navigate('MainTabs', { 
-                          screen: 'Comments',
-                          params: {
-                            eventTitle: item.summary || item.name,
-                            eventId: item.id
-                          }
-                        });
-                      }}
-                    >
-                      <Text style={styles.commentButtonText}>{t('comments.viewComments')}</Text>
-                    </TouchableOpacity>
-                  )}
                 </View>
               )}
             />
@@ -203,17 +186,5 @@ const styles = StyleSheet.create({
   },
   disclaimerBold: {
     fontWeight: 'bold',
-  },
-  commentButton: {
-    marginTop: 12,
-    backgroundColor: '#2d4887',
-    padding: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  commentButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '600',
   },
 });

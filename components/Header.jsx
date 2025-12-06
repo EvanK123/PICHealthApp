@@ -34,11 +34,6 @@ export default function Header({
   });
 
   const currentLabel = languages.find(l => l.code === lang)?.label || lang.toUpperCase();
-  const getFontSize = (text) => {
-    if (text.length <= 7) return 13;
-    if (text.length <= 10) return 11;
-    return 9;
-  };
 
   const handleProfilePress = () => {
     if (onPressProfile) {
@@ -59,25 +54,8 @@ export default function Header({
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      {/* Right: language chip + profile button + optional Submit */}
+      {/* Right: profile button + language chip + optional Submit */}
       <View style={styles.right}>
-        <View style={styles.langChip}>
-          <Text numberOfLines={1} style={[styles.langText, { fontSize: getFontSize(currentLabel) }]}>{currentLabel}</Text>
-
-          {/* Invisible overlay fills the chip; keeps chip height fixed */}
-          <Picker
-            selectedValue={lang}
-            onValueChange={setLang}
-            mode="dropdown"
-            dropdownIconColor="transparent"
-            style={styles.langPickerOverlay}
-          >
-            {languages.map(opt => (
-              <Picker.Item key={opt.code} label={opt.label} value={opt.code} color={COLORS.primary} />
-            ))}
-          </Picker>
-        </View>
-
         {/* Profile button */}
         {(avatarUrl || onPressProfile !== null) && (
           <TouchableOpacity
@@ -94,6 +72,23 @@ export default function Header({
             )}
           </TouchableOpacity>
         )}
+
+        <View style={styles.langChip}>
+          <Text numberOfLines={1} style={styles.langText}>{currentLabel}</Text>
+
+          {/* Invisible overlay fills the chip; keeps chip height fixed */}
+          <Picker
+            selectedValue={lang}
+            onValueChange={setLang}
+            mode="dropdown"
+            dropdownIconColor="transparent"
+            style={styles.langPickerOverlay}
+          >
+            {languages.map(opt => (
+              <Picker.Item key={opt.code} label={opt.label} value={opt.code} color={COLORS.primary} />
+            ))}
+          </Picker>
+        </View>
 
         {showSubmit && (
           <TouchableOpacity style={styles.ctaBtn} onPress={onPressSubmit}>
@@ -168,7 +163,8 @@ const styles = StyleSheet.create({
   // Compact language chip (fixed height)
   langChip: {
     position: 'relative',
-    width: 100,
+    minWidth: 88,
+    maxWidth: 140,
     height: 36,
     paddingHorizontal: 12,
     borderRadius: 14,
@@ -182,7 +178,6 @@ const styles = StyleSheet.create({
     color: COLORS.onPrimary,
     fontWeight: '700',
     fontSize: 13,
-    textAlign: 'center',
   },
   // Invisible overlay so the native picker doesn't inflate the chip
   langPickerOverlay: {
