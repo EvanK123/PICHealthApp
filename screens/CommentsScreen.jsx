@@ -1,0 +1,316 @@
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, ImageBackground } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { TranslationContext } from '../context/TranslationContext';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../services/supabaseClient';
+import Header from '../components/Header';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+export default function CommentsScreen({ route, navigation }) {
+  const { t } = useContext(TranslationContext);
+  const { user } = useAuth();
+  const { eventTitle, eventId } = route.params || {};
+  const avatarUrl = user?.user_metadata?.avatar_url || null;
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    fetchComments();
+    checkAdminStatus();
+
+    if (!eventId) return;
+
+    const subscription = supabase
+      .channel(`comments:${eventId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'event_comments',
+          filter: `event_id=eq.${eventId}`,
+        },
+        () => {
+          fetchComments();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [eventId]);
+
+  const checkAdminStatus = async () => {
+    if (!user) return;
+    console.log('Checking admin status for user:', user.email);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+      
+      if (error) {
+        console.log('Profile query error:', error);
+        // If no profile exists, create one
+        if (error.code === 'PGRST116') {
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: user.id, email: user.email, is_admin: false });
+          
+          if (insertError) {
+            console.error('Error creating profile:', insertError);
+          } else {
+            console.log('Profile created for user');
+          }
+        }
+        throw error;
+      }
+      
+      console.log('Admin status result:', data?.is_admin);
+      setIsAdmin(data?.is_admin === true);
+    } catch (error) {
+      console.error('Error checking admin status:', error);;
+    }
+  };
+
+  const fetchComments = async () => {
+    if (!eventId) return;
+    try {
+      const { data, error } = await supabase
+        .from('event_comments')
+        .select('*')
+        .eq('event_id', eventId)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setComments(data || []);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      console.log('Attempting to delete comment:', commentId);
+      const { data, error } = await supabase
+        .from('event_comments')
+        .delete()
+        .eq('id', commentId)
+        .select();
+      
+      console.log('Delete result:', { data, error });
+      
+      if (error) {
+        console.error('Delete failed:', error);
+        throw error;
+      }
+      
+      if (data && data.length === 0) {
+        console.warn('No rows were deleted - check RLS policies');
+      }
+      
+      // Update local state immediately for better UX
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !user || !eventId) return;
+    
+    setSubmitting(true);
+    try {
+      const username = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anonymous';
+      const { error } = await supabase
+        .from('event_comments')
+        .insert({
+          event_id: eventId,
+          user_id: user.id,
+          comment_text: newComment.trim(),
+          user_email: user.email,
+          username: username,
+        });
+      
+      if (error) throw error;
+      setNewComment('');
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
+      <ImageBackground
+        source={require('../assets/beach-bg.jpg')}
+        resizeMode="cover"
+        style={styles.image}
+        blurRadius={0}
+      >
+        <Header 
+          title={t('app.name')} 
+          avatarUrl={avatarUrl}
+          onPressProfile={() => navigation.navigate('Account')}
+        />
+        
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="#ffffff" />
+            <Text style={styles.backText}>Back</Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={styles.eventTitleBar}>
+          <Text style={styles.eventTitle}>{eventTitle || t('calendar.noTitle')}</Text>
+        </View>
+        
+        <View style={styles.content}>
+          <ScrollView style={styles.commentsContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#2d4887" style={{ marginTop: 32 }} />
+            ) : comments.length === 0 ? (
+              <Text style={styles.placeholder}>{t('comments.noComments')}</Text>
+            ) : (
+              comments.map((comment) => {
+                const displayName = comment.username || comment.user_email?.split('@')[0] || 'Anonymous';
+                const isOwner = user && comment.user_id === user.id;
+
+                const canDelete = isOwner || isAdmin;
+                return (
+                  <View key={comment.id} style={styles.commentCard}>
+                    <View style={styles.commentHeader}>
+                      <Text style={styles.commentUser}>{displayName}</Text>
+                      {canDelete && (
+                        <TouchableOpacity onPress={() => handleDeleteComment(comment.id)}>
+                          <Text style={styles.deleteButton}>✕</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                    <Text style={styles.commentText}>{comment.comment_text}</Text>
+                    <Text style={styles.commentDate}>
+                      {new Date(comment.created_at).toLocaleString()}
+                    </Text>
+                  </View>
+                );
+              })
+            )}
+          </ScrollView>
+
+          {user && (
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder={t('comments.addComment')}
+                placeholderTextColor="rgba(255,255,255,0.5)"
+                value={newComment}
+                onChangeText={setNewComment}
+                multiline
+              />
+              <TouchableOpacity
+                style={[styles.submitButton, submitting && styles.submitButtonDisabled]}
+                onPress={handleAddComment}
+                disabled={submitting || !newComment.trim()}
+              >
+                {submitting ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.submitButtonText}>{t('comments.submit')}</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </ImageBackground>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  image: { flex: 1, width: '100%', height: '100%' },
+  backButtonContainer: {
+    backgroundColor: '#2d4887',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.2)',
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  backText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+
+  eventTitleBar: {
+    backgroundColor: '#2d4887',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.2)',
+  },
+  eventTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  content: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
+  commentsContainer: { flex: 1, padding: 16 },
+  placeholder: { fontSize: 16, color: '#cbd5e1', textAlign: 'center', marginTop: 32 },
+  commentCard: {
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  commentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  commentUser: { fontSize: 14, fontWeight: '700', color: '#2d4887' },
+  deleteButton: { fontSize: 18, color: '#ef4444', fontWeight: '700' },
+  commentText: { fontSize: 15, color: '#0f172a', marginBottom: 6 },
+  commentDate: { fontSize: 12, color: '#475569' },
+  inputContainer: {
+    backgroundColor: '#2d4887',
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.2)',
+  },
+  input: {
+    backgroundColor: 'rgba(45,72,135,0.7)',
+    borderRadius: 10,
+    padding: 12,
+    color: '#fff',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.25)',
+    minHeight: 60,
+    marginBottom: 12,
+  },
+  submitButton: {
+    backgroundColor: '#0EA5B5',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  submitButtonDisabled: { opacity: 0.5 },
+  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+});
