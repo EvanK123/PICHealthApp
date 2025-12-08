@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   container: {
     width: 400,
     maxHeight: '80%',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(255, 255, 255, 1.0)',
     borderRadius: 10,
     padding: 20,
     position: 'relative',

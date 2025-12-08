@@ -126,7 +126,7 @@ const ListView = ({
             const calendarName = calendarConfig ? t(calendarConfig.translationKey) : 'Unknown';
 
             return (
-              <TouchableOpacity style={styles.card} onPress={() => handleEventPress(item)} activeOpacity={0.9}>
+              <TouchableOpacity style={styles.card} onPress={() => handleEventPress(item)} activeOpacity={1.0}>
                 <View style={[styles.topBar, { backgroundColor: barColor }]} />
                 <View style={styles.cardBody}>
                   <View style={{ flex: 1 }}>

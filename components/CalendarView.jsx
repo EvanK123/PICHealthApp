@@ -184,7 +184,7 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
                   setSelectedEvents([ev]);
                   setPopupVisible(true);
                 }}
-                activeOpacity={0.7}
+                activeOpacity={1.0}
               >
                 <View style={[styles.topBar, { backgroundColor: barColor }]} />
                 <View style={styles.sheetBody}>

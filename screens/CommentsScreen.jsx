@@ -16,9 +16,11 @@ export default function CommentsScreen({ route, navigation }) {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     fetchComments();
+    checkAdminStatus();
 
     if (!eventId) return;
 
@@ -43,6 +45,40 @@ export default function CommentsScreen({ route, navigation }) {
     };
   }, [eventId]);
 
+  const checkAdminStatus = async () => {
+    if (!user) return;
+    console.log('Checking admin status for user:', user.email);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+      
+      if (error) {
+        console.log('Profile query error:', error);
+        // If no profile exists, create one
+        if (error.code === 'PGRST116') {
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: user.id, email: user.email, is_admin: false });
+          
+          if (insertError) {
+            console.error('Error creating profile:', insertError);
+          } else {
+            console.log('Profile created for user');
+          }
+        }
+        throw error;
+      }
+      
+      console.log('Admin status result:', data?.is_admin);
+      setIsAdmin(data?.is_admin === true);
+    } catch (error) {
+      console.error('Error checking admin status:', error);;
+    }
+  };
+
   const fetchComments = async () => {
     if (!eventId) return;
     try {
@@ -63,13 +99,26 @@ export default function CommentsScreen({ route, navigation }) {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const { error } = await supabase
+      console.log('Attempting to delete comment:', commentId);
+      const { data, error } = await supabase
         .from('event_comments')
         .delete()
-        .eq('id', commentId);
+        .eq('id', commentId)
+        .select();
       
-      if (error) throw error;
-      fetchComments();
+      console.log('Delete result:', { data, error });
+      
+      if (error) {
+        console.error('Delete failed:', error);
+        throw error;
+      }
+      
+      if (data && data.length === 0) {
+        console.warn('No rows were deleted - check RLS policies');
+      }
+      
+      // Update local state immediately for better UX
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
@@ -93,7 +142,6 @@ export default function CommentsScreen({ route, navigation }) {
       
       if (error) throw error;
       setNewComment('');
-      fetchComments();
     } catch (error) {
       console.error('Error adding comment:', error);
     } finally {
@@ -136,11 +184,13 @@ export default function CommentsScreen({ route, navigation }) {
               comments.map((comment) => {
                 const displayName = comment.username || comment.user_email?.split('@')[0] || 'Anonymous';
                 const isOwner = user && comment.user_id === user.id;
+
+                const canDelete = isOwner || isAdmin;
                 return (
                   <View key={comment.id} style={styles.commentCard}>
                     <View style={styles.commentHeader}>
                       <Text style={styles.commentUser}>{displayName}</Text>
-                      {isOwner && (
+                      {canDelete && (
                         <TouchableOpacity onPress={() => handleDeleteComment(comment.id)}>
                           <Text style={styles.deleteButton}>✕</Text>
                         </TouchableOpacity>
