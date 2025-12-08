@@ -17,6 +17,8 @@ export default function CommentsScreen({ route, navigation }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [commentLikes, setCommentLikes] = useState({});
+  const [userLikes, setUserLikes] = useState({});
 
   useEffect(() => {
     fetchComments();
@@ -90,10 +92,57 @@ export default function CommentsScreen({ route, navigation }) {
       
       if (error) throw error;
       setComments(data || []);
+      if (data?.length) fetchCommentLikes(data.map(c => c.id));
     } catch (error) {
       console.error('Error fetching comments:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCommentLikes = async (commentIds) => {
+    if (!commentIds.length) return;
+    
+    const { data } = await supabase
+      .from('comment_likes')
+      .select('comment_id, user_id')
+      .in('comment_id', commentIds);
+    
+    const likeCounts = {};
+    const userLikeStatus = {};
+    
+    data?.forEach(like => {
+      likeCounts[like.comment_id] = (likeCounts[like.comment_id] || 0) + 1;
+      if (user && like.user_id === user.id) {
+        userLikeStatus[like.comment_id] = true;
+      }
+    });
+    
+    setCommentLikes(likeCounts);
+    setUserLikes(userLikeStatus);
+  };
+
+  const toggleCommentLike = async (commentId) => {
+    if (!user) return;
+    
+    const isLiked = userLikes[commentId];
+    
+    try {
+      if (isLiked) {
+        await supabase
+          .from('comment_likes')
+          .delete()
+          .eq('comment_id', commentId)
+          .eq('user_id', user.id);
+      } else {
+        await supabase
+          .from('comment_likes')
+          .insert({ comment_id: commentId, user_id: user.id });
+      }
+      
+      fetchCommentLikes(comments.map(c => c.id));
+    } catch (error) {
+      console.error('Error toggling like:', error);
     }
   };
 
@@ -184,6 +233,15 @@ export default function CommentsScreen({ route, navigation }) {
               comments.map((comment) => {
                 const displayName = comment.username || comment.user_email?.split('@')[0] || 'Anonymous';
                 const isOwner = user && comment.user_id === user.id;
+                
+                console.log('Comment check:', {
+                  commentId: comment.id,
+                  userEmail: user?.email,
+                  isAdmin,
+                  isOwner,
+                  commentUserId: comment.user_id,
+                  currentUserId: user?.id
+                });
 
                 const canDelete = isOwner || isAdmin;
                 return (
@@ -197,9 +255,24 @@ export default function CommentsScreen({ route, navigation }) {
                       )}
                     </View>
                     <Text style={styles.commentText}>{comment.comment_text}</Text>
-                    <Text style={styles.commentDate}>
-                      {new Date(comment.created_at).toLocaleString()}
-                    </Text>
+                    <View style={styles.commentFooter}>
+                      <Text style={styles.commentDate}>
+                        {new Date(comment.created_at).toLocaleString()}
+                      </Text>
+                      {user && (
+                        <TouchableOpacity
+                          style={styles.likeButton}
+                          onPress={() => toggleCommentLike(comment.id)}
+                        >
+                          <Icon 
+                            name={userLikes[comment.id] ? 'heart' : 'heart-outline'} 
+                            size={16} 
+                            color={userLikes[comment.id] ? '#ef4444' : '#64748b'} 
+                          />
+                          <Text style={styles.likeCount}>{commentLikes[comment.id] || 0}</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </View>
                 );
               })
@@ -288,7 +361,22 @@ const styles = StyleSheet.create({
   commentUser: { fontSize: 14, fontWeight: '700', color: '#2d4887' },
   deleteButton: { fontSize: 18, color: '#ef4444', fontWeight: '700' },
   commentText: { fontSize: 15, color: '#0f172a', marginBottom: 6 },
+  commentFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   commentDate: { fontSize: 12, color: '#475569' },
+  likeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  likeCount: {
+    fontSize: 12,
+    color: '#64748b',
+    fontWeight: '600',
+  },
   inputContainer: {
     backgroundColor: '#2d4887',
     padding: 16,
