@@ -12,6 +12,7 @@ CREATE TABLE event_comments (
   event_id TEXT NOT NULL,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   user_email TEXT NOT NULL,
+  username TEXT,
   comment_text TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -27,6 +28,7 @@ CREATE INDEX idx_event_comments_created_at ON event_comments(created_at DESC);
 - **event_id**: TEXT, The Google Calendar event ID
 - **user_id**: UUID, Foreign key to auth.users table
 - **user_email**: TEXT, User's email for display
+- **username**: TEXT, User's display name (from metadata or email prefix)
 - **comment_text**: TEXT, The comment content
 - **created_at**: TIMESTAMP, Auto-generated timestamp
 

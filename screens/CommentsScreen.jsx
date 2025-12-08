@@ -44,6 +44,7 @@ export default function CommentsScreen({ route, navigation }) {
     
     setSubmitting(true);
     try {
+      const username = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anonymous';
       const { error } = await supabase
         .from('event_comments')
         .insert({
@@ -51,6 +52,7 @@ export default function CommentsScreen({ route, navigation }) {
           user_id: user.id,
           comment_text: newComment.trim(),
           user_email: user.email,
+          username: username,
         });
       
       if (error) throw error;
@@ -95,15 +97,18 @@ export default function CommentsScreen({ route, navigation }) {
             ) : comments.length === 0 ? (
               <Text style={styles.placeholder}>{t('comments.noComments')}</Text>
             ) : (
-              comments.map((comment) => (
-                <View key={comment.id} style={styles.commentCard}>
-                  <Text style={styles.commentUser}>{comment.user_email}</Text>
-                  <Text style={styles.commentText}>{comment.comment_text}</Text>
-                  <Text style={styles.commentDate}>
-                    {new Date(comment.created_at).toLocaleString()}
-                  </Text>
-                </View>
-              ))
+              comments.map((comment) => {
+                const displayName = comment.username || comment.user_email?.split('@')[0] || 'Anonymous';
+                return (
+                  <View key={comment.id} style={styles.commentCard}>
+                    <Text style={styles.commentUser}>{displayName}</Text>
+                    <Text style={styles.commentText}>{comment.comment_text}</Text>
+                    <Text style={styles.commentDate}>
+                      {new Date(comment.created_at).toLocaleString()}
+                    </Text>
+                  </View>
+                );
+              })
             )}
           </ScrollView>
 
