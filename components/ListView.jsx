@@ -116,9 +116,11 @@ const ListView = ({
           style={styles.sectionList}
           renderItem={({ item }) => {
             const barColor = getColorForCalendar(item.organizer?.email);
+            const eventDate = new Date(item.start?.dateTime || item.start?.date);
+            const dateText = eventDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
             const timeText = item.start?.date
               ? (t('calendar.allDay') || 'All day')
-              : new Date(item.start?.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              : eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             const calendarConfig = calendarsConfig.calendars.find(c => c.id === item.organizer?.email);
             const calendarName = calendarConfig ? t(calendarConfig.translationKey) : 'Unknown';
@@ -130,7 +132,7 @@ const ListView = ({
                   <View style={{ flex: 1 }}>
                     <Text style={styles.cardTitle}>{item.summary || t('calendar.noTitle')}</Text>
                     <Text style={styles.cardMeta}>
-                      {timeText}
+                      {dateText} • {timeText}
                       {item.location ? ` • ${item.location}` : ''}
                     </Text>
                   </View>

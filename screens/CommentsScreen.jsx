@@ -19,6 +19,28 @@ export default function CommentsScreen({ route, navigation }) {
 
   useEffect(() => {
     fetchComments();
+
+    if (!eventId) return;
+
+    const subscription = supabase
+      .channel(`comments:${eventId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'event_comments',
+          filter: `event_id=eq.${eventId}`,
+        },
+        () => {
+          fetchComments();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [eventId]);
 
   const fetchComments = async () => {
