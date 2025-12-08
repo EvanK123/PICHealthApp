@@ -39,6 +39,20 @@ export default function CommentsScreen({ route, navigation }) {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const { error } = await supabase
+        .from('event_comments')
+        .delete()
+        .eq('id', commentId);
+      
+      if (error) throw error;
+      fetchComments();
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
+
   const handleAddComment = async () => {
     if (!newComment.trim() || !user || !eventId) return;
     
@@ -99,9 +113,17 @@ export default function CommentsScreen({ route, navigation }) {
             ) : (
               comments.map((comment) => {
                 const displayName = comment.username || comment.user_email?.split('@')[0] || 'Anonymous';
+                const isOwner = user && comment.user_id === user.id;
                 return (
                   <View key={comment.id} style={styles.commentCard}>
-                    <Text style={styles.commentUser}>{displayName}</Text>
+                    <View style={styles.commentHeader}>
+                      <Text style={styles.commentUser}>{displayName}</Text>
+                      {isOwner && (
+                        <TouchableOpacity onPress={() => handleDeleteComment(comment.id)}>
+                          <Text style={styles.deleteButton}>✕</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                     <Text style={styles.commentText}>{comment.comment_text}</Text>
                     <Text style={styles.commentDate}>
                       {new Date(comment.created_at).toLocaleString()}
@@ -185,7 +207,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 12,
   },
-  commentUser: { fontSize: 14, fontWeight: '700', color: '#2d4887', marginBottom: 4 },
+  commentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  commentUser: { fontSize: 14, fontWeight: '700', color: '#2d4887' },
+  deleteButton: { fontSize: 18, color: '#ef4444', fontWeight: '700' },
   commentText: { fontSize: 15, color: '#0f172a', marginBottom: 6 },
   commentDate: { fontSize: 12, color: '#475569' },
   inputContainer: {
