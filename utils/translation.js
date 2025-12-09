@@ -1,7 +1,5 @@
-// Load all translation files from map
 const { TRANSLATIONS } = require('../locales/translations.map');
 const links = require('../locales/links.json');
-
 const translations = TRANSLATIONS;
 
 /**

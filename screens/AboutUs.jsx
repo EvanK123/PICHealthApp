@@ -79,6 +79,7 @@ const AboutUs = () => {
             <View style={styles.textBoxContainer}>
               <Text style={textBox.introText}>{desc1}</Text>
               
+              <Text style={textBox.learnMore}>{desc2}</Text>
               <TouchableOpacity
                 onPress={() => {
                   const links = require('../locales/links.json');
@@ -92,7 +93,6 @@ const AboutUs = () => {
                   style={styles.groupPhoto}
                   resizeMode="cover"
                 />
-                <Text style={textBox.learnMore}>{desc2}</Text>
               </TouchableOpacity>
             </View>
 
@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   photoContainer: {
-    marginTop: 15,
     alignItems: "center",
   },
   groupPhoto: {
@@ -180,7 +179,8 @@ const textBox = StyleSheet.create({
     fontWeight: "600",
     color: "rgba(45, 72, 135, 1)",
     textAlign: "center",
-    marginTop: 4,
+    marginTop: 15,
+    marginBottom: 8,
   },
   title: {
     fontSize: 22,

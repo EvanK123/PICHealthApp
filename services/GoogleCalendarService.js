@@ -1,8 +1,7 @@
 const API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
-
-// Load allowed calendar IDs from config
 const calendarsConfig = require('../locales/calendars.json');
 const ALLOWED_CALENDAR_IDS = calendarsConfig.calendars.map(cal => cal.id);
+const ALLOWED_HOST = 'www.googleapis.com';
 
 export async function fetchCalendarEvents(calendarIds) {
   try {
@@ -14,14 +13,20 @@ export async function fetchCalendarEvents(calendarIds) {
     const allEvents = [];
 
     for (const calendarId of calendarIds) {
-      // Validate calendar ID is in allowed list (SSRF protection)
       if (!ALLOWED_CALENDAR_IDS.includes(calendarId)) {
         console.warn('Attempted to fetch from unauthorized calendar:', calendarId);
         continue;
       }
 
-      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${API_KEY}`;
-      const response = await fetch(url);
+      const url = new URL(`https://${ALLOWED_HOST}/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`);
+      url.searchParams.set('key', API_KEY);
+      
+      if (url.hostname !== ALLOWED_HOST) {
+        console.error('Invalid hostname detected');
+        continue;
+      }
+
+      const response = await fetch(url.toString());
       const data = await response.json();
 
       if (data.items) {

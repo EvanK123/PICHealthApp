@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TranslationContext } from '../context/TranslationContext';
@@ -122,7 +122,7 @@ export default function CommentsScreen({ route, navigation }) {
     setUserLikes(userLikeStatus);
   };
 
-  const toggleCommentLike = async (commentId) => {
+  const toggleCommentLike = useCallback(async (commentId) => {
     if (!user) return;
     
     const isLiked = userLikes[commentId];
@@ -144,9 +144,9 @@ export default function CommentsScreen({ route, navigation }) {
     } catch (error) {
       console.error('Error toggling like:', error);
     }
-  };
+  }, [user, userLikes, comments]);
 
-  const handleDeleteComment = async (commentId) => {
+  const handleDeleteComment = useCallback(async (commentId) => {
     try {
       console.log('Attempting to delete comment:', commentId);
       const { data, error } = await supabase
@@ -166,12 +166,19 @@ export default function CommentsScreen({ route, navigation }) {
         console.warn('No rows were deleted - check RLS policies');
       }
       
-      // Update local state immediately for better UX
       setComments(prev => prev.filter(comment => comment.id !== commentId));
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
-  };
+  }, []);
+
+  const handleNavigateToAccount = useCallback(() => {
+    navigation.navigate('Account');
+  }, [navigation]);
+
+  const handleGoBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
 
   const handleAddComment = async () => {
     if (!newComment.trim() || !user || !eventId) return;
@@ -209,11 +216,11 @@ export default function CommentsScreen({ route, navigation }) {
         <Header 
           title={t('app.name')} 
           avatarUrl={avatarUrl}
-          onPressProfile={() => navigation.navigate('Account')}
+          onPressProfile={handleNavigateToAccount}
         />
         
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Icon name="arrow-back" size={24} color="#ffffff" />
             <Text style={styles.backText}>Back</Text>
           </TouchableOpacity>

@@ -120,6 +120,11 @@
   "health": {
     "title": "Health",
     "description": "The information provided here is for general informational purposes only and is not intended as medical advice. Always consult with a qualified healthcare provider for advice regarding your specific medical condition, symptoms, or treatment options. Do not disregard professional medical advice or delay seeking treatment.",
+    "reflection": {
+      "title": "Reflection",
+      "disclaimer": "This is a private space for you. Nothing you write here is saved or shared.",
+      "placeholder": "Write your thoughts here..."
+    },
     "services": [
       {
         "id": "findhelp",
