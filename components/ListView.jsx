@@ -31,7 +31,7 @@ const ListView = ({
   navigation,
 }) => {
   const { t } = useContext(TranslationContext);
-  const calendarsConfig = require('../locales/calendars.json');
+  const calendarsConfig = require('../locales/config/calendars.json');
 
   const getColorForCalendar = (email) => {
     const cal = calendarsConfig.calendars.find(c => c.id === email);

@@ -5,7 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { TranslationContext } from '../context/TranslationContext';
-import languagesConfig from '../locales/languages.config.json';
+import languagesConfig from '../locales/config/languages.config.json';
 
 
 const COLORS = {

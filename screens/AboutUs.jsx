@@ -82,7 +82,7 @@ const AboutUs = () => {
               <Text style={textBox.learnMore}>{desc2}</Text>
               <TouchableOpacity
                 onPress={() => {
-                  const links = require('../locales/links.json');
+                  const links = require('../locales/config/links.json');
                   callWebView(links.aboutUs.aboutUsPage, t('app.tabs.aboutUs'));
                 }}
                 activeOpacity={0.8}

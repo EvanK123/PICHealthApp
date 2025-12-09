@@ -1,5 +1,5 @@
 const API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
-const calendarsConfig = require('../locales/calendars.json');
+const calendarsConfig = require('../locales/config/calendars.json');
 const ALLOWED_CALENDAR_IDS = calendarsConfig.calendars.map(cal => cal.id);
 const ALLOWED_HOST = 'www.googleapis.com';
 

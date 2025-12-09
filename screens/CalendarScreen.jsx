@@ -25,7 +25,7 @@ import { useAuth } from '../context/AuthContext';
 // Reusable Wellness Buttons Component
 const WellnessButtons = ({ callWebView }) => {
   const { t } = useContext(TranslationContext);
-  const links = require('../locales/links.json');
+  const links = require('../locales/config/links.json');
   const howYaDoin = t('calendar.wellnessButtons.howYaDoin');
   const sos = t('calendar.wellnessButtons.sos');
 
@@ -70,7 +70,7 @@ const CalendarScreen = () => {
   const avatarUrl = user?.user_metadata?.avatar_url || null;
 
   // Load calendar IDs from JSON config
-  const calendarsConfig = require('../locales/calendars.json');
+  const calendarsConfig = require('../locales/config/calendars.json');
   const calendarOptions = calendarsConfig.calendars.map(cal => ({
     key: cal.id,
     value: t(cal.translationKey),
@@ -152,7 +152,7 @@ const CalendarScreen = () => {
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
           onPressSubmit={() => {
-            const links = require('../locales/links.json');
+            const links = require('../locales/config/links.json');
             callWebView(links.calendar.submitEvent, t('header.submitEvent'));
           }}
         />

@@ -45,7 +45,7 @@ const toLocalDate = (iso) => {
 
 export default function CalendarView({ events, selectedCalendars, callWebView, closeModal, navigation }) {
   const { t } = useContext(TranslationContext);
-  const calendarsConfig = require('../locales/calendars.json');
+  const calendarsConfig = require('../locales/config/calendars.json');
   const [markedDates, setMarkedDates] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);

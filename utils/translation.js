@@ -1,5 +1,5 @@
 const { TRANSLATIONS } = require('../locales/translations.map');
-const links = require('../locales/links.json');
+const links = require('../locales/config/links.json');
 const translations = TRANSLATIONS;
 
 /**
