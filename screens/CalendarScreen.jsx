@@ -32,7 +32,12 @@ const WellnessButtons = ({ callWebView }) => {
   return (
     <View style={styles.middleBtns}>
       <TouchableOpacity
-        onPress={() => callWebView(links.calendar.wellnessButtons[howYaDoin.linkId], howYaDoin.label)}
+        onPress={() =>
+          callWebView(
+            links.calendar.wellnessButtons[howYaDoin.linkId],
+            howYaDoin.label
+          )
+        }
         style={{ flex: 1, alignItems: 'center' }}
         activeOpacity={0.85}
       >
@@ -42,7 +47,9 @@ const WellnessButtons = ({ callWebView }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)}
+        onPress={() =>
+          callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)
+        }
         style={{ flex: 1, alignItems: 'center' }}
         activeOpacity={0.85}
       >
@@ -63,7 +70,11 @@ const CalendarScreen = () => {
   const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
+  const [modalConfig, setModalConfig] = useState({
+    isVisible: false,
+    url: '',
+    title: '',
+  });
   const [events, setEvents] = useState({});
   const [selectedCalendars, setSelectedCalendars] = useState([]);
 
@@ -71,7 +82,7 @@ const CalendarScreen = () => {
 
   // Load calendar IDs from JSON config
   const calendarsConfig = require('../locales/config/calendars.json');
-  const calendarOptions = calendarsConfig.calendars.map(cal => ({
+  const calendarOptions = calendarsConfig.calendars.map((cal) => ({
     key: cal.id,
     value: t(cal.translationKey),
   }));
@@ -82,7 +93,8 @@ const CalendarScreen = () => {
     else setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
-  const closeModal = () => setModalConfig((prev) => ({ ...prev, isVisible: false }));
+  const closeModal = () =>
+    setModalConfig((prev) => ({ ...prev, isVisible: false }));
 
   useEffect(() => {
     async function loadEvents() {
@@ -100,13 +112,17 @@ const CalendarScreen = () => {
         const isAllDay = !!ev.start?.date && !ev.start?.dateTime;
         const timeLabel = isAllDay
           ? t('common.allDay')
-          : new Date(ev.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          : new Date(ev.start.dateTime).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            });
 
         if (!acc[key]) acc[key] = [];
         acc[key].push({
           name: ev.summary,
           time: timeLabel,
-          description: ev.description || t('calendar.noDescriptionAvailable'),
+          description:
+            ev.description || t('calendar.noDescriptionAvailable'),
           organizer: ev.organizer || {},
           ...ev,
         });
@@ -129,8 +145,6 @@ const CalendarScreen = () => {
 
   const handleProfilePress = () => navigation.navigate('Account');
 
-
-
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
       <ImageBackground
@@ -139,22 +153,27 @@ const CalendarScreen = () => {
         style={styles.image}
         blurRadius={0}
       >
+        {/* Header: Submit in top-right, no profile button here */}
         <Header
           title={t('calendar.title')}
           avatarUrl={avatarUrl}
           onPressProfile={handleProfilePress}
+          showProfile={false}
+          showSubmit={true}
+          onPressSubmit={() => {
+            const links = require('../locales/config/links.json');
+            callWebView(links.calendar.submitEvent, t('header.submitEvent'));
+          }}
         />
 
+        {/* Calendar bar: profile icon to the left of Upcoming/Calendar */}
         <CalendarBar
           calendarMode={calendarMode}
           setCalendarMode={setCalendarMode}
           selectedCalendars={selectedCalendars}
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
-          onPressSubmit={() => {
-            const links = require('../locales/config/links.json');
-            callWebView(links.calendar.submitEvent, t('header.submitEvent'));
-          }}
+          onPressProfile={handleProfilePress}
         />
 
         <View style={styles.darken}>
@@ -174,18 +193,23 @@ const CalendarScreen = () => {
               </>
             ) : (
               <ListView
-               events={events}
-               selectedCalendars={selectedCalendars}
-               setSelectedCalendars={setSelectedCalendars}
-               calendarOptions={calendarOptions}
-               navigation={navigation}
+                events={events}
+                selectedCalendars={selectedCalendars}
+                setSelectedCalendars={setSelectedCalendars}
+                calendarOptions={calendarOptions}
+                navigation={navigation}
               />
             )}
           </View>
         </View>
       </ImageBackground>
 
-      <Popup visible={popupVisible} onClose={closePopup} event={selectedEvent} navigation={navigation} />
+      <Popup
+        visible={popupVisible}
+        onClose={closePopup}
+        event={selectedEvent}
+        navigation={navigation}
+      />
       <WebViewModal
         url={modalConfig.url}
         isVisible={modalConfig.isVisible}

@@ -1,26 +1,26 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
 
-const CalendarSelector = ({ 
-  selectedCalendars = [], 
-  setSelectedCalendars, 
+const CalendarSelector = ({
+  selectedCalendars = [],
+  setSelectedCalendars,
   calendarOptions = [],
-  style 
+  style,
 }) => {
   const { t } = useContext(TranslationContext);
-  
+
   const toggleCalendar = (calendarKey) => {
-    setSelectedCalendars(prev => 
-      prev.includes(calendarKey) 
-        ? prev.filter(id => id !== calendarKey)
+    setSelectedCalendars((prev) =>
+      prev.includes(calendarKey)
+        ? prev.filter((id) => id !== calendarKey)
         : [...prev, calendarKey]
     );
   };
 
   const selectAll = () => {
-    setSelectedCalendars(calendarOptions.map(cal => cal.key));
+    setSelectedCalendars(calendarOptions.map((cal) => cal.key));
   };
 
   const clearAll = () => {
@@ -29,8 +29,10 @@ const CalendarSelector = ({
 
   return (
     <View style={[styles.container, style]}>
+      {/* Centered title + All / Clear on the right */}
       <View style={styles.header}>
         <Text style={styles.title}>{t('calendar.selectCalendar')}</Text>
+
         <View style={styles.actions}>
           <TouchableOpacity onPress={selectAll} style={styles.actionBtn}>
             <Text style={styles.actionText}>All</Text>
@@ -40,7 +42,8 @@ const CalendarSelector = ({
           </TouchableOpacity>
         </View>
       </View>
-      
+
+      {/* Calendar chips */}
       <View style={styles.chipContainer}>
         {calendarOptions.map((calendar) => {
           const isSelected = selectedCalendars.includes(calendar.key);
@@ -51,11 +54,21 @@ const CalendarSelector = ({
               style={[styles.chip, isSelected && styles.chipSelected]}
               activeOpacity={0.7}
             >
-              <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>
+              <Text
+                style={[
+                  styles.chipText,
+                  isSelected && styles.chipTextSelected,
+                ]}
+              >
                 {calendar.value}
               </Text>
               {isSelected && (
-                <Icon name="checkmark" size={16} color="#ffffff" style={styles.checkIcon} />
+                <Icon
+                  name="checkmark"
+                  size={16}
+                  color="#ffffff"
+                  style={styles.checkIcon}
+                />
               )}
             </TouchableOpacity>
           );
@@ -68,35 +81,39 @@ const CalendarSelector = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#2d4887',
-    paddingTop: 12,
-    paddingBottom: 16,
+    paddingTop: 8,
+    paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.2)',
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',   // center contents
     paddingHorizontal: 16,
-    marginBottom: 8,
+    marginBottom: 4,
     position: 'relative',
   },
   title: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
+    textAlign: 'center',
+    flex: 1,                    // lets it sit centered
   },
   actions: {
     flexDirection: 'row',
-    gap: 8,
-    position: 'absolute',
+    gap: 6,
+    position: 'absolute',       // float on the right
     right: 16,
   },
   actionBtn: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: 999,
     backgroundColor: 'rgba(255,255,255,0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.35)',
   },
   actionText: {
     color: '#ffffff',
@@ -109,13 +126,13 @@ const styles = StyleSheet.create({
     gap: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
   },
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
     borderRadius: 20,
     backgroundColor: 'rgba(255,255,255,0.12)',
     borderWidth: 1,
@@ -127,7 +144,7 @@ const styles = StyleSheet.create({
   },
   chipText: {
     color: 'rgba(255,255,255,0.75)',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
   },
   chipTextSelected: {

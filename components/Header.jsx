@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { TranslationContext } from '../context/TranslationContext';
 import languagesConfig from '../locales/config/languages.config.json';
 
-
 const COLORS = {
   primary: '#2d4887',
   onPrimary: '#ffffff',
@@ -19,21 +18,27 @@ const getAllLanguages = () => Object.values(languagesConfig);
 
 export default function Header({
   title = 'PIC Health',
-  showSubmit = false,            // <- only show button on Home
+  showSubmit = false,        // show submit button on the right
   onPressSubmit = () => {},
-  avatarUrl = null,              // Profile picture URL
-  onPressProfile = null,         // Profile button handler
+  avatarUrl = null,          // profile picture URL
+  onPressProfile = null,     // profile button handler
+  showProfile = true,        // NEW: allow hiding profile button on specific screens
 }) {
   const { lang, setLang, t } = useContext(TranslationContext);
   const navigation = useNavigation();
 
   const languages = getAllLanguages().map(l => {
     const translated = t(l.translationKey);
-    const label = translated && translated !== l.translationKey ? translated : (l.nativeName || l.name);
+    const label =
+      translated && translated !== l.translationKey
+        ? translated
+        : (l.nativeName || l.name);
     return { code: l.code, label };
   });
 
-  const currentLabel = languages.find(l => l.code === lang)?.label || lang.toUpperCase();
+  const currentLabel =
+    languages.find(l => l.code === lang)?.label || lang.toUpperCase();
+
   const getFontSize = (text) => {
     if (text.length <= 7) return 13;
     if (text.length <= 10) return 11;
@@ -53,16 +58,25 @@ export default function Header({
       {/* Left: logo (with BETA under it) + title */}
       <View style={styles.left}>
         <View style={styles.brandWrap}>
-          <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+          <Image
+            source={require('../assets/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.beta}>{t('header.beta')}</Text>
         </View>
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      {/* Right: language chip + profile button + optional Submit */}
+      {/* Right: language chip + optional profile + optional Submit */}
       <View style={styles.right}>
         <View style={styles.langChip}>
-          <Text numberOfLines={1} style={[styles.langText, { fontSize: getFontSize(currentLabel) }]}>{currentLabel}</Text>
+          <Text
+            numberOfLines={1}
+            style={[styles.langText, { fontSize: getFontSize(currentLabel) }]}
+          >
+            {currentLabel}
+          </Text>
 
           {/* Invisible overlay fills the chip; keeps chip height fixed */}
           <Picker
@@ -73,13 +87,18 @@ export default function Header({
             style={styles.langPickerOverlay}
           >
             {languages.map(opt => (
-              <Picker.Item key={opt.code} label={opt.label} value={opt.code} color={COLORS.primary} />
+              <Picker.Item
+                key={opt.code}
+                label={opt.label}
+                value={opt.code}
+                color={COLORS.primary}
+              />
             ))}
           </Picker>
         </View>
 
-        {/* Profile button */}
-        {(avatarUrl || onPressProfile !== null) && (
+        {/* Profile button — can be hidden via showProfile={false} */}
+        {showProfile && (avatarUrl || onPressProfile !== null) && (
           <TouchableOpacity
             onPress={handleProfilePress}
             activeOpacity={0.8}
@@ -143,7 +162,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '800', color: COLORS.onPrimary },
 
   right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  
+
   // Profile button
   profileButton: {
     marginRight: 4,
@@ -186,7 +205,11 @@ const styles = StyleSheet.create({
   },
   // Invisible overlay so the native picker doesn't inflate the chip
   langPickerOverlay: {
-    position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     opacity: Platform.OS === 'web' ? 0.01 : 0.01,
     color: 'transparent',
   },
