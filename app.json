@@ -29,7 +29,10 @@
               "scheme": "com.anonymous.PICHealthMobApp"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -40,6 +43,8 @@
       "baseUrl": "/PIC-Health-MobApp"
     },
     "scheme": "com.anonymous.PICHealthMobApp",
-    "plugins": []
+    "plugins": [
+      "expo-web-browser"
+    ]
   }
 }
