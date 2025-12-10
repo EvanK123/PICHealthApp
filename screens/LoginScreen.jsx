@@ -39,9 +39,7 @@ export default function LoginScreen() {
 
   const isSignIn = mode === 'signin';
 
-  const handleGoBack = React.useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+
 
   const handleModeSignIn = React.useCallback(() => {
     setMode('signin');
@@ -90,15 +88,7 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Back button row */}
-      <View style={styles.backRow}>
-        <TouchableOpacity
-          onPress={handleGoBack}
-          activeOpacity={0.8}
-        >
-          <Icon name="chevron-back" size={26} color="#ffffff" />
-        </TouchableOpacity>
-      </View>
+
 
       <View style={styles.container}>
         <Text style={styles.appTitle}>{t('login.title')}</Text>
@@ -207,7 +197,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: COLORS.headerBg },
-  backRow: { paddingLeft: 16, paddingTop: 8 },
+
   container: {
     flex: 1,
     paddingHorizontal: 24,

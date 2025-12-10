@@ -24,10 +24,10 @@
   "app": {
     "tabs": {
       "home": "Aiga",
-      "health": "Soifua Maloloina",
+      "health": "Soifua",
       "education": "A'oa'oga",
       "culture": "Aganu'u",
-      "aboutUs": "Fa'amatalaga e uiga ia i matou"
+      "aboutUs": "Matou"
     },
     "name": "PIC Health"
   },

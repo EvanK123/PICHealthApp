@@ -1,10 +1,11 @@
 // components/CalendarView.jsx
 import React, { useEffect, useState, useMemo, useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import Popup from './PopUp';
 import WebViewModal from './WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
+import { normalize, spacing, isTablet, wp } from '../utils/responsive';
 
 const COLORS = {
   primary: '#2d4887',
@@ -58,11 +59,11 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
 
   // compute cell size from available width
   const [calWidth, setCalWidth] = useState(0);
-  const CELL_MARGIN = 2;
+  const { width: screenWidth } = Dimensions.get('window');
+  const CELL_MARGIN = normalize(2);
   const COLUMNS = 7;
-  const cellSize = calWidth
-    ? Math.floor((calWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS)
-    : 46;
+  const availableWidth = calWidth || screenWidth - spacing.md; // fallback to screen width minus padding
+  const cellSize = Math.max(normalize(isTablet() ? 60 : 40), Math.floor((availableWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS));
 
 
 
@@ -104,7 +105,12 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
         onPress={() => handleDayPress(date)}
         style={[
           styles.dayCell,
-          { margin: CELL_MARGIN, width: cellSize, height: Math.max(46, Math.round(cellSize * 0.95)) },
+          { 
+            margin: CELL_MARGIN, 
+            width: cellSize, 
+            height: Math.max(normalize(isTablet() ? 60 : 40), Math.round(cellSize * 0.9)),
+            minHeight: normalize(isTablet() ? 60 : 40)
+          },
           state === 'disabled' && { opacity: 0.4 },
           selectedDate === key && styles.dayCellSelected,
         ]}
@@ -209,12 +215,12 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
 
 const styles = StyleSheet.create({
   container: { flex: 1, width: '100%' },
-  containerContent: { paddingBottom: 12, width: '100%', paddingHorizontal: 0 },
+  containerContent: { paddingBottom: spacing.md, width: '100%', paddingHorizontal: 0 },
 
   whitePanel: {
     backgroundColor: '#fff',
     borderRadius: 0,
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
     paddingHorizontal: 0, // edge-to-edge
     width: '100%',
     alignSelf: 'stretch',
@@ -222,8 +228,8 @@ const styles = StyleSheet.create({
 
   calendarStyle: { backgroundColor: 'transparent', margin: 0, paddingHorizontal: 0 },
 
-  header: { paddingVertical: 6, alignItems: 'center' },
-  headerTitle: { color: COLORS.navyText, fontSize: 18, fontWeight: '800' },
+  header: { paddingVertical: spacing.xs, alignItems: 'center' },
+  headerTitle: { color: COLORS.navyText, fontSize: normalize(isTablet() ? 22 : 18), fontWeight: '800' },
 
   // Weekday strip — single bordered container with vertical dividers
   weekStripBox: {
@@ -231,72 +237,72 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: COLORS.navyBorder,
-    borderRadius: 10,
+    borderRadius: normalize(10),
     overflow: 'hidden',
-    marginHorizontal: 6,
-    marginBottom: 6,
+    marginHorizontal: spacing.xs,
+    marginBottom: spacing.xs,
   },
   weekCellBox: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
     borderRightWidth: 1,
     borderRightColor: COLORS.navyBorder,
   },
   weekCellLast: { borderRightWidth: 0 },
-  weekText: { fontSize: 12, fontWeight: '800', color: COLORS.navyText },
+  weekText: { fontSize: normalize(isTablet() ? 14 : 12), fontWeight: '800', color: COLORS.navyText },
 
   // Day cells
   dayCell: {
-    borderRadius: 12,
+    borderRadius: normalize(12),
     borderWidth: 1,
     borderColor: COLORS.navyBorder,
     backgroundColor: '#fff',
-    padding: 6,
+    padding: spacing.xs,
     justifyContent: 'flex-start',
   },
   dayCellSelected: { borderColor: COLORS.primary, borderWidth: 2 },
-  dayNum: { color: COLORS.ink, fontWeight: '700', marginBottom: 2, fontSize: 12 },
+  dayNum: { color: COLORS.ink, fontWeight: '700', marginBottom: normalize(2), fontSize: normalize(isTablet() ? 14 : 12) },
   eventPill: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 10,
+    paddingHorizontal: spacing.xs,
+    paddingVertical: normalize(2),
+    borderRadius: normalize(10),
     alignSelf: 'flex-start',
     maxWidth: '100%',
   },
-  eventPillText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  eventPillText: { color: '#fff', fontSize: normalize(isTablet() ? 12 : 10), fontWeight: '700' },
 
   // Bottom sheet
   sheet: {
     backgroundColor: '#fff',
-    marginTop: 12,
-    borderTopLeftRadius: 22,
-    borderTopRightRadius: 22,
-    paddingTop: 12,
-    paddingBottom: 16,
+    marginTop: spacing.md,
+    borderTopLeftRadius: normalize(22),
+    borderTopRightRadius: normalize(22),
+    paddingTop: spacing.md,
+    paddingBottom: spacing.lg,
     shadowColor: '#000',
     shadowOpacity: 0.12,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: -2 },
     elevation: 6,
   },
-  sheetTitle: { textAlign: 'center', fontSize: 20, fontWeight: '900', color: COLORS.ink, marginBottom: 8 },
+  sheetTitle: { textAlign: 'center', fontSize: normalize(isTablet() ? 24 : 20), fontWeight: '900', color: COLORS.ink, marginBottom: spacing.sm },
   sheetCard: {
-    marginHorizontal: 14,
-    marginBottom: 12,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
     backgroundColor: COLORS.sheetCard,
-    borderRadius: 14,
+    borderRadius: normalize(14),
     borderWidth: 1,
     borderColor: COLORS.panelBorder,
     overflow: 'hidden',
   },
-  topBar: { height: 6, width: '100%' },
+  topBar: { height: normalize(6), width: '100%' },
   topBarTeal: { backgroundColor: COLORS.sheetBar1 },
   topBarBlue: { backgroundColor: COLORS.sheetBar2 },
-  sheetBody: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 12 },
-  sheetTitleText: { fontSize: 16, fontWeight: '800', color: COLORS.ink, marginBottom: 2 },
-  sheetMeta: { fontSize: 13, color: COLORS.inkMute },
-  tag: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14, backgroundColor: COLORS.brand },
+  sheetBody: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, padding: spacing.md },
+  sheetTitleText: { fontSize: normalize(isTablet() ? 18 : 16), fontWeight: '800', color: COLORS.ink, marginBottom: normalize(2) },
+  sheetMeta: { fontSize: normalize(isTablet() ? 15 : 13), color: COLORS.inkMute },
+  tag: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: normalize(14), backgroundColor: COLORS.brand },
   tagText: { color: '#fff', fontWeight: '800' },
 });

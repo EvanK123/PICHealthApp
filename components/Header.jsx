@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { TranslationContext } from '../context/TranslationContext';
 import languagesConfig from '../locales/config/languages.config.json';
+import { normalize, spacing, iconSizes, isTablet } from '../utils/responsive';
 
 const COLORS = {
   primary: '#2d4887',
@@ -124,14 +125,12 @@ export default function Header({
   );
 }
 
-const HEIGHT = 64;
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.primary,
-    minHeight: HEIGHT,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    minHeight: normalize(64),
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -140,41 +139,42 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: spacing.sm,
+    flex: 1,
   },
 
   // Logo + BETA stacked vertically
   brandWrap: {
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 34,
+    minWidth: normalize(34),
   },
-  logo: { width: 34, height: 34 },
+  logo: { width: normalize(34), height: normalize(34) },
   beta: {
-    marginTop: 2,
-    fontSize: 10,
+    marginTop: normalize(2),
+    fontSize: normalize(10),
     fontWeight: '800',
     letterSpacing: 1,
     color: 'rgba(255,255,255,0.9)',
     opacity: 0.9,
   },
 
-  title: { fontSize: 22, fontWeight: '800', color: COLORS.onPrimary },
+  title: { fontSize: normalize(22), fontWeight: '800', color: COLORS.onPrimary },
 
-  right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  right: { flexDirection: 'row', alignItems: 'center', gap: isTablet() ? spacing.lg : spacing.sm },
 
   // Profile button
   profileButton: {
-    marginRight: 4,
-    padding: 4,
+    marginRight: spacing.xs,
+    padding: spacing.xs,
     borderRadius: 999,
     justifyContent: 'center',
     alignItems: 'center',
   },
   profileAvatarWrapper: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: normalize(28),
+    height: normalize(28),
+    borderRadius: normalize(14),
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#ffffff',
@@ -187,21 +187,23 @@ const styles = StyleSheet.create({
   // Compact language chip (fixed height)
   langChip: {
     position: 'relative',
-    width: 100,
-    height: 36,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    width: normalize(90),
+    height: normalize(32),
+    paddingHorizontal: spacing.xs,
+    borderRadius: normalize(16),
+    borderWidth: 0,
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(255,255,255,0.15)',
     overflow: 'hidden',
   },
   langText: {
     color: COLORS.onPrimary,
-    fontWeight: '700',
-    fontSize: 13,
+    fontWeight: '600',
+    fontSize: normalize(10),
     textAlign: 'center',
+    adjustsFontSizeToFit: true,
+    minimumFontScale: 0.7,
+    numberOfLines: 1,
   },
   // Invisible overlay so the native picker doesn't inflate the chip
   langPickerOverlay: {
@@ -216,10 +218,19 @@ const styles = StyleSheet.create({
 
   ctaBtn: {
     backgroundColor: COLORS.brand,
-    paddingHorizontal: 14,
-    height: 36,
-    borderRadius: 14,
+    paddingHorizontal: spacing.lg,
+    height: normalize(isTablet() ? 44 : 36),
+    minWidth: normalize(isTablet() ? 140 : 100),
+    borderRadius: normalize(14),
     justifyContent: 'center',
   },
-  ctaText: { color: '#ffffff', fontWeight: '800' },
+  ctaText: { 
+    color: '#ffffff', 
+    fontWeight: '800',
+    fontSize: normalize(isTablet() ? 16 : 14),
+    adjustsFontSizeToFit: Platform.OS !== 'web',
+    minimumFontScale: 0.8,
+    numberOfLines: 1,
+    textAlign: 'center',
+  },
 });

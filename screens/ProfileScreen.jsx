@@ -38,9 +38,7 @@ export default function ProfileScreen() {
   const userId = user?.id ?? '—';
   const avatarUrl = user?.user_metadata?.avatar_url ?? null;
 
-  const handleGoBack = React.useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+
 
   const handleSignOut = React.useCallback(async () => {
     try {
@@ -206,16 +204,8 @@ export default function ProfileScreen() {
         blurRadius={0}
       >
         <Header 
-          title={t('profile.title')} 
-          avatarUrl={avatarUrl}
+          title={t('profile.title')}
         />
-        
-        <View style={styles.backButtonContainer}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color="#ffffff" />
-            <Text style={styles.backText}>Back</Text>
-          </TouchableOpacity>
-        </View>
 
         <View style={styles.darken}>
           <View style={styles.container}>
@@ -309,23 +299,7 @@ const styles = StyleSheet.create({
   },
   image: { flex: 1, width: '100%', height: '100%' },
   darken: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
-  backButtonContainer: {
-    backgroundColor: '#2d4887',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.2)',
-  },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  backText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+
 
   container: {
     flex: 1,

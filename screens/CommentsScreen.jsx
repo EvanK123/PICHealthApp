@@ -247,7 +247,7 @@ export default function CommentsScreen({ route, navigation }) {
   };
 
   return (
-    <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       <ImageBackground
         source={require('../assets/beach-bg.jpg')}
         resizeMode="cover"
@@ -256,8 +256,6 @@ export default function CommentsScreen({ route, navigation }) {
       >
         <Header
           title={t('app.name')}
-          avatarUrl={avatarUrl}
-          onPressProfile={handleNavigateToAccount}
         />
 
         <View style={styles.backButtonContainer}>
@@ -274,7 +272,10 @@ export default function CommentsScreen({ route, navigation }) {
         </View>
 
         <View style={styles.content}>
-          <ScrollView style={styles.commentsContainer}>
+          <ScrollView 
+            style={styles.commentsContainer}
+            contentContainerStyle={styles.scrollContent}
+          >
             {loading ? (
               <ActivityIndicator
                 size="large"
@@ -295,14 +296,7 @@ export default function CommentsScreen({ route, navigation }) {
                   profileAvatars[comment.user_id] ||
                   null;
 
-                console.log('Comment check:', {
-                  commentId: comment.id,
-                  userEmail: user?.email,
-                  isAdmin,
-                  isOwner,
-                  commentUserId: comment.user_id,
-                  currentUserId: user?.id,
-                });
+
 
                 const canDelete = isOwner || isAdmin;
                 return (
@@ -439,7 +433,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   content: { flex: 1, backgroundColor: 'rgba(0,0,0,0.40)' },
-  commentsContainer: { flex: 1, padding: 16 },
+  commentsContainer: { flex: 1 },
+  scrollContent: { padding: 16, paddingBottom: 32 },
   placeholder: {
     fontSize: 16,
     color: '#cbd5e1',

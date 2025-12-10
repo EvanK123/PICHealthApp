@@ -57,8 +57,6 @@ const EducationScreen = () => {
         {/* Header on Education WITHOUT Submit button */}
         <Header 
           title={headerTitle}
-          avatarUrl={avatarUrl}
-          onPressProfile={handleProfilePress}
         />
 
         <ScrollView contentContainerStyle={styles.scrollContent}>

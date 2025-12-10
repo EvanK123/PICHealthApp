@@ -1,9 +1,10 @@
 // components/ListView.jsx
 import React, { useMemo, useState, useContext } from 'react';
-import { View, Text, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, SectionList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import Popup from './PopUp';
 import { TranslationContext } from '../context/TranslationContext';
 import CalendarSelector from './CalendarSelector';
+import { normalize, spacing, isTablet } from '../utils/responsive';
 
 const COLORS = {
   bannerBg: 'hsla(200, 0%, 20%, 0.6)',
@@ -17,9 +18,13 @@ const COLORS = {
 
 const Banner = ({ title, onPrev, onNext }) => (
   <View style={styles.bannerWrap}>
-    <TouchableOpacity onPress={onPrev} style={styles.navBtn}><Text style={styles.navBtnText}>{'<'}</Text></TouchableOpacity>
-    <Text style={styles.bannerTitle} numberOfLines={1}>{title}</Text>
-    <TouchableOpacity onPress={onNext} style={styles.navBtn}><Text style={styles.navBtnText}>{'>'}</Text></TouchableOpacity>
+    <TouchableOpacity onPress={onPrev} style={styles.navBtn}>
+      <Text style={styles.navBtnText} adjustsFontSizeToFit numberOfLines={1}>{'<'}</Text>
+    </TouchableOpacity>
+    <Text style={styles.bannerTitle} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>{title}</Text>
+    <TouchableOpacity onPress={onNext} style={styles.navBtn}>
+      <Text style={styles.navBtnText} adjustsFontSizeToFit numberOfLines={1}>{'>'}</Text>
+    </TouchableOpacity>
   </View>
 );
 
@@ -76,8 +81,8 @@ const ListView = ({
   const hasEvents = sortedEventsArray.length > 0;
 
   const bannerTitle = hasEvents
-    ? `${monthLabel} — ${t('calendar.upcomingEvents') || 'Upcoming Events'}`
-    : `${monthLabel} — ${t('calendar.messages.noEventsAvailable') || 'No upcoming events'}`;
+    ? monthLabel
+    : monthLabel;
 
   const handleEventPress = (item) => {
     setSelectedEvents([item]);
@@ -97,18 +102,15 @@ const ListView = ({
 
   return (
     <View style={styles.container}>
-      {/* Calendar selector also in Upcoming tab */}
       <CalendarSelector
         selectedCalendars={selectedCalendars}
         setSelectedCalendars={setSelectedCalendars}
         calendarOptions={calendarOptions || []}
       />
-
+      
       <Banner title={bannerTitle} onPrev={goPrevMonth} onNext={goNextMonth} />
 
-      {selectedCalendars.length === 0 ? (
-        <Text style={styles.noEventsText}>{t('calendar.messages.pleaseSelectCalendar')}</Text>
-      ) : hasEvents ? (
+      {hasEvents ? (
         <SectionList
           stickySectionHeadersEnabled
           sections={sortedEventsArray}
@@ -150,7 +152,10 @@ const ListView = ({
         />
       ) : (
         <Text style={styles.noEventsText}>
-          {t('calendar.messages.noEventsAvailable') || 'No upcoming events'}
+          {selectedCalendars.length === 0 
+            ? t('calendar.messages.pleaseSelectCalendar')
+            : t('calendar.messages.noEventsAvailable') || 'No events'
+          }
         </Text>
       )}
 
@@ -162,46 +167,77 @@ const ListView = ({
 export default ListView;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 0, paddingBottom: 16, width: '100%' },
-
-
+  container: { flex: 1, paddingTop: 0, paddingBottom: spacing.lg, width: '100%' },
 
   // month banner
   bannerWrap: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#2d4887',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 10,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.sm,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.2)',
   },
-  bannerTitle: { flex: 1, textAlign: 'center', color: '#ffffff', fontSize: 18, fontWeight: '800' },
-  navBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.12)' },
-  navBtnText: { color: '#ffffff', fontSize: 16, fontWeight: '700' },
+  bannerTitle: { 
+    flex: 1, 
+    textAlign: 'center', 
+    color: '#ffffff', 
+    fontSize: normalize(isTablet() ? 22 : 20), 
+    fontWeight: '800'
+  },
+  navBtn: { 
+    paddingHorizontal: spacing.md, 
+    paddingVertical: spacing.xs, 
+    borderRadius: normalize(14), 
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    minWidth: normalize(isTablet() ? 48 : 40),
+    height: normalize(isTablet() ? 40 : 32),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  navBtnText: { 
+    color: '#ffffff', 
+    fontSize: normalize(isTablet() ? 20 : 18), 
+    fontWeight: '700',
+    textAlign: 'center'
+  },
 
   // list + cards (match CalendarView sheet cards)
   sectionList: { width: '100%' },
 
   card: {
-    marginHorizontal: 14,
-    marginBottom: 12,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
     backgroundColor: COLORS.sheetCard,
-    borderRadius: 14,
+    borderRadius: normalize(14),
     borderWidth: 1,
     borderColor: COLORS.panelBorder,
     overflow: 'hidden',
   },
-  topBar: { height: 6, width: '100%' },
+  topBar: { height: normalize(6), width: '100%' },
   topBarTeal: { backgroundColor: COLORS.sheetBar1 },
   topBarBlue: { backgroundColor: COLORS.sheetBar2 },
-  cardBody: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 12 },
-  cardTitle: { fontSize: 16, fontWeight: '800', color: COLORS.ink, marginBottom: 2 },
-  cardMeta: { fontSize: 13, color: COLORS.inkMute },
+  cardBody: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, padding: spacing.md },
+  cardTitle: { 
+    fontSize: normalize(isTablet() ? 22 : 20), 
+    fontWeight: '800', 
+    color: COLORS.ink, 
+    marginBottom: normalize(2) 
+  },
+  cardMeta: { 
+    fontSize: normalize(isTablet() ? 18 : 16), 
+    color: COLORS.inkMute 
+  },
 
-  tag: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14, backgroundColor: COLORS.sheetBar1 },
-  tagText: { color: '#fff', fontWeight: '800' },
+  tag: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: normalize(14), backgroundColor: COLORS.sheetBar1 },
+  tagText: { 
+    color: '#fff', 
+    fontWeight: '800',
+    fontSize: normalize(isTablet() ? 16 : 14),
+    textAlign: 'center'
+  },
 
   // accessibility-only month header (hidden visually)
   visuallyHidden: {
@@ -210,5 +246,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden', clipPath: 'inset(50%)',
   },
 
-  noEventsText: { fontSize: 16, color: '#cbd5e1', textAlign: 'center', marginTop: 16 },
+  noEventsText: { 
+    fontSize: normalize(isTablet() ? 22 : 20), 
+    color: '#cbd5e1', 
+    textAlign: 'center', 
+    marginTop: spacing.lg 
+  },
 });

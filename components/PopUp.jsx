@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image } from 'react-native';
+import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image, Dimensions } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
+import { normalize, spacing, isTablet, wp, hp } from '../utils/responsive';
 
 
 // Popup component to display event details or welcome message in a modal
@@ -56,7 +57,7 @@ const Popup = ({ visible, onClose, mode = "event", events, event, navigation }) 
                   <Text style={styles.title}>{item.summary || item.name}</Text>
                   {item.description ? (
                     <RenderHtml
-                      contentWidth={300}
+                      contentWidth={isTablet() ? wp(60) : wp(80)}
                       source={{ html: item.description }}
                       defaultTextProps={{ selectable: true }}
                       renderersProps={{ a: { onPress: handleLinkPress } }}
@@ -121,99 +122,101 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: spacing.md,
   },
   container: {
-    width: 400,
+    width: isTablet() ? wp(70) : wp(90),
+    maxWidth: normalize(500),
     maxHeight: '80%',
     backgroundColor: 'rgba(255, 255, 255, 1.0)',
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: normalize(10),
+    padding: spacing.lg,
     position: 'relative',
   },
   closeIconButton: {
     position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 30,
-    height: 30,
+    top: spacing.sm,
+    right: spacing.sm,
+    width: normalize(30),
+    height: normalize(30),
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
   },
   closeIcon: {
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
     color: '#2d4887',
   },
   eventContainer: {
-    marginBottom: 20,
-    paddingTop: 10,
-    paddingRight: 20,
+    marginBottom: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingRight: spacing.lg,
   },
   title: {
-    fontSize: 20,
+    fontSize: normalize(isTablet() ? 24 : 20),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   noDescription: {
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     color: '#555',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   eventTime: {
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     color: '#555',
-    marginTop: 10,
+    marginTop: spacing.sm,
   },
   closeButton: {
-    marginTop: 20,
+    marginTop: spacing.lg,
     backgroundColor: '#2d4887',
-    padding: 10,
-    borderRadius: 5,
+    padding: spacing.md,
+    borderRadius: normalize(5),
     alignItems: 'center',
   },
   closeButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: normalize(isTablet() ? 18 : 16),
   },
   welcomeTitle: {
-    fontSize: 24,
+    fontSize: normalize(isTablet() ? 28 : 24),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   welcomeLogo: {
-    width: 180,
-    height: 180,
+    width: normalize(isTablet() ? 220 : 180),
+    height: normalize(isTablet() ? 220 : 180),
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: spacing.lg,
   },
   betaText: {
-    fontSize: 18,
+    fontSize: normalize(isTablet() ? 20 : 18),
     color: '#2d4887',
     textAlign: 'center',
-    marginBottom: 15,
+    marginBottom: spacing.md,
     fontWeight: 'bold',
   },
   disclaimerText: {
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: spacing.lg,
     color: '#333',
   },
   disclaimerBold: {
     fontWeight: 'bold',
   },
   commentButton: {
-    marginTop: 12,
+    marginTop: spacing.md,
     backgroundColor: '#2d4887',
-    padding: 10,
-    borderRadius: 8,
+    padding: spacing.md,
+    borderRadius: normalize(8),
     alignItems: 'center',
   },
   commentButtonText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     fontWeight: '600',
   },
 });

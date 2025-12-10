@@ -1,9 +1,10 @@
 // components/CalendarBar.jsx
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
 import CalendarSelector from './CalendarSelector';
+import { normalize, spacing, isTablet, wp } from '../utils/responsive';
 
 const COLORS = {
   headerBg: '#2d4887',
@@ -20,7 +21,6 @@ export default function CalendarBar({
   selectedCalendars,
   setSelectedCalendars,
   calendarOptions,
-  onPressProfile,             // NEW: profile icon handler
 }) {
   const { t } = useContext(TranslationContext);
   const goUpcoming = () => setCalendarMode(false);
@@ -31,15 +31,7 @@ export default function CalendarBar({
       {/* Row with profile icon + pill group, centered */}
       <View style={styles.pillRow}>
         <View style={styles.rowInner}>
-          {onPressProfile && (
-            <TouchableOpacity
-              onPress={onPressProfile}
-              activeOpacity={0.8}
-              style={styles.profileButton}
-            >
-              <Icon name="person-circle-outline" size={26} color="#ffffff" />
-            </TouchableOpacity>
-          )}
+
 
           <View style={styles.pillGroup}>
             <TouchableOpacity
@@ -94,9 +86,9 @@ export default function CalendarBar({
 const styles = StyleSheet.create({
   pillRow: {
     backgroundColor: COLORS.headerBg,
-    paddingTop: 8,
-    paddingBottom: 10,
-    paddingHorizontal: 16,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
+    paddingHorizontal: isTablet() ? wp(8) : spacing.md,
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.2)',
@@ -104,32 +96,45 @@ const styles = StyleSheet.create({
   rowInner: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
   },
   profileButton: {
-    marginRight: 10,
+    marginRight: spacing.sm,
+    padding: spacing.xs,
   },
   pillGroup: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.pillGroupBg,
-    padding: 6,
-    borderRadius: 20,
+    padding: spacing.xs,
+    borderRadius: normalize(20),
+    alignSelf: 'center',
   },
 
   pill: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 18,
+    paddingHorizontal: spacing.lg,
+    borderRadius: normalize(20),
     backgroundColor: COLORS.pillBg,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.25)',
+    width: normalize(isTablet() ? 160 : 130),
+    height: normalize(isTablet() ? 52 : 44),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  pillRight: { marginLeft: 10 },
+  pillRight: { marginLeft: spacing.sm },
   pillActive: {
     backgroundColor: COLORS.pillActiveBg,
     borderColor: 'transparent',
   },
-  pillText: { color: COLORS.pillText, fontWeight: '700' },
+  pillText: { 
+    color: COLORS.pillText, 
+    fontWeight: '700',
+    fontSize: normalize(isTablet() ? 16 : 14),
+    textAlign: 'center',
+    numberOfLines: 1,
+  },
   pillTextActive: { color: COLORS.pillTextActive },
 });
 

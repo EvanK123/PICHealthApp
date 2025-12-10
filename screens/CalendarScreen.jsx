@@ -8,7 +8,9 @@ import {
   Platform,
   Text,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
+import { normalize, spacing, isTablet, wp, hp } from '../utils/responsive';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
@@ -38,7 +40,7 @@ const WellnessButtons = ({ callWebView }) => {
             howYaDoin.label
           )
         }
-        style={{ flex: 1, alignItems: 'center' }}
+        style={styles.wellnessBtnContainer}
         activeOpacity={0.85}
       >
         <View style={styles.wellnessSOS}>
@@ -50,7 +52,7 @@ const WellnessButtons = ({ callWebView }) => {
         onPress={() =>
           callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)
         }
-        style={{ flex: 1, alignItems: 'center' }}
+        style={styles.wellnessBtnContainer}
         activeOpacity={0.85}
       >
         <View style={styles.wellnessSOS}>
@@ -173,7 +175,6 @@ const CalendarScreen = () => {
           selectedCalendars={selectedCalendars}
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
-          onPressProfile={handleProfilePress}
         />
 
         <View style={styles.darken}>
@@ -234,29 +235,33 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
 
-  // Wellness buttons
+  // Wellness buttons - responsive sizing
   middleBtns: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    gap: 12,
-    paddingHorizontal: 12,
-    marginTop: 12,
-    marginBottom: 8,
+    justifyContent: 'space-between',
+    paddingHorizontal: isTablet() ? wp(5) : spacing.md,
+    marginTop: spacing.md,
+    marginBottom: spacing.sm,
     width: '100%',
   },
+  wellnessBtnContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
   wellnessSOS: {
-    height: 50,
+    height: normalize(isTablet() ? 60 : 45),
     width: '95%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: normalize(10),
     backgroundColor: 'rgba(255,255,255,0.85)',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(0,0,0,0.06)',
   },
   middleBtnText: {
-    fontSize: 18,
+    fontSize: normalize(isTablet() ? 20 : 16),
     fontWeight: '700',
     color: '#1f2937',
+    textAlign: 'center',
   },
 });

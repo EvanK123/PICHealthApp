@@ -62,8 +62,6 @@ const AboutUs = () => {
           <Header 
             title={headerTitle} 
             showSubmit={false}
-            avatarUrl={avatarUrl}
-            onPressProfile={handleProfilePress}
           />
 
           <ScrollView contentContainerStyle={styles.scrollContent}>

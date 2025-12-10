@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useContext, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
+import { normalize, spacing, isTablet, iconSizes } from '../utils/responsive';
 
 const CalendarSelector = ({
   selectedCalendars = [],
@@ -10,6 +11,9 @@ const CalendarSelector = ({
   style,
 }) => {
   const { t } = useContext(TranslationContext);
+  const scrollViewRef = useRef(null);
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(false);
 
   const toggleCalendar = (calendarKey) => {
     setSelectedCalendars((prev) =>
@@ -27,24 +31,50 @@ const CalendarSelector = ({
     setSelectedCalendars([]);
   };
 
+  const handleScroll = (event) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    setCanScrollUp(contentOffset.y > 0);
+    setCanScrollDown(contentOffset.y < contentSize.height - layoutMeasurement.height);
+  };
+
+  const scrollUp = () => {
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  const scrollDown = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  };
+
+  const showArrows = calendarOptions.length > 2;
+
   return (
     <View style={[styles.container, style]}>
-      {/* Centered title + All / Clear on the right */}
-      <View style={styles.header}>
-        <Text style={styles.title}>{t('calendar.selectCalendar')}</Text>
 
-        <View style={styles.actions}>
-          <TouchableOpacity onPress={selectAll} style={styles.actionBtn}>
-            <Text style={styles.actionText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={clearAll} style={styles.actionBtn}>
-            <Text style={styles.actionText}>Clear</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      {/* Calendar chips */}
-      <View style={styles.chipContainer}>
+      {/* Calendar chips with arrows */}
+      <View style={styles.chipSection}>
+        {showArrows && (
+          <View style={styles.arrowContainer}>
+            {canScrollUp && (
+              <TouchableOpacity onPress={scrollUp} style={styles.arrowButton}>
+                <Icon name="chevron-up" size={iconSizes.sm} color="#ffffff" />
+              </TouchableOpacity>
+            )}
+            {canScrollDown && (
+              <TouchableOpacity onPress={scrollDown} style={styles.arrowButton}>
+                <Icon name="chevron-down" size={iconSizes.sm} color="#ffffff" />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+        <ScrollView 
+          ref={scrollViewRef}
+          style={[styles.scrollContainer, showArrows && styles.scrollWithArrows]}
+          contentContainerStyle={styles.chipContainer}
+          showsVerticalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+        >
         {calendarOptions.map((calendar) => {
           const isSelected = selectedCalendars.includes(calendar.key);
           return (
@@ -62,17 +92,10 @@ const CalendarSelector = ({
               >
                 {calendar.value}
               </Text>
-              {isSelected && (
-                <Icon
-                  name="checkmark"
-                  size={16}
-                  color="#ffffff"
-                  style={styles.checkIcon}
-                />
-              )}
             </TouchableOpacity>
           );
         })}
+        </ScrollView>
       </View>
     </View>
   );
@@ -81,62 +104,55 @@ const CalendarSelector = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#2d4887',
-    paddingTop: 8,
-    paddingBottom: 10,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.2)',
   },
-  header: {
+
+  chipSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',   // center contents
-    paddingHorizontal: 16,
-    marginBottom: 4,
-    position: 'relative',
+    justifyContent: 'center',
   },
-  title: {
-    color: '#ffffff',
-    fontSize: 15,
-    fontWeight: '600',
-    textAlign: 'center',
-    flex: 1,                    // lets it sit centered
+  arrowContainer: {
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
   },
-  actions: {
-    flexDirection: 'row',
-    gap: 6,
-    position: 'absolute',       // float on the right
-    right: 16,
+  arrowButton: {
+    padding: spacing.xs,
+    marginVertical: normalize(2),
   },
-  actionBtn: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.35)',
+  scrollContainer: {
+    maxHeight: normalize(isTablet() ? 100 : 80),
   },
-  actionText: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
+  scrollWithArrows: {
+    flex: 1,
   },
   chipContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: spacing.sm,
+    marginTop: spacing.xs,
+    paddingBottom: spacing.xs,
   },
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 20,
+    justifyContent: 'center',
+    paddingHorizontal: spacing.sm,
+    borderRadius: normalize(20),
     backgroundColor: 'rgba(255,255,255,0.12)',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.25)',
+    width: isTablet() ? '30%' : '42%',
+    minWidth: normalize(isTablet() ? 120 : 100),
+    height: normalize(isTablet() ? 40 : 32),
   },
   chipSelected: {
     backgroundColor: '#0EA5B5',
@@ -144,14 +160,18 @@ const styles = StyleSheet.create({
   },
   chipText: {
     color: 'rgba(255,255,255,0.75)',
-    fontSize: 13,
+    fontSize: normalize(isTablet() ? 14 : 12),
     fontWeight: '600',
+    textAlign: 'center',
+    adjustsFontSizeToFit: true,
+    numberOfLines: 1,
+    minimumFontScale: 0.8,
   },
   chipTextSelected: {
     color: '#ffffff',
   },
   checkIcon: {
-    marginLeft: 4,
+    marginLeft: spacing.xs,
   },
 });
 
