@@ -72,11 +72,17 @@ export default function ProfileScreen() {
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
+        base64: true, // request base64 to avoid extra filesystem reads
       });
 
       if (result.canceled) return;
 
-      const asset = result.assets[0];
+      const asset = result.assets?.[0];
+      if (!asset?.uri) {
+        console.error('[ProfileScreen] No asset URI returned from picker');
+        alert(t('profile.avatarChangeError'));
+        return;
+      }
 
       // Build path & mimetype
       const fileExt =
@@ -115,10 +121,12 @@ export default function ProfileScreen() {
       } else {
         // 🔹 NATIVE: keep your existing base64 -> ArrayBuffer upload
         const fileUri = asset.uri;
-
-        const base64 = await FileSystem.readAsStringAsync(fileUri, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
+        // Prefer picker-provided base64 to avoid deprecated file-system API
+        const base64 =
+          asset.base64 ||
+          (await FileSystem.readAsStringAsync(fileUri, {
+            encoding: FileSystem.EncodingType?.Base64 || 'base64',
+          }));
 
         const arrayBuffer = decodeBase64(base64);
 
@@ -161,6 +169,19 @@ export default function ProfileScreen() {
         console.error('[ProfileScreen] updateUser error:', updateError);
         alert(t('profile.saveAvatarFailed'));
         return;
+      }
+
+      // Persist avatar URL in profiles so other users can see it (e.g., in comments)
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert(
+          { id: user.id, avatar_url: versionedUrl, email: user.email },
+          { onConflict: 'id' }
+        );
+
+      if (profileError) {
+        console.error('[ProfileScreen] profile upsert error:', profileError);
+        // continue; not fatal for current user cache
       }
 
       // Refresh user so UI gets new avatar_url
