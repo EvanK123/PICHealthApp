@@ -41,6 +41,10 @@ export default function ProfileScreen() {
   const email = user?.email ?? t('profile.unknownUser');
   const userId = user?.id ?? '—';
   const avatarUrl = user?.user_metadata?.avatar_url ?? null;
+  
+  // Check if user is logged in via Google OAuth
+  const isGoogleAuth = user?.app_metadata?.provider === 'google' || 
+                       user?.identities?.some(identity => identity.provider === 'google');
 
   // Name change state
   const [showNameForm, setShowNameForm] = React.useState(false);
@@ -509,7 +513,19 @@ export default function ProfileScreen() {
           )}
 
           {/* Change Password Section */}
-          {!showPasswordForm ? (
+          {isGoogleAuth ? (
+            <View style={styles.infoNote}>
+              <Icon
+                name="information-circle-outline"
+                size={16}
+                color="rgba(209,213,219,0.8)"
+                style={{ marginRight: 6 }}
+              />
+              <Text style={styles.infoNoteText}>
+                Password changes are not available for accounts signed in with Google.
+              </Text>
+            </View>
+          ) : !showPasswordForm ? (
             <TouchableOpacity
               style={styles.actionButton}
               onPress={() => setShowPasswordForm(true)}
@@ -803,5 +819,21 @@ const styles = StyleSheet.create({
     color: 'rgba(209,213,219,0.8)',
     fontSize: 12,
     textAlign: 'center',
+  },
+  infoNote: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(59,130,246,0.15)',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(59,130,246,0.3)',
+  },
+  infoNoteText: {
+    flex: 1,
+    color: 'rgba(209,213,219,0.9)',
+    fontSize: 13,
+    lineHeight: 18,
   },
 });
