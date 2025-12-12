@@ -57,8 +57,6 @@ const CultureScreen = () => {
         {/* Header on this tab WITHOUT Submit button */}
         <Header 
           title={headerTitle}
-          avatarUrl={avatarUrl}
-          onPressProfile={handleProfilePress}
         />
 
         <ScrollView contentContainerStyle={styles.scrollContent}>

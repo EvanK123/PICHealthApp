@@ -8,7 +8,9 @@ import {
   Platform,
   Text,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
+import { normalize, spacing, isTablet, isSmallPhone, wp, hp, useDimensions } from '../utils/responsive';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,56 +24,42 @@ import { TranslationContext } from '../context/TranslationContext';
 import { fetchCalendarEvents } from '../services/GoogleCalendarService';
 import { useAuth } from '../context/AuthContext';
 
-// Reusable Wellness Buttons Component
-const WellnessButtons = ({ callWebView }) => {
-  const { t } = useContext(TranslationContext);
-  const links = require('../locales/links.json');
-  const howYaDoin = t('calendar.wellnessButtons.howYaDoin');
-  const sos = t('calendar.wellnessButtons.sos');
 
-  return (
-    <View style={styles.middleBtns}>
-      <TouchableOpacity
-        onPress={() => callWebView(links.calendar.wellnessButtons[howYaDoin.linkId], howYaDoin.label)}
-        style={{ flex: 1, alignItems: 'center' }}
-        activeOpacity={0.85}
-      >
-        <View style={styles.wellnessSOS}>
-          <Text style={styles.middleBtnText}>{howYaDoin.label}</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)}
-        style={{ flex: 1, alignItems: 'center' }}
-        activeOpacity={0.85}
-      >
-        <View style={styles.wellnessSOS}>
-          <Text style={styles.middleBtnText}>{sos.label}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 const CalendarScreen = () => {
   const { t } = useContext(TranslationContext);
   const navigation = useNavigation();
   const { user } = useAuth();
+  const dimensions = useDimensions(); // Force re-render on dimension changes
+  
+  const links = require('../locales/config/links.json');
+  const calendarsConfig = require('../locales/config/calendars.json');
+  const howYaDoin = t('calendar.wellnessButtons.howYaDoin');
+  const sos = t('calendar.wellnessButtons.sos');
 
   // false = Upcoming (default), true = Calendar
   const [calendarMode, setCalendarMode] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
+  const [modalConfig, setModalConfig] = useState({
+    isVisible: false,
+    url: '',
+    title: '',
+  });
   const [events, setEvents] = useState({});
-  const [selectedCalendars, setSelectedCalendars] = useState([]);
+  
+  // Initialize with default selected calendars
+  const getDefaultCalendars = () => {
+    return calendarsConfig.calendars
+      .filter(cal => cal.defaultSelected)
+      .map(cal => cal.id);
+  };
+  
+  const [selectedCalendars, setSelectedCalendars] = useState(getDefaultCalendars());
 
   const avatarUrl = user?.user_metadata?.avatar_url || null;
 
-  // Load calendar IDs from JSON config
-  const calendarsConfig = require('../locales/calendars.json');
-  const calendarOptions = calendarsConfig.calendars.map(cal => ({
+  const calendarOptions = calendarsConfig.calendars.map((cal) => ({
     key: cal.id,
     value: t(cal.translationKey),
   }));
@@ -82,7 +70,8 @@ const CalendarScreen = () => {
     else setModalConfig({ isVisible: true, url, title: defaultTitle });
   };
 
-  const closeModal = () => setModalConfig((prev) => ({ ...prev, isVisible: false }));
+  const closeModal = () =>
+    setModalConfig((prev) => ({ ...prev, isVisible: false }));
 
   useEffect(() => {
     async function loadEvents() {
@@ -99,14 +88,18 @@ const CalendarScreen = () => {
         const key = startStr.split('T')[0];
         const isAllDay = !!ev.start?.date && !ev.start?.dateTime;
         const timeLabel = isAllDay
-          ? t('common.allDay')
-          : new Date(ev.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          ? t('calendar.allDay')
+          : new Date(ev.start.dateTime).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            });
 
         if (!acc[key]) acc[key] = [];
         acc[key].push({
           name: ev.summary,
           time: timeLabel,
-          description: ev.description || t('calendar.noDescriptionAvailable'),
+          description:
+            ev.description || t('calendar.noDescriptionAvailable'),
           organizer: ev.organizer || {},
           ...ev,
         });
@@ -129,8 +122,6 @@ const CalendarScreen = () => {
 
   const handleProfilePress = () => navigation.navigate('Account');
 
-
-
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
       <ImageBackground
@@ -139,22 +130,22 @@ const CalendarScreen = () => {
         style={styles.image}
         blurRadius={0}
       >
+        {/* Header: No submit button, no profile button here */}
         <Header
           title={t('calendar.title')}
-          showSubmit
-          onPressSubmit={() => {
-            const links = require('../locales/links.json');
-            callWebView(links.calendar.submitEvent, t('header.submitEvent'));
-          }}
+          avatarUrl={avatarUrl}
+          onPressProfile={handleProfilePress}
+          showProfile={false}
+          showSubmit={false}
         />
 
+        {/* Calendar bar: profile icon to the left of Upcoming/Calendar */}
         <CalendarBar
           calendarMode={calendarMode}
           setCalendarMode={setCalendarMode}
+          selectedCalendars={selectedCalendars}
           setSelectedCalendars={setSelectedCalendars}
           calendarOptions={calendarOptions}
-          onPressProfile={handleProfilePress}
-          avatarUrl={avatarUrl}
         />
 
         <View style={styles.darken}>
@@ -168,22 +159,88 @@ const CalendarScreen = () => {
                   callWebView={callWebView}
                   closeModal={closeModal}
                   onEventPress={handleEventPress}
+                  navigation={navigation}
                 />
-                <WellnessButtons callWebView={callWebView} />
+                <View style={styles.wellnessRow}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      callWebView(
+                        links.calendar.wellnessButtons[howYaDoin.linkId],
+                        howYaDoin.label
+                      )
+                    }
+                    style={styles.wellnessBtnContainer}
+                    activeOpacity={0.85}
+                  >
+                    <View style={styles.wellnessSOS}>
+                      <Text style={styles.middleBtnText}>{howYaDoin.label}</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() =>
+                      callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)
+                    }
+                    style={styles.wellnessBtnContainer}
+                    activeOpacity={0.85}
+                  >
+                    <View style={styles.wellnessSOS}>
+                      <Text style={styles.middleBtnText}>{sos.label}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </>
             ) : (
-              <ListView
-               events={events}
-               selectedCalendars={selectedCalendars}
-               setSelectedCalendars={setSelectedCalendars}
-               calendarOptions={calendarOptions}
-              />
+              <>
+                <ListView
+                  events={events}
+                  selectedCalendars={selectedCalendars}
+                  setSelectedCalendars={setSelectedCalendars}
+                  calendarOptions={calendarOptions}
+                  navigation={navigation}
+                  callWebView={callWebView}
+                />
+                {/* Wellness buttons above bottom bar for list view */}
+                <View style={styles.wellnessRow}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      callWebView(
+                        links.calendar.wellnessButtons[howYaDoin.linkId],
+                        howYaDoin.label
+                      )
+                    }
+                    style={styles.wellnessBtnContainer}
+                    activeOpacity={0.85}
+                  >
+                    <View style={styles.wellnessSOS}>
+                      <Text style={styles.middleBtnText}>{howYaDoin.label}</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() =>
+                      callWebView(links.calendar.wellnessButtons[sos.linkId], sos.label)
+                    }
+                    style={styles.wellnessBtnContainer}
+                    activeOpacity={0.85}
+                  >
+                    <View style={styles.wellnessSOS}>
+                      <Text style={styles.middleBtnText}>{sos.label}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </>
             )}
           </View>
         </View>
       </ImageBackground>
 
-      <Popup visible={popupVisible} onClose={closePopup} event={selectedEvent} />
+      <Popup
+        visible={popupVisible}
+        onClose={closePopup}
+        event={selectedEvent}
+        navigation={navigation}
+      />
       <WebViewModal
         url={modalConfig.url}
         isVisible={modalConfig.isVisible}
@@ -208,29 +265,81 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
 
-  // Wellness buttons
-  middleBtns: {
+  // Wellness buttons row
+  wellnessRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    gap: 12,
-    paddingHorizontal: 12,
-    marginTop: 12,
-    marginBottom: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: normalize(24),
+    marginTop: normalize(8),
+    marginBottom: 0,
+    paddingBottom: normalize(8),
     width: '100%',
   },
+  
+  // Submit button container and styles
+  submitButtonContainer: {
+    paddingHorizontal: normalize(16),
+    paddingVertical: isSmallPhone() ? normalize(4) : normalize(8),
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+  },
+  submitButtonCalendar: {
+    backgroundColor: '#0EA5B5',
+    paddingHorizontal: normalize(24),
+    borderRadius: normalize(10),
+    borderWidth: 1,
+    borderColor: 'transparent',
+    width: normalize(isTablet() ? 160 : 130),
+    height: normalize(isTablet() ? 50 : 45),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitButtonText: {
+    color: '#ffffff',
+    fontSize: normalize(isTablet() ? 16 : 14),
+    fontWeight: '700',
+    textAlign: 'center',
+    numberOfLines: 1,
+  },
+  
+  // Events tab submit button (pill style)
+  submitButtonEvents: {
+    backgroundColor: '#0EA5B5',
+    paddingHorizontal: normalize(24),
+    borderRadius: normalize(20),
+    borderWidth: 1,
+    borderColor: 'transparent',
+    width: normalize(isTablet() ? 160 : isSmallPhone() ? 110 : 130),
+    height: normalize(isTablet() ? 52 : isSmallPhone() ? 36 : 44),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitButtonEventsText: {
+    color: '#ffffff',
+    fontSize: normalize(isTablet() ? 16 : 14),
+    fontWeight: '700',
+    textAlign: 'center',
+    numberOfLines: 1,
+  },
+  wellnessBtnContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
   wellnessSOS: {
-    height: 50,
+    height: normalize(isTablet() ? 50 : 45),
     width: '95%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: normalize(10),
     backgroundColor: 'rgba(255,255,255,0.85)',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(0,0,0,0.06)',
   },
   middleBtnText: {
-    fontSize: 18,
+    fontSize: Platform.OS === 'web' ? normalize(12) : normalize(isSmallPhone() ? 14 : isTablet() ? 18 : 16),
     fontWeight: '700',
     color: '#1f2937',
+    textAlign: 'center',
   },
 });

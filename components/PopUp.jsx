@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image } from 'react-native';
+import { Platform, Modal, View, Text, TouchableOpacity, StyleSheet, Linking, FlatList, Image, Dimensions } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import WebViewModal from './WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
+import { normalize, spacing, isTablet, wp, hp } from '../utils/responsive';
 
 
 // Popup component to display event details or welcome message in a modal
-const Popup = ({ visible, onClose, mode = "event", events, event }) => {
+const Popup = ({ visible, onClose, mode = "event", events, event, navigation }) => {
   const { t } = useContext(TranslationContext);
   const [modalConfig, setModalConfig] = useState({ isVisible: false, url: '', title: '' });
 
@@ -51,23 +52,56 @@ const Popup = ({ visible, onClose, mode = "event", events, event }) => {
             <FlatList
               data={eventList}
               keyExtractor={(item, index) => (item.id || item.name || index).toString()}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
               renderItem={({ item }) => (
                 <View style={styles.eventContainer}>
                   <Text style={styles.title}>{item.summary || item.name}</Text>
                   {item.description ? (
                     <RenderHtml
-                      contentWidth={300}
+                      contentWidth={isTablet() ? wp(60) : wp(80)}
                       source={{ html: item.description }}
                       defaultTextProps={{ selectable: true }}
                       renderersProps={{ a: { onPress: handleLinkPress } }}
                     />
                   ) : (
-                    <Text style={styles.noDescription}>{t('common.noDescriptionAvailable')}</Text>
+                    <Text style={styles.noDescription}>{t('calendar.noDescriptionAvailable')}</Text>
                   )}
                   <Text style={styles.eventTime}>
-                    {item.start ? new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' }) : item.time}
+                    {(() => {
+                      // Check if it's an all-day event
+                      const isAllDay = item.start?.date && !item.start?.dateTime;
+                      if (isAllDay) {
+                        return t('calendar.allDay');
+                      }
+                      // Use the time property if available (already formatted)
+                      if (item.time) {
+                        return item.time;
+                      }
+                      // Otherwise format from dateTime
+                      if (item.start?.dateTime) {
+                        return new Date(item.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                      }
+                      return '';
+                    })()}
                   </Text>
                   {item.location && <Text style={styles.eventTime}>{item.location}</Text>}
+                  {navigation && (
+                    <TouchableOpacity
+                      style={styles.commentButton}
+                      onPress={() => {
+                        onClose();
+                        navigation.navigate('MainTabs', { 
+                          screen: 'Comments',
+                          params: {
+                            eventTitle: item.summary || item.name,
+                            eventId: item.id
+                          }
+                        });
+                      }}
+                    >
+                      <Text style={styles.commentButtonText}>{t('comments.viewComments')}</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               )}
             />
@@ -104,87 +138,112 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: spacing.md,
   },
   container: {
-    width: 400,
+    width: isTablet() ? wp(70) : wp(90),
+    maxWidth: normalize(500),
     maxHeight: '80%',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderRadius: 10,
-    padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 1.0)',
+    borderRadius: normalize(10),
+    padding: spacing.md,
     position: 'relative',
   },
   closeIconButton: {
     position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 30,
-    height: 30,
+    top: spacing.sm,
+    right: spacing.sm,
+    width: normalize(30),
+    height: normalize(30),
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
   },
   closeIcon: {
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
     color: '#2d4887',
   },
   eventContainer: {
-    marginBottom: 20,
-    paddingTop: 10,
-    paddingRight: 20,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#9ca3af',
+    marginVertical: spacing.md,
+    marginHorizontal: spacing.lg,
   },
   title: {
-    fontSize: 20,
+    fontSize: normalize(isTablet() ? 24 : 20),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   noDescription: {
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     color: '#555',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   eventTime: {
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     color: '#555',
-    marginTop: 10,
+    marginTop: spacing.sm,
   },
   closeButton: {
-    marginTop: 20,
+    marginTop: spacing.lg,
     backgroundColor: '#2d4887',
-    padding: 10,
-    borderRadius: 5,
+    padding: spacing.md,
+    borderRadius: normalize(5),
     alignItems: 'center',
   },
   closeButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: normalize(isTablet() ? 18 : 16),
   },
   welcomeTitle: {
-    fontSize: 24,
+    fontSize: normalize(isTablet() ? 28 : 24),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   welcomeLogo: {
-    width: 180,
-    height: 180,
+    width: normalize(isTablet() ? 220 : 180),
+    height: normalize(isTablet() ? 220 : 180),
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: spacing.lg,
   },
   betaText: {
-    fontSize: 18,
+    fontSize: normalize(isTablet() ? 20 : 18),
     color: '#2d4887',
     textAlign: 'center',
-    marginBottom: 15,
+    marginBottom: spacing.md,
     fontWeight: 'bold',
   },
   disclaimerText: {
-    fontSize: 14,
+    fontSize: normalize(isTablet() ? 16 : 14),
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: spacing.lg,
     color: '#333',
   },
   disclaimerBold: {
     fontWeight: 'bold',
+  },
+  commentButton: {
+    marginTop: spacing.md,
+    backgroundColor: '#2d4887',
+    paddingVertical: normalize(12),
+    paddingHorizontal: spacing.lg,
+    borderRadius: normalize(8),
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: normalize(200),
+    alignSelf: 'center',
+  },
+  commentButtonText: {
+    color: 'white',
+    fontSize: normalize(isTablet() ? 15 : 13),
+    fontWeight: '600',
   },
 });

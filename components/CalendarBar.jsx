@@ -1,8 +1,10 @@
+// components/CalendarBar.jsx
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
+import CalendarSelector from './CalendarSelector';
+import { normalize, spacing, getSpacing, isTablet, isSmallPhone, wp, useDimensions } from '../utils/responsive';
 
 const COLORS = {
   headerBg: '#2d4887',
@@ -16,72 +18,69 @@ const COLORS = {
 export default function CalendarBar({
   calendarMode,              // true = Calendar view, false = Upcoming list
   setCalendarMode,
+  selectedCalendars,
   setSelectedCalendars,
   calendarOptions,
-  onPressProfile,
-  avatarUrl,
 }) {
   const { t } = useContext(TranslationContext);
+  const dimensions = useDimensions(); // Force re-render on dimension changes
+  const dynamicSpacing = getSpacing(); // Get dynamic spacing
   const goUpcoming = () => setCalendarMode(false);
   const goCalendar = () => setCalendarMode(true);
 
-  const handleProfilePress = () => {
-    if (typeof onPressProfile === 'function') onPressProfile();
-  };
-
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.headerBg }}>
-      {/* CENTERED row: profile + pill group */}
+      {/* Row with profile icon + pill group, centered */}
       <View style={styles.pillRow}>
-        <TouchableOpacity
-          onPress={handleProfilePress}
-          activeOpacity={0.8}
-          style={styles.profileButton}
-        >
-          {avatarUrl ? (
-            <View style={styles.profileAvatarWrapper}>
-              <Image source={{ uri: avatarUrl }} style={styles.profileAvatar} />
-            </View>
-          ) : (
-            <Icon name="person-circle-outline" size={28} color="#ffffff" />
-          )}
-        </TouchableOpacity>
+        <View style={styles.rowInner}>
 
-        <View style={styles.pillGroup}>
-          <TouchableOpacity
-            onPress={goUpcoming}
-            activeOpacity={0.9}
-            style={[styles.pill, !calendarMode && styles.pillActive]}
-          >
-            <Text style={[styles.pillText, !calendarMode && styles.pillTextActive]}>
-              {t('calendar.upcomingEvents')}
-            </Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={goCalendar}
-            activeOpacity={0.9}
-            style={[styles.pill, styles.pillRight, calendarMode && styles.pillActive]}
-          >
-            <Text style={[styles.pillText, calendarMode && styles.pillTextActive]}>
-              {t('calendar.calendar')}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.pillGroup}>
+            <TouchableOpacity
+              onPress={goUpcoming}
+              activeOpacity={0.9}
+              style={[styles.pill, !calendarMode && styles.pillActive]}
+            >
+              <Text
+                style={[
+                  styles.pillText,
+                  !calendarMode && styles.pillTextActive,
+                ]}
+              >
+                {t('calendar.upcomingEvents')}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={goCalendar}
+              activeOpacity={0.9}
+              style={[
+                styles.pill,
+                styles.pillRight,
+                calendarMode && styles.pillActive,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.pillText,
+                  calendarMode && styles.pillTextActive,
+                ]}
+              >
+                {t('calendar.calendar')}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
       {/* Only show calendar selector when Calendar view is active */}
-      <View style={calendarMode ? styles.dropdownWrap : { display: 'none' }}>
-        <MultipleSelectList
-          setSelected={setSelectedCalendars}
-          data={calendarOptions}
-          save="key"
-          label={t('calendar.selectCalendar')}
-          placeholder={t('calendar.selectCalendar')}
-          dropdownStyles={styles.dropdown}
-          boxStyles={styles.dropdownBox}
+      {calendarMode && (
+        <CalendarSelector
+          selectedCalendars={selectedCalendars}
+          setSelectedCalendars={setSelectedCalendars}
+          calendarOptions={calendarOptions}
         />
-      </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -89,53 +88,57 @@ export default function CalendarBar({
 const styles = StyleSheet.create({
   pillRow: {
     backgroundColor: COLORS.headerBg,
-    paddingTop: 8,
-    paddingBottom: 10,
-    paddingHorizontal: 16,
+    paddingTop: normalize(8),
+    paddingBottom: normalize(8),
+    paddingHorizontal: isTablet() ? wp(8) : normalize(16),
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.2)',
+  },
+  rowInner: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',     // << center the whole row horizontally
-    gap: 10,
+    width: '100%',
+    justifyContent: 'center',
   },
   profileButton: {
-    padding: 2,
-    borderRadius: 999,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginRight: spacing.sm,
+    padding: spacing.xs,
   },
-  profileAvatarWrapper: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#ffffff',
-  },
-  profileAvatar: { width: '100%', height: '100%' },
-
   pillGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.pillGroupBg,
-    padding: 6,
-    borderRadius: 20,
-    flexShrink: 1,
-    maxWidth: '80%',
+    backgroundColor: 'transparent',
+    padding: normalize(4),
+    borderRadius: normalize(20),
+    alignSelf: 'center',
   },
+
   pill: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 18,
+    paddingHorizontal: normalize(24),
+    borderRadius: normalize(20),
     backgroundColor: COLORS.pillBg,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.25)',
+    width: normalize(isTablet() ? 180 : isSmallPhone() ? 120 : 150),
+    height: normalize(isTablet() ? 58 : isSmallPhone() ? 40 : 50),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  pillRight: { marginLeft: 10 },
-  pillActive: { backgroundColor: COLORS.pillActiveBg, borderColor: 'transparent' },
-  pillText: { color: COLORS.pillText, fontWeight: '700' },
+  pillRight: { marginLeft: normalize(8) },
+  pillActive: {
+    backgroundColor: COLORS.pillActiveBg,
+    borderColor: 'transparent',
+  },
+  pillText: { 
+    color: COLORS.pillText, 
+    fontWeight: '700',
+    fontSize: normalize(isTablet() ? 16 : isSmallPhone() ? 12 : 14),
+    textAlign: 'center',
+    adjustsFontSizeToFit: true,
+    numberOfLines: 1,
+    minimumFontScale: 0.8,
+  },
   pillTextActive: { color: COLORS.pillTextActive },
-
-  dropdownWrap: { backgroundColor: COLORS.headerBg },
-  dropdown: { backgroundColor: '#fff', borderRadius: 0, marginTop: 0, marginBottom: 10 },
-  dropdownBox: { backgroundColor: '#fff', borderColor: '#fff', borderRadius: 0 },
 });
+

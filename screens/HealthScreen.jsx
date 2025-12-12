@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -58,8 +59,6 @@ const HealthScreen = () => {
       >
         <Header 
           title={headerTitle}
-          avatarUrl={avatarUrl}
-          onPressProfile={handleProfilePress}
         >
           <Disclaimer description={headerDesc} />
         </Header>
@@ -101,6 +100,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   image: { flex: 1, width: "100%", height: "100%" },
   scrollContent: { paddingVertical: 10 },
+
 });
 
 const textBox = StyleSheet.create({

@@ -1,10 +1,11 @@
 // components/CalendarView.jsx
 import React, { useEffect, useState, useMemo, useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import Popup from './PopUp';
 import WebViewModal from './WebViewModal';
 import { TranslationContext } from '../context/TranslationContext';
+import { normalize, spacing, isTablet, wp, useDimensions } from '../utils/responsive';
 
 const COLORS = {
   primary: '#2d4887',
@@ -35,17 +36,17 @@ const CAL_THEME = {
   textDayHeaderFontWeight: '700',
 };
 
-const WEEKDAYS_ABBREV = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const WEEKDAYS_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+// Weekday abbreviations and full names are now handled via translation context
 
 const toLocalDate = (iso) => {
   const [y,m,d] = (iso||'').split('-').map(Number);
   return new Date(y,(m||1)-1,d||1);
 };
 
-export default function CalendarView({ events, selectedCalendars, callWebView, closeModal }) {
+export default function CalendarView({ events, selectedCalendars, callWebView, closeModal, navigation }) {
   const { t } = useContext(TranslationContext);
-  const calendarsConfig = require('../locales/calendars.json');
+  const dimensions = useDimensions(); // Force re-render on dimension changes
+  const calendarsConfig = require('../locales/config/calendars.json');
   const [markedDates, setMarkedDates] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState([]);
@@ -58,11 +59,11 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
 
   // compute cell size from available width
   const [calWidth, setCalWidth] = useState(0);
-  const CELL_MARGIN = 2;
+  const { width: screenWidth } = Dimensions.get('window');
+  const CELL_MARGIN = normalize(2);
   const COLUMNS = 7;
-  const cellSize = calWidth
-    ? Math.floor((calWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS)
-    : 46;
+  const availableWidth = calWidth || screenWidth - spacing.md; // fallback to screen width minus padding
+  const cellSize = Math.max(normalize(isTablet() ? 60 : 40), Math.floor((availableWidth - CELL_MARGIN * 2 * COLUMNS) / COLUMNS));
 
 
 
@@ -86,16 +87,32 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
   }, [events, selectedCalendars, selectedDate]);
 
   const handleDayPress = (day) => {
+    const selectedDateEvents = (events[day.dateString] || []).sort((a, b) => {
+      // All-day events should come first, then sort by time
+      const aIsAllDay = !!a.start?.date && !a.start?.dateTime;
+      const bIsAllDay = !!b.start?.date && !b.start?.dateTime;
+      
+      if (aIsAllDay && !bIsAllDay) return -1;
+      if (!aIsAllDay && bIsAllDay) return 1;
+      if (aIsAllDay && bIsAllDay) return 0; // Both all-day, keep original order
+      
+      // Both have times, sort by time
+      const aTime = a.start?.dateTime ? new Date(a.start.dateTime).getTime() : 0;
+      const bTime = b.start?.dateTime ? new Date(b.start.dateTime).getTime() : 0;
+      return aTime - bTime;
+    });
+    if (selectedDateEvents.length > 0) {
+      setSelectedEvents(selectedDateEvents);
+      setPopupVisible(true);
+    }
     setSelectedDate(day.dateString);
-    const selectedDateEvents = events[day.dateString] || [];
-    setSelectedEvents(selectedDateEvents);
-    setPopupVisible(true);
   };
 
   // custom day cell
   const DayCell = ({ date, state }) => {
     const key = date.dateString;
     const list = events[key] || [];
+    const eventCount = list.length;
     const first = list[0];
     const pillColor = first?.organizer?.email ? getColorForCalendar(first.organizer.email) : COLORS.accentPIC;
 
@@ -104,15 +121,20 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
         onPress={() => handleDayPress(date)}
         style={[
           styles.dayCell,
-          { margin: CELL_MARGIN, width: cellSize, height: Math.max(46, Math.round(cellSize * 0.95)) },
+          { 
+            margin: CELL_MARGIN, 
+            width: cellSize, 
+            height: Math.max(normalize(isTablet() ? 60 : 40), Math.round(cellSize * 0.9)),
+            minHeight: normalize(isTablet() ? 60 : 40)
+          },
           state === 'disabled' && { opacity: 0.4 },
           selectedDate === key && styles.dayCellSelected,
         ]}
       >
         <Text style={styles.dayNum}>{date.day}</Text>
-        {first?.summary ? (
+        {eventCount > 0 ? (
           <View style={[styles.eventPill, { backgroundColor: pillColor }]}>
-            <Text numberOfLines={1} style={styles.eventPillText}>{first.summary}</Text>
+            <Text style={styles.eventPillText}>{eventCount}</Text>
           </View>
         ) : null}
       </TouchableOpacity>
@@ -122,7 +144,8 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
   const selectedLabel = useMemo(() => {
     if (!selectedDate) return '';
     const d = toLocalDate(selectedDate);
-    const wd = WEEKDAYS_FULL[d.getDay()];
+    const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const wd = t(`common.days.${weekdays[d.getDay()]}`);
     const dd = d.getDate();
     return `${t('calendar.upcomingEvents')} ${wd} ${dd}`;
   }, [selectedDate, t]);
@@ -133,12 +156,12 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
       <View style={styles.whitePanel} onLayout={(e) => setCalWidth(e.nativeEvent.layout.width)}>
         {/* Weekday strip with border & vertical dividers */}
         <View style={styles.weekStripBox}>
-          {WEEKDAYS_ABBREV.map((d, i) => (
+          {['sun','mon','tue','wed','thu','fri','sat'].map((d, i) => (
             <View
               key={d}
-              style={[styles.weekCellBox, i === WEEKDAYS_ABBREV.length - 1 && styles.weekCellLast]}
+              style={[styles.weekCellBox, i === 6 && styles.weekCellLast]}
             >
-              <Text style={styles.weekText}>{d}</Text>
+              <Text style={styles.weekText}>{t(`common.dayAbbreviations.${d}`)}</Text>
             </View>
           ))}
         </View>
@@ -155,7 +178,9 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
           theme={CAL_THEME}
           renderHeader={(date) => {
             const d = new Date(date);
-            const label = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+            const monthName = t(`common.months.${months[d.getMonth()]}`);
+            const label = `${monthName} ${d.getFullYear()}`;
             return (
               <View style={styles.header}>
                 <Text style={styles.headerTitle}>{label}</Text>
@@ -166,34 +191,9 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
         />
       </View>
 
-      {/* Bottom sheet of events for the selected day */}
-      {selectedDate && (
-        <View style={styles.sheet}>
-          <Text style={styles.sheetTitle}>{selectedLabel}</Text>
-          {selectedEvents.map((ev) => {
-            const barColor = getColorForCalendar(ev.organizer?.email);
-            const timeText = ev.start?.date
-              ? t('calendar.allDay')
-              : new Date(ev.start?.dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-            return (
-              <View key={ev.id || ev.summary + ev.start?.dateTime} style={styles.sheetCard}>
-                <View style={[styles.topBar, { backgroundColor: barColor }]} />
-                <View style={styles.sheetBody}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.sheetTitleText}>{ev.summary || t('calendar.noTitle')}</Text>
-                    <Text style={styles.sheetMeta}>
-                      {timeText} {ev.location ? `• ${ev.location}` : ''}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-      )}
 
-      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} />
+      <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} events={selectedEvents} navigation={navigation} />
       <WebViewModal url={''} isVisible={false} onClose={closeModal} />
     </ScrollView>
   );
@@ -201,12 +201,12 @@ export default function CalendarView({ events, selectedCalendars, callWebView, c
 
 const styles = StyleSheet.create({
   container: { flex: 1, width: '100%' },
-  containerContent: { paddingBottom: 12, width: '100%', paddingHorizontal: 0 },
+  containerContent: { paddingBottom: normalize(16), width: '100%', paddingHorizontal: 0 },
 
   whitePanel: {
     backgroundColor: '#fff',
     borderRadius: 0,
-    paddingVertical: 8,
+    paddingVertical: normalize(8),
     paddingHorizontal: 0, // edge-to-edge
     width: '100%',
     alignSelf: 'stretch',
@@ -214,8 +214,8 @@ const styles = StyleSheet.create({
 
   calendarStyle: { backgroundColor: 'transparent', margin: 0, paddingHorizontal: 0 },
 
-  header: { paddingVertical: 6, alignItems: 'center' },
-  headerTitle: { color: COLORS.navyText, fontSize: 18, fontWeight: '800' },
+  header: { paddingVertical: normalize(4), alignItems: 'center' },
+  headerTitle: { color: COLORS.navyText, fontSize: normalize(isTablet() ? 22 : 18), fontWeight: '800' },
 
   // Weekday strip — single bordered container with vertical dividers
   weekStripBox: {
@@ -223,72 +223,77 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: COLORS.navyBorder,
-    borderRadius: 10,
+    borderRadius: normalize(10),
     overflow: 'hidden',
-    marginHorizontal: 6,
-    marginBottom: 6,
+    marginHorizontal: normalize(4),
+    marginBottom: normalize(4),
   },
   weekCellBox: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: normalize(8),
     borderRightWidth: 1,
     borderRightColor: COLORS.navyBorder,
   },
   weekCellLast: { borderRightWidth: 0 },
-  weekText: { fontSize: 12, fontWeight: '800', color: COLORS.navyText },
+  weekText: { fontSize: normalize(isTablet() ? 14 : 12), fontWeight: '800', color: COLORS.navyText },
 
   // Day cells
   dayCell: {
-    borderRadius: 12,
+    borderRadius: normalize(12),
     borderWidth: 1,
     borderColor: COLORS.navyBorder,
     backgroundColor: '#fff',
-    padding: 6,
+    padding: normalize(4),
     justifyContent: 'flex-start',
   },
   dayCellSelected: { borderColor: COLORS.primary, borderWidth: 2 },
-  dayNum: { color: COLORS.ink, fontWeight: '700', marginBottom: 2, fontSize: 12 },
+  dayNum: { color: COLORS.ink, fontWeight: '700', marginBottom: normalize(2), fontSize: normalize(isTablet() ? 14 : 12) },
   eventPill: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 10,
-    alignSelf: 'flex-start',
-    maxWidth: '100%',
+    minWidth: normalize(isTablet() ? 24 : 20),
+    minHeight: normalize(isTablet() ? 24 : 20),
+    paddingHorizontal: normalize(6),
+    paddingVertical: normalize(2),
+    borderRadius: normalize(isTablet() ? 12 : 10),
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  eventPillText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  eventPillText: { color: '#fff', fontSize: normalize(isTablet() ? 12 : 10), fontWeight: '700', textAlign: 'center' },
 
   // Bottom sheet
   sheet: {
     backgroundColor: '#fff',
-    marginTop: 12,
-    borderTopLeftRadius: 22,
-    borderTopRightRadius: 22,
-    paddingTop: 12,
-    paddingBottom: 16,
+    marginTop: normalize(16),
+    borderTopLeftRadius: normalize(22),
+    borderTopRightRadius: normalize(22),
+    paddingTop: normalize(16),
+    paddingBottom: normalize(24),
     shadowColor: '#000',
     shadowOpacity: 0.12,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: -2 },
     elevation: 6,
   },
-  sheetTitle: { textAlign: 'center', fontSize: 20, fontWeight: '900', color: COLORS.ink, marginBottom: 8 },
+  sheetTitle: { textAlign: 'center', fontSize: normalize(isTablet() ? 24 : 20), fontWeight: '900', color: COLORS.ink, marginBottom: normalize(8) },
   sheetCard: {
-    marginHorizontal: 14,
-    marginBottom: 12,
+    marginHorizontal: normalize(16),
+    marginBottom: normalize(16),
     backgroundColor: COLORS.sheetCard,
-    borderRadius: 14,
+    borderRadius: normalize(14),
     borderWidth: 1,
     borderColor: COLORS.panelBorder,
     overflow: 'hidden',
   },
-  topBar: { height: 6, width: '100%' },
+  topBar: { height: normalize(6), width: '100%' },
   topBarTeal: { backgroundColor: COLORS.sheetBar1 },
   topBarBlue: { backgroundColor: COLORS.sheetBar2 },
-  sheetBody: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 12 },
-  sheetTitleText: { fontSize: 16, fontWeight: '800', color: COLORS.ink, marginBottom: 2 },
-  sheetMeta: { fontSize: 13, color: COLORS.inkMute },
-  tag: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 14, backgroundColor: COLORS.brand },
+  sheetBody: { flexDirection: 'row', alignItems: 'center', gap: normalize(8), padding: Platform.OS === 'web' ? normalize(8) : normalize(16) },
+  sheetHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: normalize(2) },
+  sheetCalendarLabel: { fontSize: normalize(10), color: COLORS.inkMute, fontWeight: '600', textAlign: 'right', flex: 0 },
+  sheetTitleText: { fontSize: Platform.OS === 'web' ? normalize(14) : normalize(isTablet() ? 18 : 16), fontWeight: '800', color: COLORS.ink, marginBottom: normalize(2) },
+  sheetMeta: { fontSize: Platform.OS === 'web' ? normalize(12) : normalize(isTablet() ? 15 : 13), color: COLORS.inkMute },
+  tag: { paddingHorizontal: normalize(8), paddingVertical: normalize(4), borderRadius: normalize(14), backgroundColor: COLORS.brand },
   tagText: { color: '#fff', fontWeight: '800' },
 });

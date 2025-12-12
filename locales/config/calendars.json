@@ -3,12 +3,14 @@
     {
       "id": "f934159db7dbaebd1b8b4b0fc731f6ea8fbe8ba458e88df53eaf0356186dcb82@group.calendar.google.com",
       "translationKey": "calendar.calendarOptions.pacificIslander",
-      "color": "#0B75B9"
+      "color": "#0B75B9",
+      "defaultSelected": true
     },
     {
       "id": "8e898b18eb481bf71ec0ca0206091aa7d7ca9ee4dc136ea57ee36f73bc2bbe66@group.calendar.google.com",
-      "translationKey": "calendar.calendarOptions.latino",
-      "color": "#71AD45"
+      "translationKey": "calendar.calendarOptions.otherEvents",
+      "color": "#71AD45",
+      "defaultSelected": false
     }
   ]
 }

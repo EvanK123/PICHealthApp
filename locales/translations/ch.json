@@ -1,5 +1,6 @@
 {
   "common": {
+    "locale": "ch-GU",
     "languages": {
       "english": "English",
       "spanish": "Español",
@@ -16,10 +17,35 @@
       "friday": "Bietnes",
       "saturday": "Såbalu"
     },
+    "dayAbbreviations": {
+      "sun": "Dam",
+      "mon": "Lun",
+      "tue": "Måt",
+      "wed": "Met",
+      "thu": "Hue",
+      "fri": "Bie",
+      "sat": "Såb"
+    },
     "close": "Tatkelo'",
     "browser": "Browser",
     "or": "o",
-    "somethingWentWrong": "Kao guaha mampos dangkolo na cho'cho'"
+    "somethingWentWrong": "Kao guaha mampos dangkolo na cho'cho'",
+    "noDescriptionAvailable": "Taya' deskripsion",
+    "back": "Tatte",
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marso",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Hunio",
+      "july": "Hulio",
+      "august": "Agosto",
+      "september": "Septembre",
+      "october": "Oktubre",
+      "november": "Novembre",
+      "december": "Disiembre"
+    }
   },
   "app": {
     "tabs": {
@@ -27,7 +53,7 @@
       "health": "Salud",
       "education": "Edukasion",
       "culture": "Kuttura",
-      "aboutUs": "Put PIC Health"
+      "aboutUs": "Put Hit"
     },
     "name": "PIC Health"
   },
@@ -41,10 +67,12 @@
     "allDay": "Todo i Ha'åni",
     "noDescriptionAvailable": "Taya' deskripsion",
     "noTitle": "(Taya' Titulo)",
-    "free": "Gratis",
-    "family": "Familia",
+    "hidePastEvents": "Nana' i manmamaila na eventu",
+    "all": "Todo",
+    "clear": "Limpia",
     "calendarOptions": {
       "pacificIslander": "Kumunidat Pasifiku",
+      "otherEvents": "Otros na Eventu",
       "latino": "Kumunidat Latino"
     },
     "wellnessButtons": {
@@ -63,7 +91,8 @@
     }
   },
   "header": {
-    "submitEvent": "Nå'i i Gechu"
+    "submitEvent": "Nå'i i Gechu",
+    "beta": "BETA"
   },
   "login": {
     "title": "PIC Health",
@@ -77,15 +106,55 @@
     "passwordPlaceholder": "••••••••",
     "continueWithGoogle": "Sigi yan Google",
     "enterEmailPassword": "Na'i korreo electronico yan password.",
+    "enterEmail": "Fa'na'i i korreo electronico-mu.",
+    "forgotPassword": "Kao malak i Password?",
+    "resetPasswordInstructions": "Na'i i korreo electronico-mu yan para un na'i ha code para un reset i password-mu.",
+    "otpSentMessage": "Ma na'i i code (6 na numero) gi email-mu. Fa'na'i un na'i gi papa' i code yan i password-mu nuebu.",
+    "sendOTP": "Na'i i Code",
+    "otpCode": "Code para Reset",
+    "otpPlaceholder": "Na'i i code (6 na numero)",
+    "resendOTP": "Na'i Ta'lo i Code",
+    "otpSendFailed": "Mampos dangkolo na cho'cho' gi na'i i code. Fa'na'i un tattiyi ta'lo.",
+    "otpVerificationFailed": "Ti siña i code pat ti ma'pos. Fa'na'i un tattiyi ta'lo.",
+    "fillAllFields": "Fa'na'i un na'i todo i campos.",
+    "backToLogin": "Tatti gi Login",
+    "resetPasswordTitle": "Reset i Password-mu",
+    "newPassword": "Password Nuebu",
+    "newPasswordPlaceholder": "Na'i i password nuebu",
+    "confirmPassword": "Konfirma i Password",
+    "confirmPasswordPlaceholder": "Konfirma i password nuebu",
+    "resetPassword": "Reset i Password",
+    "passwordResetSuccess": "Ma reset i password!",
+    "passwordResetSuccessMessage": "Ma reset i password-mu. Siña un dangkulo na yan i password-mu nuebu.",
+    "enterNewPassword": "Fa'na'i un na'i ha password nuebu.",
+    "passwordTooShort": "I password debe tatai 6 na letra.",
+    "passwordsDoNotMatch": "Ti siña i password siha.",
     "googleSignInWebOnly": "I Google sign-in gaige pa'go gi web ha'.",
     "googleSignInFailed": "Mampos dangkolo na cho'cho' gi Google sign-in"
   },
   "profile": {
-    "title": "Account",
+    "title": "Kuentå",
     "unknownUser": "Tiningo' na taotao",
     "signedInTo": "Man entre hao gi PIC Health",
     "userId": "ID i User",
     "changeProfilePhoto": "Bira i Litratu-mu",
+    "changeName": "Bira i Na'an",
+    "changePassword": "Bira i Password",
+    "currentPassword": "Password Pa'go",
+    "newPassword": "Password Nuebu",
+    "confirmPassword": "Konfirma i Password Nuebu",
+    "name": "Na'an",
+    "enterName": "Na'i i na'an-mu",
+    "enterCurrentPassword": "Na'i i password pa'go",
+    "enterNewPassword": "Na'i i password nuebu",
+    "enterConfirmPassword": "Konfirma i password nuebu",
+    "nameUpdated": "Maolek na na'an!",
+    "passwordUpdated": "Maolek na password!",
+    "nameUpdateFailed": "Mampos dangkolo na cho'cho' gi update i na'an.",
+    "passwordUpdateFailed": "Mampos dangkolo na cho'cho' gi update i password.",
+    "passwordMismatch": "Ti ma'åse' i password siha.",
+    "passwordTooShort": "Debe di ha leas 6 na karakteres i password.",
+    "invalidCurrentPassword": "Ti ma'åse' i password pa'go.",
     "signOut": "Håyani",
     "signOutMessage": "Para un tatti gi app despues de un håyani.",
     "permissionRequired": "Nesesita permiso para u usa i litratu para un po'ne litratu-mu.",
@@ -93,7 +162,9 @@
     "avatarUrlFailed": "Siña ha' hu sodda' i URL gi avatar.",
     "saveAvatarFailed": "Mampos dangkolo na cho'cho' gi atotta i URL gi avatar.",
     "profileUpdated": "Ma updada i litratu-mu! Kao sigi minutu para u refresh.",
-    "avatarChangeError": "Kao guaha mampos dangkolo na cho'cho' anai un bira i avatar-mu."
+    "avatarChangeError": "Kao guaha mampos dangkolo na cho'cho' anai un bira i avatar-mu.",
+    "save": "Na'i",
+    "cancel": "Kansela"
   },
   "popup": {
     "welcomeTitle": "Bienbenidu gi PIC Health!",
@@ -105,9 +176,21 @@
   "webView": {
     "notSupported": "I embedded view ti siña gi web preview. Este na link para u baba gi un nuebu na bentåna:"
   },
+  "comments": {
+    "viewComments": "Li'e Komentos",
+    "noComments": "Taya' komentos pa'go",
+    "addComment": "Nå'i un komento...",
+    "submit": "Nå'i",
+    "anonymous": "Taya' na'an"
+  },
   "health": {
     "title": "Salud",
     "description": "I informasion gi eyu na lugat para informasion ha'. Ti medikal na parehu. Siempre konsulta yan un medikal na profesianal para parehu put i medikal na kondison-mu, sintomas, o oppton siha. Chamo chule' profesianal na medikal na parehu o retrasa para un ekkungok ayuda.",
+    "reflection": {
+      "title": "Reflection",
+      "disclaimer": "Este un pribadu na lugat para hago. Taya' muna'tuge gi eyu na lugat ma save o ma share.",
+      "placeholder": "Tuge i hinasso-mu gi eyu na lugat..."
+    },
     "services": [
       {
         "id": "findhelp",

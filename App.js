@@ -3,13 +3,14 @@ import 'react-native-url-polyfill/auto';
 import 'react-native-get-random-values';
 
 import React, { useState } from 'react';
-import { ActivityIndicator, View, Text } from 'react-native';
+import { ActivityIndicator, View, Text, Image } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import { normalize, iconSizes, spacing } from './utils/responsive';
 
 import AboutUs from './screens/AboutUs';
 import HealthScreen from './screens/HealthScreen';
@@ -26,6 +27,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import CommentsScreen from './screens/CommentsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,13 +46,31 @@ const TabNavigator = () => {
           else if (route.name === 'Health') iconName = 'heart';
           else if (route.name === 'Education') iconName = 'book';
           else if (route.name === 'Culture') iconName = 'globe';
+          else if (route.name === 'Comments') iconName = 'chatbubbles';
 
-          return <Icon name={iconName} size={size} color={color} />;
+          return <Icon name={iconName} size={normalize(size)} color={color} />;
         },
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'darkgray',
         headerShown: false,
-        tabBarStyle: { backgroundColor: '#2d4887' },
+        tabBarStyle: { 
+          backgroundColor: '#2d4887',
+          height: normalize(75),
+          paddingBottom: normalize(2),
+          borderTopWidth: 0,
+          elevation: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: normalize(12),
+          fontWeight: '600',
+          textAlign: 'center',
+          lineHeight: normalize(15),
+        },
+        tabBarAllowFontScaling: true,
+        tabBarItemStyle: {
+          paddingVertical: normalize(2),
+          height: normalize(65),
+        },
       })}
     >
       <Tab.Screen
@@ -77,6 +97,31 @@ const TabNavigator = () => {
         name="About Us"
         component={AboutUs}
         options={{ tabBarLabel: t('app.tabs.aboutUs') }}
+      />
+      <Tab.Screen
+        name="Account"
+        component={AccountScreenGate}
+        options={{ 
+          tabBarLabel: 'Account',
+          tabBarIcon: ({ color, size }) => {
+            const { user } = useAuth();
+            const avatarUrl = user?.user_metadata?.avatar_url;
+            
+            return avatarUrl ? (
+              <Image 
+                source={{ uri: avatarUrl }} 
+                style={{ width: normalize(size), height: normalize(size), borderRadius: normalize(size) / 2 }}
+              />
+            ) : (
+              <Icon name="person-circle-outline" size={normalize(size)} color={color} />
+            );
+          }
+        }}
+      />
+      <Tab.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={{ tabBarButton: () => null }}
       />
     </Tab.Navigator>
   );

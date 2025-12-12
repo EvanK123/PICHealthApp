@@ -7,4 +7,16 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error('Supabase configuration missing. Check your .env file.');
 }
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true, // Enable for web OAuth callback handling
+    // Supabase will automatically use AsyncStorage for React Native
+  },
+  global: {
+    headers: {
+      'x-client-info': 'pic-health-app',
+    },
+  },
+});

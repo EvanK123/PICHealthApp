@@ -1,5 +1,6 @@
 {
   "common": {
+    "locale": "sm-WS",
     "languages": {
       "english": "Fa'aperetania",
       "spanish": "Fa'asipaniolo",
@@ -16,18 +17,43 @@
       "friday": "Aso Faraile",
       "saturday": "Aso To'ona'i"
     },
+    "dayAbbreviations": {
+      "sun": "Sa",
+      "mon": "Ga",
+      "tue": "Lu",
+      "wed": "Lulu",
+      "thu": "To",
+      "fri": "Fa",
+      "sat": "To'"
+    },
     "close": "Tapuni",
     "browser": "Su'esu'e",
     "or": "po'o",
-    "somethingWentWrong": "Ua i ai se mea na faaletonu"
+    "somethingWentWrong": "Ua i ai se mea na faaletonu",
+    "noDescriptionAvailable": "Leai se fa'amatalaga o maua",
+    "back": "Toe fo'i",
+    "months": {
+      "january": "Ianuari",
+      "february": "Fepuari",
+      "march": "Mati",
+      "april": "Aperila",
+      "may": "Me",
+      "june": "Iuni",
+      "july": "Iulai",
+      "august": "Aokuso",
+      "september": "Setema",
+      "october": "Oketopa",
+      "november": "Novema",
+      "december": "Tesema"
+    }
   },
   "app": {
     "tabs": {
       "home": "Aiga",
-      "health": "Soifua Maloloina",
+      "health": "Soifua",
       "education": "A'oa'oga",
       "culture": "Aganu'u",
-      "aboutUs": "Fa'amatalaga e uiga ia i matou"
+      "aboutUs": "Matou"
     },
     "name": "PIC Health"
   },
@@ -41,10 +67,12 @@
     "allDay": "Aso Atoa",
     "noDescriptionAvailable": "Leai se fa'amatalaga o maua",
     "noTitle": "(Leai se Ulutala)",
-    "free": "Sa'oloto",
-    "family": "Aiga",
+    "hidePastEvents": "Nana'i mea na tupu",
+    "all": "Uma",
+    "clear": "Fa'amama",
     "calendarOptions": {
       "pacificIslander": "Komupiuti a le Pasefika",
+      "otherEvents": "O isi Mea e Fai",
       "latino": "Komupiuti Latino"
     },
     "wellnessButtons": {
@@ -63,7 +91,8 @@
     }
   },
   "header": {
-    "submitEvent": "Tu'u mai se Mea e Fai"
+    "submitEvent": "Tu'u mai se Mea e Fai",
+    "beta": "BETA"
   },
   "login": {
     "title": "PIC Health",
@@ -77,6 +106,29 @@
     "passwordPlaceholder": "••••••••",
     "continueWithGoogle": "Fa'aauau ma Google",
     "enterEmailPassword": "Tu'u le imeli ma le upu fa'ataga.",
+    "enterEmail": "Fa'amolemole tu'u lau tuatusi imeli.",
+    "forgotPassword": "Ua galo le Upu Fa'ataga?",
+    "resetPasswordInstructions": "Tu'u lau tuatusi imeli ma o le a matou auina atu ia te oe se fa'ailoga e toe seti ai lau upu fa'ataga.",
+    "otpSentMessage": "Ua matou lafoina se fa'ailoga 6-numera i lau imeli. Fa'amolemole tu'u i lalo fa'atasi ma lau upu fa'ataga fou.",
+    "sendOTP": "Lafo le Fa'ailoga",
+    "otpCode": "Fa'ailoga Fa'amaonia",
+    "otpPlaceholder": "Tu'u le fa'ailoga 6-numera",
+    "resendOTP": "Toe Lafo le Fa'ailoga",
+    "otpSendFailed": "Ua le mafai ona lafo le fa'ailoga. Fa'amolemole toe taumafai.",
+    "otpVerificationFailed": "Fa'ailoga e le aoga pe ua uma. Fa'amolemole toe taumafai.",
+    "fillAllFields": "Fa'amolemole fa'atumu uma vaega.",
+    "backToLogin": "Toe Fo'i i le Saini i totonu",
+    "resetPasswordTitle": "Toe Seti Lau Upu Fa'ataga",
+    "newPassword": "Upu Fa'ataga Fou",
+    "newPasswordPlaceholder": "Tu'u le upu fa'ataga fou",
+    "confirmPassword": "Fa'amaonia le Upu Fa'ataga",
+    "confirmPasswordPlaceholder": "Fa'amaonia le upu fa'ataga fou",
+    "resetPassword": "Toe Seti le Upu Fa'ataga",
+    "passwordResetSuccess": "Ua Manuia le Toe Setiina o le Upu Fa'ataga!",
+    "passwordResetSuccessMessage": "Ua toe setiina ma le manuia lau upu fa'ataga. E mafai nei ona e saini i totonu i lau upu fa'ataga fou.",
+    "enterNewPassword": "Fa'amolemole tu'u se upu fa'ataga fou.",
+    "passwordTooShort": "E tatau ona itiiti ifo i le 6 mataitusi le upu fa'ataga.",
+    "passwordsDoNotMatch": "E le tutusa upu fa'ataga.",
     "googleSignInWebOnly": "O le saini i le Google e na'o le upega tafa'ilagi o lo'o fa'aogaina i le taimi nei.",
     "googleSignInFailed": "Ua le manuia le saini i le Google"
   },
@@ -86,6 +138,23 @@
     "signedInTo": "Ua saini i totonu i le PIC Health",
     "userId": "ID o le Tagata",
     "changeProfilePhoto": "Suia le Ata o le Tofiga",
+    "changeName": "Suia le Igoa",
+    "changePassword": "Suia le Upu Fa'ataga",
+    "currentPassword": "Upu Fa'ataga o lo'o i ai",
+    "newPassword": "Upu Fa'ataga Fou",
+    "confirmPassword": "Fa'amaonia le Upu Fa'ataga Fou",
+    "name": "Igoa",
+    "enterName": "Tu'u le igoa",
+    "enterCurrentPassword": "Tu'u le upu fa'ataga o lo'o i ai",
+    "enterNewPassword": "Tu'u le upu fa'ataga fou",
+    "enterConfirmPassword": "Fa'amaonia le upu fa'ataga fou",
+    "nameUpdated": "Ua fa'afou lelei le igoa!",
+    "passwordUpdated": "Ua fa'afou lelei le upu fa'ataga!",
+    "nameUpdateFailed": "Ua le manuia le fa'afouina o le igoa.",
+    "passwordUpdateFailed": "Ua le manuia le fa'afouina o le upu fa'ataga.",
+    "passwordMismatch": "E le tutusa upu fa'ataga fou.",
+    "passwordTooShort": "E tatau ona itiiti ifo i le 6 mataitusi le upu fa'ataga.",
+    "invalidCurrentPassword": "E le sa'o le upu fa'ataga o lo'o i ai.",
     "signOut": "Saini i fafo",
     "signOutMessage": "O le a e toe fo'i i le app pe a uma ona saini i fafo.",
     "permissionRequired": "E mana'omia le fa'atagaga e maua ai ata e seti ai se ata fa'apitoa.",
@@ -93,7 +162,9 @@
     "avatarUrlFailed": "Le mafai ona maua le URL o le avatar.",
     "saveAvatarFailed": "Ua le mafai ona sefe le URL o le avatar.",
     "profileUpdated": "Ua fa'afou le ata o le tofiga! Atonu e umi se taimi e toe fa'afou ai.",
-    "avatarChangeError": "Ua i ai se mea na faaletonu a'o e suia lau avatar."
+    "avatarChangeError": "Ua i ai se mea na faaletonu a'o e suia lau avatar.",
+    "save": "Fa'asao",
+    "cancel": "Fa'aleaogaina"
   },
   "popup": {
     "welcomeTitle": "Susu maia i le PIC Health!",
@@ -105,9 +176,21 @@
   "webView": {
     "notSupported": "E le lagolagoina le va'aiga fa'apipi'i i le va'aiga o le upega tafa'ilagi. O lenei so'otaga e tatau ona tatala i se fa'amalama fou:"
   },
+  "comments": {
+    "viewComments": "Va'ai Fa'amatalaga",
+    "noComments": "E leai ni fa'amatalaga",
+    "addComment": "Fa'aopoopo se fa'amatalaga...",
+    "submit": "Lafo",
+    "anonymous": "Le igoa"
+  },
   "health": {
     "title": "Soifua Maloloina",
     "description": "O fa'amatalaga o lo'o tu'uina atu iinei e mo na'o fa'amatalaga lautele ma e le'o fa'amoemoe e fai ma fautuaga fa'afoma'i. Fa'afeso'ota'i i taimi uma ma se tufuga fa'apitoa mo le soifua maloloina mo fautuaga e uiga i lou tulaga fa'afoma'i fa'apitoa, fa'ailoga, po'o filifiliga o togafitiga. Aua le fa'ate'aina fautuaga fa'apolofesa fa'afoma'i pe fa'atuai le sailia o togafitiga.",
+    "reflection": {
+      "title": "Mafaufauga",
+      "disclaimer": "O se avanoa tumaoti lenei mo oe. E leai se mea e te tusia iinei e teu pe fa'asoa.",
+      "placeholder": "Tusi au manatu iinei..."
+    },
     "services": [
       {
         "id": "findhelp",

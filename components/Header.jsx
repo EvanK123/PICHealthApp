@@ -5,8 +5,8 @@ import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { TranslationContext } from '../context/TranslationContext';
-import languagesConfig from '../locales/languages.config.json';
-
+import languagesConfig from '../locales/config/languages.config.json';
+import { normalize, spacing, iconSizes, isTablet } from '../utils/responsive';
 
 const COLORS = {
   primary: '#2d4887',
@@ -19,21 +19,32 @@ const getAllLanguages = () => Object.values(languagesConfig);
 
 export default function Header({
   title = 'PIC Health',
-  showSubmit = false,            // <- only show button on Home
+  showSubmit = false,        // show submit button on the right
   onPressSubmit = () => {},
-  avatarUrl = null,              // Profile picture URL
-  onPressProfile = null,         // Profile button handler
+  avatarUrl = null,          // profile picture URL
+  onPressProfile = null,     // profile button handler
+  showProfile = true,        // NEW: allow hiding profile button on specific screens
 }) {
   const { lang, setLang, t } = useContext(TranslationContext);
   const navigation = useNavigation();
 
   const languages = getAllLanguages().map(l => {
     const translated = t(l.translationKey);
-    const label = translated && translated !== l.translationKey ? translated : (l.nativeName || l.name);
+    const label =
+      translated && translated !== l.translationKey
+        ? translated
+        : (l.nativeName || l.name);
     return { code: l.code, label };
   });
 
-  const currentLabel = languages.find(l => l.code === lang)?.label || lang.toUpperCase();
+  const currentLabel =
+    languages.find(l => l.code === lang)?.label || lang.toUpperCase();
+
+  const getFontSize = (text) => {
+    if (text.length <= 7) return 13;
+    if (text.length <= 10) return 11;
+    return 9;
+  };
 
   const handleProfilePress = () => {
     if (onPressProfile) {
@@ -48,16 +59,47 @@ export default function Header({
       {/* Left: logo (with BETA under it) + title */}
       <View style={styles.left}>
         <View style={styles.brandWrap}>
-          <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+          <Image
+            source={require('../assets/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.beta}>{t('header.beta')}</Text>
         </View>
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      {/* Right: profile button + language chip + optional Submit */}
+      {/* Right: language chip + optional profile + optional Submit */}
       <View style={styles.right}>
-        {/* Profile button */}
-        {(avatarUrl || onPressProfile !== null) && (
+        <View style={styles.langChip}>
+          <Text
+            numberOfLines={1}
+            style={[styles.langText, { fontSize: getFontSize(currentLabel) }]}
+          >
+            {currentLabel}
+          </Text>
+
+          {/* Invisible overlay fills the chip; keeps chip height fixed */}
+          <Picker
+            selectedValue={lang}
+            onValueChange={setLang}
+            mode="dropdown"
+            dropdownIconColor="transparent"
+            style={styles.langPickerOverlay}
+          >
+            {languages.map(opt => (
+              <Picker.Item
+                key={opt.code}
+                label={opt.label}
+                value={opt.code}
+                color={COLORS.primary}
+              />
+            ))}
+          </Picker>
+        </View>
+
+        {/* Profile button — can be hidden via showProfile={false} */}
+        {showProfile && (avatarUrl || onPressProfile !== null) && (
           <TouchableOpacity
             onPress={handleProfilePress}
             activeOpacity={0.8}
@@ -73,23 +115,6 @@ export default function Header({
           </TouchableOpacity>
         )}
 
-        <View style={styles.langChip}>
-          <Text numberOfLines={1} style={styles.langText}>{currentLabel}</Text>
-
-          {/* Invisible overlay fills the chip; keeps chip height fixed */}
-          <Picker
-            selectedValue={lang}
-            onValueChange={setLang}
-            mode="dropdown"
-            dropdownIconColor="transparent"
-            style={styles.langPickerOverlay}
-          >
-            {languages.map(opt => (
-              <Picker.Item key={opt.code} label={opt.label} value={opt.code} color={COLORS.primary} />
-            ))}
-          </Picker>
-        </View>
-
         {showSubmit && (
           <TouchableOpacity style={styles.ctaBtn} onPress={onPressSubmit}>
             <Text style={styles.ctaText}>{t('header.submitEvent')}</Text>
@@ -100,14 +125,12 @@ export default function Header({
   );
 }
 
-const HEIGHT = 64;
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.primary,
-    minHeight: HEIGHT,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    minHeight: normalize(64),
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -116,41 +139,42 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: spacing.sm,
+    flex: 1,
   },
 
   // Logo + BETA stacked vertically
   brandWrap: {
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 34,
+    minWidth: normalize(34),
   },
-  logo: { width: 34, height: 34 },
+  logo: { width: normalize(34), height: normalize(34) },
   beta: {
-    marginTop: 2,
-    fontSize: 10,
+    marginTop: normalize(2),
+    fontSize: normalize(10),
     fontWeight: '800',
     letterSpacing: 1,
     color: 'rgba(255,255,255,0.9)',
     opacity: 0.9,
   },
 
-  title: { fontSize: 22, fontWeight: '800', color: COLORS.onPrimary },
+  title: { fontSize: normalize(22), fontWeight: '800', color: COLORS.onPrimary },
 
-  right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  
+  right: { flexDirection: 'row', alignItems: 'center', gap: isTablet() ? spacing.lg : spacing.sm },
+
   // Profile button
   profileButton: {
-    marginRight: 4,
-    padding: 4,
+    marginRight: spacing.xs,
+    padding: spacing.xs,
     borderRadius: 999,
     justifyContent: 'center',
     alignItems: 'center',
   },
   profileAvatarWrapper: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: normalize(28),
+    height: normalize(28),
+    borderRadius: normalize(14),
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#ffffff',
@@ -163,35 +187,50 @@ const styles = StyleSheet.create({
   // Compact language chip (fixed height)
   langChip: {
     position: 'relative',
-    minWidth: 88,
-    maxWidth: 140,
-    height: 36,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    width: normalize(isTablet() ? 110 : 95),
+    height: normalize(isTablet() ? 38 : 34),
+    paddingHorizontal: spacing.xs,
+    borderRadius: normalize(17),
+    borderWidth: 0,
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(255,255,255,0.15)',
     overflow: 'hidden',
   },
   langText: {
     color: COLORS.onPrimary,
-    fontWeight: '700',
-    fontSize: 13,
+    fontWeight: '600',
+    fontSize: normalize(10),
+    textAlign: 'center',
+    adjustsFontSizeToFit: true,
+    minimumFontScale: 0.7,
+    numberOfLines: 1,
   },
   // Invisible overlay so the native picker doesn't inflate the chip
   langPickerOverlay: {
-    position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     opacity: Platform.OS === 'web' ? 0.01 : 0.01,
     color: 'transparent',
   },
 
   ctaBtn: {
     backgroundColor: COLORS.brand,
-    paddingHorizontal: 14,
-    height: 36,
-    borderRadius: 14,
+    paddingHorizontal: spacing.lg,
+    height: normalize(isTablet() ? 44 : 36),
+    minWidth: normalize(isTablet() ? 140 : 100),
+    borderRadius: normalize(14),
     justifyContent: 'center',
   },
-  ctaText: { color: '#ffffff', fontWeight: '800' },
+  ctaText: { 
+    color: '#ffffff', 
+    fontWeight: '800',
+    fontSize: normalize(isTablet() ? 16 : 14),
+    adjustsFontSizeToFit: Platform.OS !== 'web',
+    minimumFontScale: 0.8,
+    numberOfLines: 1,
+    textAlign: 'center',
+  },
 });

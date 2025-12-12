@@ -1,5 +1,6 @@
 {
   "common": {
+    "locale": "en-US",
     "languages": {
       "english": "English",
       "spanish": "Español",
@@ -16,10 +17,37 @@
       "friday": "Friday",
       "saturday": "Saturday"
     },
+    "dayAbbreviations": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
     "close": "Close",
+    "cancel": "Cancel",
+    "ok": "OK",
     "browser": "Browser",
     "or": "or",
-    "somethingWentWrong": "Something went wrong"
+    "somethingWentWrong": "Something went wrong",
+    "noDescriptionAvailable": "No description available",
+    "back": "Back",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
   },
 
   "app": {
@@ -36,17 +64,18 @@
   "calendar": {
     "title": "PIC Health",
     "calendar": "Calendar",
-    "upcomingEvents": "Upcoming Events",
+    "upcomingEvents": "Events",
     "selectCalendar": "Select Calendar",
     "search": "Search",
     "allDay": "All Day",
     "noDescriptionAvailable": "No description available",
     "noTitle": "(No title)",
-    "free": "Free",
-    "family": "Family",
+    "hidePastEvents": "Hide past events",
+    "all": "All",
+    "clear": "Clear",
     "calendarOptions": {
       "pacificIslander": "Pacific Islander Community",
-      "latino": "Latino Community"
+      "otherEvents": "Other Events"
     },
     "wellnessButtons": {
       "howYaDoin": {
@@ -75,12 +104,45 @@
     "logIn": "Log In",
     "signUp": "Sign Up",
     "createAccount": "Create Account",
+    "signUpSuccess": "Account Created!",
+    "verificationEmailSent": "We've sent a verification email to your inbox. Please check your email and click the verification link to activate your account. Once verified, you can sign in.",
+    "confirmAccountCreation": "Confirm Account Creation",
+    "finalPasswordConfirm": "Enter your password one final time to confirm account creation.",
+    "passwordRecoveryWarning": "⚠️ IMPORTANT: You cannot reset your password if you forget it. Make sure you remember your password or save it securely.",
+    "enterFinalPassword": "Please enter your password to confirm.",
+    "finalPasswordMismatch": "Password does not match. Please try again.",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your name",
     "email": "Email",
     "password": "Password",
     "emailPlaceholder": "you@example.com",
     "passwordPlaceholder": "••••••••",
+    "enterUsername": "Please enter a username.",
     "continueWithGoogle": "Continue with Google",
     "enterEmailPassword": "Enter email and password.",
+    "enterEmail": "Please enter your email address.",
+    "forgotPassword": "Forgot Password?",
+    "resetPasswordInstructions": "Enter your email address and we'll send you a verification code to reset your password.",
+    "otpSentMessage": "We've sent a 6-digit code to your email. Please enter it below along with your new password.",
+    "sendOTP": "Send Verification Code",
+    "otpCode": "Verification Code",
+    "otpPlaceholder": "Enter 6-digit code",
+    "resendOTP": "Resend Code",
+    "otpSendFailed": "Failed to send verification code. Please try again.",
+    "otpVerificationFailed": "Invalid or expired verification code. Please try again.",
+    "fillAllFields": "Please fill in all fields.",
+    "backToLogin": "Back to Login",
+    "resetPasswordTitle": "Reset Your Password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "resetPassword": "Reset Password",
+    "passwordResetSuccess": "Password Reset Successful!",
+    "passwordResetSuccessMessage": "Your password has been successfully reset. You can now log in with your new password.",
+    "enterNewPassword": "Please enter a new password.",
+    "passwordTooShort": "Password must be at least 6 characters long.",
+    "passwordsDoNotMatch": "Passwords do not match.",
     "googleSignInWebOnly": "Google sign-in is only wired for web right now.",
     "googleSignInFailed": "Google sign-in failed"
   },
@@ -91,6 +153,25 @@
     "signedInTo": "Signed in to PIC Health",
     "userId": "User ID",
     "changeProfilePhoto": "Change profile photo",
+    "changeName": "Change Name",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "name": "Name",
+    "enterName": "Enter your name",
+    "enterCurrentPassword": "Enter current password",
+    "enterNewPassword": "Enter new password",
+    "enterConfirmPassword": "Confirm new password",
+    "success": "Success",
+    "error": "Error",
+    "nameUpdated": "Name updated successfully!",
+    "passwordUpdated": "Password updated successfully!",
+    "nameUpdateFailed": "Failed to update name.",
+    "passwordUpdateFailed": "Failed to update password.",
+    "passwordMismatch": "New passwords do not match.",
+    "passwordTooShort": "Password must be at least 6 characters.",
+    "invalidCurrentPassword": "Current password is incorrect.",
     "signOut": "Sign Out",
     "signOutMessage": "You'll be returned to the app after signing out.",
     "permissionRequired": "Permission to access photos is required to set a profile picture.",
@@ -98,7 +179,9 @@
     "avatarUrlFailed": "Could not retrieve avatar URL.",
     "saveAvatarFailed": "Failed to save avatar URL.",
     "profileUpdated": "Profile picture updated! It may take a moment to refresh.",
-    "avatarChangeError": "Something went wrong while changing your avatar."
+    "avatarChangeError": "Something went wrong while changing your avatar.",
+    "save": "Save",
+    "cancel": "Cancel"
   },
 
   "popup": {
@@ -113,9 +196,17 @@
     "notSupported": "The embedded view isn't supported in web preview. This link should open in a new tab:"
   },
 
+  "comments": {
+    "viewComments": "View Comments",
+    "noComments": "No comments yet",
+    "addComment": "Add a comment...",
+    "submit": "Submit",
+    "anonymous": "Anonymous"
+  },
+
   "health": {
     "title": "Health",
-    "description": "The information provided here is for general informational purposes only and is not intended as medical advice. Always consult with a qualified healthcare provider for advice regarding your specific medical condition, symptoms, or treatment options. Do not disregard professional medical advice or delay seeking treatment.",
+    "description": "Health resources and services for the Pacific Islander community.",
     "services": [
       {
         "id": "findhelp",
@@ -224,12 +315,11 @@
   },
 
   "culture": {
-    "title": "Culture, Arts, & Language",
+    "title": "Culture",
     "services": [
       {
         "id": "umeke",
         "title": "Umeke",
-        "dontTranslateTitle": true,
         "text": "Based in North County San Diego, UMEKE is a 501(c)(3) organization dedicated to the preservation, perpetuation and education of Hawaiian culture. Their vision is to educate local communities through cross-cultural learning, embracing an intersectional approach to work towards the equity and advancement of all marginalized and underserved populations.",
         "links": [
           {
