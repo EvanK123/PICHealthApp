@@ -63,8 +63,45 @@ export function AuthProvider({ children }) {
     try {
       const {
         data: { subscription: authSubscription },
-      } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      } = supabase.auth.onAuthStateChange(async (event, newSession) => {
         if (!isMounted) return;
+        
+        // Store the event type for password recovery detection
+        if (event === 'PASSWORD_RECOVERY') {
+          // User clicked password reset link - they need to set a new password
+          // The session is created but we'll handle navigation in the component
+        }
+        
+        // When user signs in (after email verification), ensure profile exists and is up to date
+        if (event === 'SIGNED_IN' && newSession?.user) {
+          const userId = newSession.user.id;
+          const userEmail = newSession.user.email;
+          const fullName = newSession.user.user_metadata?.full_name;
+          
+          // Try to ensure profile exists and has the correct username
+          if (fullName) {
+            try {
+              const { error: profileError } = await supabase
+                .from('profiles')
+                .upsert(
+                  {
+                    id: userId,
+                    email: userEmail,
+                    full_name: fullName,
+                  },
+                  { onConflict: 'id' }
+                );
+              
+              if (profileError) {
+                console.error('[AuthContext] Error updating profile on sign in:', profileError);
+                // Don't throw - profile should exist from trigger
+              }
+            } catch (err) {
+              console.error('[AuthContext] Unexpected error updating profile:', err);
+            }
+          }
+        }
+        
         setSession(newSession);
         setUser(newSession?.user ?? null);
       });
@@ -83,9 +120,30 @@ export function AuthProvider({ children }) {
   }, []);
 
   // Email/password sign up
-  const signUp = async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+  const signUp = async (email, password, username = null) => {
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        data: {
+          full_name: username || null
+        }
+      }
+    });
     if (error) throw error;
+    
+    // Note: A database trigger should automatically create the profile
+    // when a new user is created in auth.users. The trigger will extract
+    // the full_name from the user's metadata.
+    // 
+    // We don't try to update the profile here because:
+    // 1. The user needs to verify their email first (not authenticated yet)
+    // 2. RLS policies prevent unauthenticated users from updating profiles
+    // 3. The trigger already handles profile creation with the username from metadata
+    // 
+    // The profile will be updated automatically when the user verifies their email
+    // and signs in, or we can handle it in the auth state change listener.
+    
     return data;
   };
 
@@ -104,6 +162,7 @@ export function AuthProvider({ children }) {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };
+
 
   // Force-refresh the user object (e.g., after updating metadata/avatar)
   const refreshUser = async () => {

@@ -49,7 +49,18 @@ const CalendarSelector = ({
 
   return (
     <View style={[styles.container, style]}>
-
+      {/* All/Clear buttons */}
+      <View style={styles.headerRow}>
+        <View style={styles.spacer} />
+        <View style={styles.actionButtons}>
+          <TouchableOpacity onPress={selectAll} style={styles.actionButton}>
+            <Text style={styles.actionButtonText}>{t('calendar.all')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={clearAll} style={styles.actionButton}>
+            <Text style={styles.actionButtonText}>{t('calendar.clear')}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
       {/* Calendar chips with arrows */}
       <View style={styles.chipSection}>
@@ -108,6 +119,33 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.2)',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: spacing.md,
+    marginBottom: spacing.xs,
+  },
+  spacer: {
+    flex: 1,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    gap: spacing.xs,
+  },
+  actionButton: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderRadius: normalize(12),
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.25)',
+  },
+  actionButtonText: {
+    color: '#ffffff',
+    fontSize: normalize(12),
+    fontWeight: '600',
   },
 
   chipSection: {

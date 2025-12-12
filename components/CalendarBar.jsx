@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Dimensions } fr
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TranslationContext } from '../context/TranslationContext';
 import CalendarSelector from './CalendarSelector';
-import { normalize, spacing, isTablet, wp } from '../utils/responsive';
+import { normalize, spacing, getSpacing, isTablet, isSmallPhone, wp, useDimensions } from '../utils/responsive';
 
 const COLORS = {
   headerBg: '#2d4887',
@@ -23,6 +23,8 @@ export default function CalendarBar({
   calendarOptions,
 }) {
   const { t } = useContext(TranslationContext);
+  const dimensions = useDimensions(); // Force re-render on dimension changes
+  const dynamicSpacing = getSpacing(); // Get dynamic spacing
   const goUpcoming = () => setCalendarMode(false);
   const goCalendar = () => setCalendarMode(true);
 
@@ -86,9 +88,9 @@ export default function CalendarBar({
 const styles = StyleSheet.create({
   pillRow: {
     backgroundColor: COLORS.headerBg,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.sm,
-    paddingHorizontal: isTablet() ? wp(8) : spacing.md,
+    paddingTop: normalize(8),
+    paddingBottom: normalize(8),
+    paddingHorizontal: isTablet() ? wp(8) : normalize(16),
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.2)',
@@ -106,24 +108,24 @@ const styles = StyleSheet.create({
   pillGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.pillGroupBg,
-    padding: spacing.xs,
+    backgroundColor: 'transparent',
+    padding: normalize(4),
     borderRadius: normalize(20),
     alignSelf: 'center',
   },
 
   pill: {
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: normalize(24),
     borderRadius: normalize(20),
     backgroundColor: COLORS.pillBg,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.25)',
-    width: normalize(isTablet() ? 160 : 130),
-    height: normalize(isTablet() ? 52 : 44),
+    width: normalize(isTablet() ? 180 : isSmallPhone() ? 120 : 150),
+    height: normalize(isTablet() ? 58 : isSmallPhone() ? 40 : 50),
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pillRight: { marginLeft: spacing.sm },
+  pillRight: { marginLeft: normalize(8) },
   pillActive: {
     backgroundColor: COLORS.pillActiveBg,
     borderColor: 'transparent',
@@ -131,9 +133,11 @@ const styles = StyleSheet.create({
   pillText: { 
     color: COLORS.pillText, 
     fontWeight: '700',
-    fontSize: normalize(isTablet() ? 16 : 14),
+    fontSize: normalize(isTablet() ? 16 : isSmallPhone() ? 12 : 14),
     textAlign: 'center',
+    adjustsFontSizeToFit: true,
     numberOfLines: 1,
+    minimumFontScale: 0.8,
   },
   pillTextActive: { color: COLORS.pillTextActive },
 });

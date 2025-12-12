@@ -1,11 +1,12 @@
 {
   "common": {
+    "locale": "es-ES",
     "languages": {
       "english": "Inglés",
       "spanish": "Español",
       "samoan": "Samoano",
       "chamorro": "Chamorro",
-      "tongan": "Tongano"
+      "tongano": "Tongano"
     },
     "days": {
       "sunday": "Domingo",
@@ -16,10 +17,35 @@
       "friday": "Viernes",
       "saturday": "Sábado"
     },
+    "dayAbbreviations": {
+      "sun": "Dom",
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mié",
+      "thu": "Jue",
+      "fri": "Vie",
+      "sat": "Sáb"
+    },
     "close": "Cerrar",
     "browser": "Navegador",
     "or": "o",
-    "somethingWentWrong": "Algo salió mal"
+    "somethingWentWrong": "Algo salió mal",
+    "noDescriptionAvailable": "No hay descripción disponible",
+    "back": "Atrás",
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    }
   },
   "app": {
     "tabs": {
@@ -42,10 +68,12 @@
     "allDay": "Todo el día",
     "noDescriptionAvailable": "No hay descripción disponible",
     "noTitle": "(Sin título)",
-    "free": "Gratis",
-    "family": "Familia",
+    "hidePastEvents": "Ocultar eventos pasados",
+    "all": "Todos",
+    "clear": "Limpiar",
     "calendarOptions": {
       "pacificIslander": "Comunidad de las Islas del Pacífico",
+      "otherEvents": "Otros Eventos",
       "latino": "Comunidad Latina"
     },
     "wellnessButtons": {
@@ -64,7 +92,8 @@
     }
   },
   "header": {
-    "submitEvent": "Enviar Evento"
+    "submitEvent": "Enviar Evento",
+    "beta": "BETA"
   },
   "login": {
     "title": "PIC Health",
@@ -78,6 +107,29 @@
     "passwordPlaceholder": "••••••••",
     "continueWithGoogle": "Continuar con Google",
     "enterEmailPassword": "Ingresa correo electrónico y contraseña.",
+    "enterEmail": "Por favor ingresa tu dirección de correo electrónico.",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPasswordInstructions": "Ingresa tu dirección de correo electrónico y te enviaremos un código de verificación para restablecer tu contraseña.",
+    "otpSentMessage": "Hemos enviado un código de 6 dígitos a tu correo. Por favor ingrésalo a continuación junto con tu nueva contraseña.",
+    "sendOTP": "Enviar Código de Verificación",
+    "otpCode": "Código de Verificación",
+    "otpPlaceholder": "Ingresa código de 6 dígitos",
+    "resendOTP": "Reenviar Código",
+    "otpSendFailed": "Error al enviar código de verificación. Por favor intenta de nuevo.",
+    "otpVerificationFailed": "Código de verificación inválido o expirado. Por favor intenta de nuevo.",
+    "fillAllFields": "Por favor completa todos los campos.",
+    "backToLogin": "Volver al Inicio de Sesión",
+    "resetPasswordTitle": "Restablecer Tu Contraseña",
+    "newPassword": "Nueva Contraseña",
+    "newPasswordPlaceholder": "Ingresa nueva contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "confirmPasswordPlaceholder": "Confirma nueva contraseña",
+    "resetPassword": "Restablecer Contraseña",
+    "passwordResetSuccess": "¡Contraseña Restablecida Exitosamente!",
+    "passwordResetSuccessMessage": "Tu contraseña ha sido restablecida exitosamente. Ahora puedes iniciar sesión con tu nueva contraseña.",
+    "enterNewPassword": "Por favor ingresa una nueva contraseña.",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres.",
+    "passwordsDoNotMatch": "Las contraseñas no coinciden.",
     "googleSignInWebOnly": "El inicio de sesión con Google solo está disponible para la web en este momento.",
     "googleSignInFailed": "El inicio de sesión con Google falló"
   },
@@ -87,6 +139,23 @@
     "signedInTo": "Sesión iniciada en PIC Health",
     "userId": "ID de Usuario",
     "changeProfilePhoto": "Cambiar foto de perfil",
+    "changeName": "Cambiar Nombre",
+    "changePassword": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "name": "Nombre",
+    "enterName": "Ingresa tu nombre",
+    "enterCurrentPassword": "Ingresa la contraseña actual",
+    "enterNewPassword": "Ingresa la nueva contraseña",
+    "enterConfirmPassword": "Confirma la nueva contraseña",
+    "nameUpdated": "¡Nombre actualizado exitosamente!",
+    "passwordUpdated": "¡Contraseña actualizada exitosamente!",
+    "nameUpdateFailed": "Error al actualizar el nombre.",
+    "passwordUpdateFailed": "Error al actualizar la contraseña.",
+    "passwordMismatch": "Las nuevas contraseñas no coinciden.",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres.",
+    "invalidCurrentPassword": "La contraseña actual es incorrecta.",
     "signOut": "Cerrar Sesión",
     "signOutMessage": "Volverás a la aplicación después de cerrar sesión.",
     "permissionRequired": "Se requiere permiso para acceder a las fotos para establecer una foto de perfil.",
@@ -94,7 +163,9 @@
     "avatarUrlFailed": "No se pudo obtener la URL del avatar.",
     "saveAvatarFailed": "Error al guardar la URL del avatar.",
     "profileUpdated": "¡Foto de perfil actualizada! Puede tardar un momento en actualizarse.",
-    "avatarChangeError": "Algo salió mal al cambiar tu avatar."
+    "avatarChangeError": "Algo salió mal al cambiar tu avatar.",
+    "save": "Guardar",
+    "cancel": "Cancelar"
   },
   "popup": {
     "welcomeTitle": "¡Bienvenido a PIC Health!",
@@ -106,9 +177,22 @@
   "webView": {
     "notSupported": "La vista integrada no es compatible en la vista previa web. Este enlace debería abrirse en una nueva pestaña:"
   },
+  "comments": {
+    "viewComments": "Ver Comentarios",
+    "noComments": "Aún no hay comentarios",
+    "addComment": "Agregar un comentario...",
+    "submit": "Enviar",
+    "anonymous": "Anónimo"
+  },
   "health": {
     "title": "Salud",
+    "description": "Recursos y servicios de salud para la comunidad de las Islas del Pacífico.",
     "description": "La información proporcionada aquí es solo para fines informativos generales y no pretende ser un consejo médico. Siempre consulta con un proveedor de atención médica calificado para obtener asesoramiento sobre tu condición médica específica, síntomas u opciones de tratamiento. No ignores el consejo médico profesional ni retrases la búsqueda de tratamiento.",
+    "reflection": {
+      "title": "Reflexión",
+      "disclaimer": "Este es un espacio privado para ti. Nada de lo que escribas aquí se guarda o comparte.",
+      "placeholder": "Escribe tus pensamientos aquí..."
+    },
     "services": [
       {
         "id": "findhelp",

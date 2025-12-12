@@ -57,6 +57,8 @@ const TabNavigator = () => {
           backgroundColor: '#2d4887',
           height: normalize(75),
           paddingBottom: normalize(2),
+          borderTopWidth: 0,
+          elevation: 0,
         },
         tabBarLabelStyle: {
           fontSize: normalize(12),

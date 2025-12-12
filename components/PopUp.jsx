@@ -52,6 +52,7 @@ const Popup = ({ visible, onClose, mode = "event", events, event, navigation }) 
             <FlatList
               data={eventList}
               keyExtractor={(item, index) => (item.id || item.name || index).toString()}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
               renderItem={({ item }) => (
                 <View style={styles.eventContainer}>
                   <Text style={styles.title}>{item.summary || item.name}</Text>
@@ -63,10 +64,25 @@ const Popup = ({ visible, onClose, mode = "event", events, event, navigation }) 
                       renderersProps={{ a: { onPress: handleLinkPress } }}
                     />
                   ) : (
-                    <Text style={styles.noDescription}>{t('common.noDescriptionAvailable')}</Text>
+                    <Text style={styles.noDescription}>{t('calendar.noDescriptionAvailable')}</Text>
                   )}
                   <Text style={styles.eventTime}>
-                    {item.start ? new Date(item.start.dateTime || item.start.date).toLocaleString([], { hour: '2-digit', minute: '2-digit' }) : item.time}
+                    {(() => {
+                      // Check if it's an all-day event
+                      const isAllDay = item.start?.date && !item.start?.dateTime;
+                      if (isAllDay) {
+                        return t('calendar.allDay');
+                      }
+                      // Use the time property if available (already formatted)
+                      if (item.time) {
+                        return item.time;
+                      }
+                      // Otherwise format from dateTime
+                      if (item.start?.dateTime) {
+                        return new Date(item.start.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                      }
+                      return '';
+                    })()}
                   </Text>
                   {item.location && <Text style={styles.eventTime}>{item.location}</Text>}
                   {navigation && (
@@ -130,7 +146,7 @@ const styles = StyleSheet.create({
     maxHeight: '80%',
     backgroundColor: 'rgba(255, 255, 255, 1.0)',
     borderRadius: normalize(10),
-    padding: spacing.lg,
+    padding: spacing.md,
     position: 'relative',
   },
   closeIconButton: {
@@ -149,9 +165,15 @@ const styles = StyleSheet.create({
     color: '#2d4887',
   },
   eventContainer: {
-    marginBottom: spacing.lg,
-    paddingTop: spacing.sm,
-    paddingRight: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#9ca3af',
+    marginVertical: spacing.md,
+    marginHorizontal: spacing.lg,
   },
   title: {
     fontSize: normalize(isTablet() ? 24 : 20),
@@ -210,13 +232,18 @@ const styles = StyleSheet.create({
   commentButton: {
     marginTop: spacing.md,
     backgroundColor: '#2d4887',
-    padding: spacing.md,
+    paddingVertical: normalize(12),
+    paddingHorizontal: spacing.lg,
     borderRadius: normalize(8),
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: normalize(200),
+    alignSelf: 'center',
   },
   commentButtonText: {
     color: 'white',
-    fontSize: normalize(isTablet() ? 16 : 14),
+    fontSize: normalize(isTablet() ? 15 : 13),
     fontWeight: '600',
   },
 });

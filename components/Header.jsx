@@ -187,10 +187,10 @@ const styles = StyleSheet.create({
   // Compact language chip (fixed height)
   langChip: {
     position: 'relative',
-    width: normalize(90),
-    height: normalize(32),
+    width: normalize(isTablet() ? 110 : 95),
+    height: normalize(isTablet() ? 38 : 34),
     paddingHorizontal: spacing.xs,
-    borderRadius: normalize(16),
+    borderRadius: normalize(17),
     borderWidth: 0,
     justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.15)',

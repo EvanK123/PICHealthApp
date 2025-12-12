@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ImageBackground,
   Image,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TranslationContext } from '../context/TranslationContext';
@@ -16,10 +17,12 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../services/supabaseClient';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { normalize, spacing, isSmallPhone, useDimensions } from '../utils/responsive';
 
 export default function CommentsScreen({ route, navigation }) {
   const { t } = useContext(TranslationContext);
   const { user } = useAuth();
+  const dimensions = useDimensions(); // Force re-render on dimension changes
   const { eventTitle, eventId } = route.params || {};
   const avatarUrl = user?.user_metadata?.avatar_url || null;
   const [comments, setComments] = useState([]);
@@ -30,6 +33,7 @@ export default function CommentsScreen({ route, navigation }) {
   const [commentLikes, setCommentLikes] = useState({});
   const [userLikes, setUserLikes] = useState({});
   const [profileAvatars, setProfileAvatars] = useState({});
+  const [profileNames, setProfileNames] = useState({});
 
   useEffect(() => {
     fetchComments();
@@ -53,14 +57,59 @@ export default function CommentsScreen({ route, navigation }) {
       )
       .subscribe();
 
+    // Also subscribe to profile changes to update names in real-time
+    const profileSubscription = supabase
+      .channel('profiles')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+        },
+        async () => {
+          // Refresh profile names when any profile is updated
+          // First fetch comments to get current user IDs
+          const { data: currentComments } = await supabase
+            .from('event_comments')
+            .select('user_id')
+            .eq('event_id', eventId);
+          
+          if (currentComments && currentComments.length > 0) {
+            const userIds = [...new Set(currentComments.map((c) => c.user_id).filter(Boolean))];
+            fetchProfileNames(userIds);
+            // Also refresh comments to update display
+            fetchComments();
+          }
+        }
+      )
+      .subscribe();
+
     return () => {
       subscription.unsubscribe();
+      profileSubscription.unsubscribe();
     };
   }, [eventId]);
 
+  // Check admin status whenever user changes
+  useEffect(() => {
+    checkAdminStatus();
+  }, [user]);
+
+  // Refresh profile names when user changes (to get updated names)
+  useEffect(() => {
+    if (comments.length > 0) {
+      const userIds = [...new Set(comments.map((c) => c.user_id).filter(Boolean))];
+      fetchProfileNames(userIds);
+    }
+  }, [user?.user_metadata?.full_name]);
+
   const checkAdminStatus = async () => {
-    if (!user) return;
-    console.log('Checking admin status for user:', user.email);
+    if (!user) {
+      setIsAdmin(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -69,7 +118,7 @@ export default function CommentsScreen({ route, navigation }) {
         .single();
 
       if (error) {
-        console.log('Profile query error:', error);
+
         // If no profile exists, create one
         if (error.code === 'PGRST116') {
           const { error: insertError } = await supabase
@@ -78,17 +127,17 @@ export default function CommentsScreen({ route, navigation }) {
 
           if (insertError) {
             console.error('Error creating profile:', insertError);
-          } else {
-            console.log('Profile created for user');
           }
         }
-        throw error;
+        setIsAdmin(false);
+        return;
       }
 
-      console.log('Admin status result:', data?.is_admin);
+
       setIsAdmin(data?.is_admin === true);
     } catch (error) {
       console.error('Error checking admin status:', error);
+      setIsAdmin(false);
     }
   };
 
@@ -105,8 +154,14 @@ export default function CommentsScreen({ route, navigation }) {
       const list = data || [];
       setComments(list);
       if (list.length) {
+        const userIds = [...new Set(list.map((c) => c.user_id).filter(Boolean))];
         fetchCommentLikes(list.map((c) => c.id));
-        fetchProfileAvatars(list.map((c) => c.user_id));
+        fetchProfileAvatars(userIds);
+        // Always fetch profile names to get the most up-to-date names
+        fetchProfileNames(userIds);
+      } else {
+        // Clear profile names if no comments
+        setProfileNames({});
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
@@ -158,6 +213,41 @@ export default function CommentsScreen({ route, navigation }) {
     setProfileAvatars((prev) => ({ ...prev, ...map }));
   };
 
+  const fetchProfileNames = async (userIds = []) => {
+    const ids = [...new Set(userIds.filter(Boolean))];
+    if (!ids.length) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', ids);
+
+      if (error) {
+        console.error('Error fetching profile names:', error);
+        return;
+      }
+
+      const map = {};
+      // Store all results, including null values, so we know we've checked
+      data?.forEach((p) => {
+        map[p.id] = p.full_name || null;
+      });
+      
+      // Update state with fetched names
+      setProfileNames((prev) => {
+        const updated = { ...prev };
+        Object.keys(map).forEach((id) => {
+          // Always update with the fetched value (even if null)
+          updated[id] = map[id];
+        });
+        return updated;
+      });
+    } catch (err) {
+      console.error('Error in fetchProfileNames:', err);
+    }
+  };
+
   const toggleCommentLike = useCallback(
     async (commentId) => {
       if (!user) return;
@@ -177,33 +267,39 @@ export default function CommentsScreen({ route, navigation }) {
             .insert({ comment_id: commentId, user_id: user.id });
         }
 
-        fetchCommentLikes(comments.map((c) => c.id));
+        // Update state locally instead of refetching all
+        setUserLikes(prev => ({
+          ...prev,
+          [commentId]: !isLiked
+        }));
+        setCommentLikes(prev => ({
+          ...prev,
+          [commentId]: (prev[commentId] || 0) + (isLiked ? -1 : 1)
+        }));
       } catch (error) {
         console.error('Error toggling like:', error);
       }
     },
-    [user, userLikes, comments]
+    [user, userLikes]
   );
 
   const handleDeleteComment = useCallback(async (commentId) => {
     try {
-      console.log('Attempting to delete comment:', commentId);
+
       const { data, error } = await supabase
         .from('event_comments')
         .delete()
         .eq('id', commentId)
         .select();
 
-      console.log('Delete result:', { data, error });
+
 
       if (error) {
         console.error('Delete failed:', error);
         throw error;
       }
 
-      if (data && data.length === 0) {
-        console.warn('No rows were deleted - check RLS policies');
-      }
+
 
       setComments((prev) => prev.filter((comment) => comment.id !== commentId));
     } catch (error) {
@@ -227,7 +323,7 @@ export default function CommentsScreen({ route, navigation }) {
       const username =
         user.user_metadata?.full_name ||
         user.email?.split('@')[0] ||
-        'Anonymous';
+        t('comments.anonymous');
       const { error } = await supabase.from('event_comments').insert({
         event_id: eventId,
         user_id: user.id,
@@ -261,7 +357,7 @@ export default function CommentsScreen({ route, navigation }) {
         <View style={styles.backButtonContainer}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Icon name="arrow-back" size={24} color="#ffffff" />
-            <Text style={styles.backText}>Back</Text>
+            <Text style={styles.backText}>{t('common.back')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -286,15 +382,35 @@ export default function CommentsScreen({ route, navigation }) {
               <Text style={styles.placeholder}>{t('comments.noComments')}</Text>
             ) : (
               comments.map((comment) => {
-                const displayName =
-                  comment.username ||
-                  comment.user_email?.split('@')[0] ||
-                  'Anonymous';
                 const isOwner = user && comment.user_id === user.id;
-                const avatar =
-                  comment.avatar_url ||
-                  profileAvatars[comment.user_id] ||
-                  null;
+                // Priority for display name:
+                // 1. Current user's metadata (for their own comments - always up-to-date)
+                // 2. Profile table name (for all users - most up-to-date source)
+                // 3. Stored username (fallback for old comments)
+                // 4. Email (fallback)
+                // 5. Anonymous
+                let displayName;
+                if (isOwner) {
+                  // For current user's own comments, use their current metadata
+                  displayName = user.user_metadata?.full_name ||
+                               user.email?.split('@')[0] ||
+                               t('comments.anonymous');
+                } else {
+                  // For other users, prioritize profile name over stored username
+                  // Check if we've fetched the profile name (even if it's null)
+                  if (comment.user_id && comment.user_id in profileNames) {
+                    // We've checked the profiles table - use that value (or fallback)
+                    displayName = profileNames[comment.user_id] ||
+                                 comment.user_email?.split('@')[0] ||
+                                 t('comments.anonymous');
+                  } else {
+                    // Haven't fetched from profiles yet - use stored username temporarily
+                    displayName = comment.username ||
+                                 comment.user_email?.split('@')[0] ||
+                                 t('comments.anonymous');
+                  }
+                }
+                const avatar = profileAvatars[comment.user_id] || comment.avatar_url || null;
 
 
 
@@ -427,7 +543,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255,255,255,0.2)',
   },
   eventTitle: {
-    fontSize: 18,
+    fontSize: isSmallPhone() ? normalize(16) : normalize(18),
     fontWeight: '800',
     color: '#fff',
     textAlign: 'center',
@@ -443,9 +559,9 @@ const styles = StyleSheet.create({
   },
   commentCard: {
     backgroundColor: 'rgba(255,255,255,0.95)',
-    padding: 12,
+    padding: isSmallPhone() ? normalize(8) : 12,
     borderRadius: 12,
-    marginBottom: 12,
+    marginBottom: isSmallPhone() ? normalize(4) : normalize(8),
   },
   commentHeader: {
     flexDirection: 'row',
@@ -458,7 +574,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  commentUser: { fontSize: 14, fontWeight: '700', color: '#2d4887' },
+  commentUser: { fontSize: normalize(isSmallPhone() ? 12 : 14), fontWeight: '700', color: '#2d4887' },
   commentAvatar: {
     width: 32,
     height: 32,
@@ -471,7 +587,7 @@ const styles = StyleSheet.create({
     height: 32,
   },
   deleteButton: { fontSize: 18, color: '#ef4444', fontWeight: '700' },
-  commentText: { fontSize: 15, color: '#0f172a', marginBottom: 6 },
+  commentText: { fontSize: normalize(isSmallPhone() ? 13 : 15), color: '#0f172a', marginBottom: 6 },
   commentFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -497,19 +613,19 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'rgba(45,72,135,0.7)',
     borderRadius: 10,
-    padding: 12,
+    padding: Platform.OS === 'web' ? 12 : normalize(8),
     color: '#fff',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.25)',
-    minHeight: 60,
-    marginBottom: 12,
+    minHeight: Platform.OS === 'web' ? 60 : (isSmallPhone() ? 40 : 45),
+    marginBottom: normalize(8),
   },
   submitButton: {
     backgroundColor: '#0EA5B5',
-    paddingVertical: 12,
+    paddingVertical: Platform.OS === 'web' ? 12 : normalize(8),
     borderRadius: 10,
     alignItems: 'center',
   },
   submitButtonDisabled: { opacity: 0.5 },
-  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: normalize(isSmallPhone() ? 14 : 16) },
 });

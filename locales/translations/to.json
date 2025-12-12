@@ -1,5 +1,6 @@
 {
   "common": {
+    "locale": "to-TO",
     "languages": {
       "english": "Lea faka-Pālangi",
       "spanish": "Lea faka-Sipēnisi",
@@ -16,10 +17,35 @@
       "friday": "Falaite",
       "saturday": "Tokonaki"
     },
+    "dayAbbreviations": {
+      "sun": "Sāp",
+      "mon": "Mōn",
+      "tue": "Tūs",
+      "wed": "Pul",
+      "thu": "Tuʻa",
+      "fri": "Fal",
+      "sat": "Tok"
+    },
     "close": "Tapuni",
     "browser": "Pilisī",
     "or": "pe",
-    "somethingWentWrong": "Naʻe hoko ha mea paʻu"
+    "somethingWentWrong": "Naʻe hoko ha mea paʻu",
+    "noDescriptionAvailable": "ʻOku ʻikai ke ʻi ai ha fakamatala",
+    "back": "Foki",
+    "months": {
+      "january": "Sānuali",
+      "february": "Fēpueli",
+      "march": "Maʻasi",
+      "april": "ʻEpaleli",
+      "may": "Mē",
+      "june": "Sune",
+      "july": "Siulai",
+      "august": "ʻAokosi",
+      "september": "Sēpitema",
+      "october": "ʻOkatopa",
+      "november": "Nōvema",
+      "december": "Tīsema"
+    }
   },
   "app": {
     "tabs": {
@@ -41,10 +67,12 @@
     "allDay": "ʻAho Kotoa",
     "noDescriptionAvailable": "ʻOku ʻikai ke ʻi ai ha fakamatala",
     "noTitle": "(ʻOku ʻikai ha Hingoa)",
-    "free": "Taʻetotongi",
-    "family": "Fāmili",
+    "hidePastEvents": "Fakafisi ha ngaahi meʻa naʻe hoko",
+    "all": "Kotoa",
+    "clear": "Fakamaʻa",
     "calendarOptions": {
       "pacificIslander": "Komipiuti ʻo e Kāinga Pasifiki",
+      "otherEvents": "Ngaahi Meʻa Kehe",
       "latino": "Komipiuti ʻo e Kāinga Lātina"
     },
     "wellnessButtons": {
@@ -63,7 +91,8 @@
     }
   },
   "header": {
-    "submitEvent": "Tukuatu ha Eveti"
+    "submitEvent": "Tukuatu ha Eveti",
+    "beta": "BETA"
   },
   "login": {
     "title": "PIC Health",
@@ -77,6 +106,29 @@
     "passwordPlaceholder": "••••••••",
     "continueWithGoogle": "Kau Ki Ai ʻAki ʻa Google",
     "enterEmailPassword": "Fakahuʻi ʻimēli mo e ʻupu hū fakaʻilonga.",
+    "enterEmail": "Kataki ʻo fakahuʻi hoʻo tuʻasila ʻimēli.",
+    "forgotPassword": "Kuo Ngalo ʻa e Kupu Fakapulipuli?",
+    "resetPasswordInstructions": "Fakahuʻi hoʻo tuʻasila ʻimēli pea te ke ʻave ha fakamoʻoniʻi ke fakafoʻou ai hoʻo kupu fakapulipuli.",
+    "otpSentMessage": "Kuo ʻave ha fakamoʻoniʻi ʻe 6-ngaohi ki hoʻo ʻimēli. Kataki ʻo fakahuʻi ʻi lalo fakataha mo hoʻo kupu fakapulipuli foʻou.",
+    "sendOTP": "ʻAve ʻa e Fakamoʻoniʻi",
+    "otpCode": "Fakamoʻoniʻi",
+    "otpPlaceholder": "Fakahuʻi fakamoʻoniʻi ʻe 6-ngaohi",
+    "resendOTP": "Toe ʻAve ʻa e Fakamoʻoniʻi",
+    "otpSendFailed": "Naʻe ʻikai lava ʻo ʻave ʻa e fakamoʻoniʻi. Kataki ʻo toe feinga.",
+    "otpVerificationFailed": "Fakamoʻoniʻi ʻoku ʻikai malu pe kuo ʻosi. Kataki ʻo toe feinga.",
+    "fillAllFields": "Kataki ʻo fakahuʻi ʻa e ngaahi meʻa kotoa.",
+    "backToLogin": "Toe Foaki ki he Fakaʻilo Hake",
+    "resetPasswordTitle": "Fakafoʻou Hoʻo Kupu Fakapulipuli",
+    "newPassword": "Kupu Fakapulipuli Foʻou",
+    "newPasswordPlaceholder": "Fakahuʻi kupu fakapulipuli foʻou",
+    "confirmPassword": "Fakamoʻoniʻi ʻa e Kupu Fakapulipuli",
+    "confirmPasswordPlaceholder": "Fakamoʻoniʻi kupu fakapulipuli foʻou",
+    "resetPassword": "Fakafoʻou ʻa e Kupu Fakapulipuli",
+    "passwordResetSuccess": "Kuo Fakafoʻou Lelei ʻa e Kupu Fakapulipuli!",
+    "passwordResetSuccessMessage": "Kuo fakafoʻou lelei hoʻo kupu fakapulipuli. ʻOku ke lava ke fakaʻilo hake ʻaki hoʻo kupu fakapulipuli foʻou.",
+    "enterNewPassword": "Kataki ʻo fakahuʻi ha kupu fakapulipuli foʻou.",
+    "passwordTooShort": "ʻOku totonu ke ʻi ai ha lea ʻe 6 ʻoku lahi ange ʻa e kupu fakapulipuli.",
+    "passwordsDoNotMatch": "ʻOku ʻikai tatau ʻa e ngaahi kupu fakapulipuli.",
     "googleSignInWebOnly": "ʻOku ngāue pē ʻa e fakaʻilo ʻaki ʻa Google ki he uepi he taimi ni.",
     "googleSignInFailed": "Naʻe ʻikai momoko ʻa e fakaʻilo ʻaki ʻa Google"
   },
@@ -86,6 +138,23 @@
     "signedInTo": "Fakaʻilo hake ki PIC Health",
     "userId": "ʻIsī ʻo e ʻIsī",
     "changeProfilePhoto": "Liliu ʻa e fōtō ʻo e pulofili",
+    "changeName": "Liliu ʻa e Hingoa",
+    "changePassword": "Liliu ʻa e Kupu Fakapulipuli",
+    "currentPassword": "Kupu Fakapulipuli ʻOku ʻI He Taimi Ni",
+    "newPassword": "Kupu Fakapulipuli Foʻou",
+    "confirmPassword": "Fakapapauʻi ʻa e Kupu Fakapulipuli Foʻou",
+    "name": "Hingoa",
+    "enterName": "Fakahuʻu ʻa ho hingoa",
+    "enterCurrentPassword": "Fakahuʻu ʻa e kupu fakapulipuli ʻoku ʻi he taimi ni",
+    "enterNewPassword": "Fakahuʻu ʻa e kupu fakapulipuli foʻou",
+    "enterConfirmPassword": "Fakapapauʻi ʻa e kupu fakapulipuli foʻou",
+    "nameUpdated": "Kuo fakafoʻou lelei ʻa e hingoa!",
+    "passwordUpdated": "Kuo fakafoʻou lelei ʻa e kupu fakapulipuli!",
+    "nameUpdateFailed": "Naʻe ʻikai lava ʻo fakafoʻou ʻa e hingoa.",
+    "passwordUpdateFailed": "Naʻe ʻikai lava ʻo fakafoʻou ʻa e kupu fakapulipuli.",
+    "passwordMismatch": "ʻOku ʻikai tatau ʻa e ngaahi kupu fakapulipuli foʻou.",
+    "passwordTooShort": "Kuo pau ke ʻi ai ha lea ʻe 6 ʻi he kupu fakapulipuli.",
+    "invalidCurrentPassword": "ʻOku ʻikai tonu ʻa e kupu fakapulipuli ʻoku ʻi he taimi ni.",
     "signOut": "Fakaʻilo Hifo",
     "signOutMessage": "Te ke toe foaki ki he ʻapí hili ha fakaʻilo hifo.",
     "permissionRequired": "ʻOku fiemaʻu ha faʻataga ke maʻu ha fōtō ke setētā ai ha fōtō pulofili.",
@@ -93,7 +162,9 @@
     "avatarUrlFailed": "Naʻe ʻikai lava ʻo maʻu ʻa e URL ʻo e ʻātivā.",
     "saveAvatarFailed": "Naʻe ʻikai lava ʻo seivi ʻa e URL ʻo e ʻātivā.",
     "profileUpdated": "Kuo fakamoʻoni ʻa e fōtō pulofili! ʻE toe ʻi ai ha miniti ʻe toe liliu ai.",
-    "avatarChangeError": "Naʻe hoko ha mea paʻu he taimi ʻoku liliu ai hoʻo ʻātivā."
+    "avatarChangeError": "Naʻe hoko ha mea paʻu he taimi ʻoku liliu ai hoʻo ʻātivā.",
+    "save": "Fakasao",
+    "cancel": "Tuku"
   },
   "popup": {
     "welcomeTitle": "Talitali fiefia ki PIC Health!",
@@ -105,9 +176,21 @@
   "webView": {
     "notSupported": "ʻOku ʻikai ke tokoni ʻa e vaʻa fakakau ʻi he vahe ʻo e uepi. ʻE toʻo pē ʻa e soʻa ko ʻení ʻi ha mata ʻe taha:"
   },
+  "comments": {
+    "viewComments": "Sio ki he Ngaahi Fakamatala",
+    "noComments": "Hange ʻikai ha fakamatala",
+    "addComment": "Fakahufi ha fakamatala...",
+    "submit": "Tukuatu",
+    "anonymous": "ʻOku ʻikai ke ʻiloʻi"
+  },
   "health": {
     "title": "Moʻui",
     "description": "ʻOku ouange pē ʻa e fakamatala ʻi heni ki he ngaahi meʻa fakamatala lahi, ʻoku ʻikai ko ha faleʻi fakasaienisi. Kataki ʻo fekauʻaki mo ha toketa kuo pau ke maʻu ha faleʻi ki hoʻo tuʻunga moʻui, ngaahi ʻailanga, pe ngaahi fili ʻo e tokoni. ʻOua ʻe teʻeki ai hoʻo fekauʻaki mo ha faleʻi fakasaienisi pe fakanonou hoʻo kumi ha tokoni.",
+    "reflection": {
+      "title": "Fakakaukau",
+      "disclaimer": "Ko ha vahevahe faka-maluʻu ʻeni mo koe. ʻOku ʻikai teu ha meʻa te ke tohi ʻi heni pe vahevahe.",
+      "placeholder": "Tohi hoʻo ngaahi mahalo ʻi heni..."
+    },
     "services": [
       {
         "id": "findhelp",
